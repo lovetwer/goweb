@@ -1,4 +1,4 @@
-<!--pages/detail/detail.wxml  详情页：大图 + 网站名 + 分类 + 完整简介 + 复制网址 + 本地收藏-->
+<!--pages/detail/detail.wxml  详情页：大图 + 网站名 + 分类 + 完整简介 + 复制网址 + 本地收藏（浅色版式）-->
 <view class="container">
 
   <!-- 加载中 -->
@@ -45,11 +45,6 @@
       </view>
       <view class="hero-shade"></view>
 
-      <!-- 分类角标 -->
-      <view class="hero-badge">
-        <text class="hero-badge-text">{{site.category}}</text>
-      </view>
-
       <!-- 收藏按钮 -->
       <view
         class="hero-fav {{isFavorite ? 'hero-fav-on' : ''}}"
@@ -61,26 +56,31 @@
     </view>
 
     <view class="detail-body">
-      <view class="sheet {{coverFailed || !site.hasCover ? 'sheet-dark' : ''}}">
+      <view class="sheet">
 
         <!-- 标题区 -->
         <view class="sheet-head">
           <view class="head-top">
-            <text class="head-no">收录编号</text>
+            <view class="head-cat">
+              <text class="cat-mark"></text>
+              <text class="cat-text">{{site.category}}</text>
+            </view>
             <text class="head-date" wx:if="{{site.timeText}}">{{site.timeText}}</text>
           </view>
+
           <text class="site-name">{{site.name}}</text>
-          <view class="head-rule">
-            <view class="head-rule-red"></view>
-            <view class="head-rule-grey"></view>
+
+          <view class="head-rule"></view>
+
+          <view class="head-meta">
+            <text class="meta-label">DOMAIN</text>
+            <text class="site-host">{{site.hostText}}</text>
           </view>
-          <text class="site-host">{{site.hostText}}</text>
         </view>
 
         <!-- 完整简介 -->
         <view class="section">
           <view class="section-label">
-            <text class="label-mark"></text>
             <text class="label-text">网站简介</text>
             <text class="label-en">DESCRIPTION</text>
           </view>
@@ -90,7 +90,6 @@
         <!-- 网址：只展示 + 只复制，无任何跳转 -->
         <view class="section">
           <view class="section-label">
-            <text class="label-mark"></text>
             <text class="label-text">网站地址</text>
             <text class="label-en">URL</text>
           </view>

@@ -13,7 +13,7 @@
       <text class="fav-num">{{countText}}</text>
     </view>
     <view class="fav-head-rule">
-      <view class="fav-head-rule-red"></view>
+      <view class="fav-head-rule-black"></view>
       <view class="fav-head-rule-grey"></view>
     </view>
     <text class="fav-sub">仅保存在本机，不上传服务器</text>

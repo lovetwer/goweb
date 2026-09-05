@@ -6,10 +6,10 @@
   ],
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#f2f1ef",
+    "navigationBarBackgroundColor": "#ffffff",
     "navigationBarTitleText": "网站收录导航",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f2f1ef",
+    "backgroundColor": "#ffffff",
     "enablePullDownRefresh": false
   },
   "permission": {},

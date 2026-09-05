@@ -1,9 +1,10 @@
-/* pages/favorites/favorites.wxss —— 与首页同一套黑白灰红版式 */
+/* pages/favorites/favorites.wxss —— 与首页同一套浅色版式（白为主，黑标题，灰文字，红仅「清空」二字） */
 
 /* ================= 头部 ================= */
 .fav-header {
   padding: 24rpx 32rpx 28rpx;
-  background: var(--paper);
+  background: var(--white);
+  border-bottom: 2rpx solid var(--line);
 }
 
 .fav-head-top {
@@ -23,9 +24,10 @@
   padding: 8rpx 22rpx;
   border: 2rpx solid var(--line-2);
   border-radius: 999rpx;
-  background: transparent;
+  background: var(--white);
 }
 
+/* 红 7/7：破坏性操作（清空）的文字提示 */
 .fav-clear-text {
   font-size: 22rpx;
   letter-spacing: 1rpx;
@@ -35,7 +37,7 @@
 .fav-title-row {
   display: flex;
   align-items: baseline;
-  margin-top: 14rpx;
+  margin-top: 16rpx;
 }
 
 .fav-title {
@@ -57,19 +59,19 @@
 .fav-head-rule {
   display: flex;
   align-items: center;
-  margin-top: 22rpx;
+  margin-top: 24rpx;
 }
 
-.fav-head-rule-red {
+.fav-head-rule-black {
   width: 88rpx;
   height: 6rpx;
-  background: var(--red);
+  background: var(--black);
 }
 
 .fav-head-rule-grey {
   flex: 1;
   height: 2rpx;
-  background: var(--line-2);
+  background: var(--line);
 }
 
 .fav-sub {
@@ -82,7 +84,8 @@
 
 /* ================= 列表 ================= */
 .fav-list {
-  padding: 0 24rpx;
+  padding: 20rpx 24rpx 0;
+  background: var(--white);
 }
 
 .fav-item {
@@ -91,7 +94,7 @@
   align-items: stretch;
   padding: 22rpx 84rpx 22rpx 24rpx;
   margin-bottom: 18rpx;
-  background: var(--card);
+  background: var(--white);
   border: 2rpx solid var(--line);
   border-radius: var(--radius);
   transition: border-color 0.18s ease;
@@ -109,7 +112,7 @@
   border-radius: var(--radius);
   overflow: hidden;
   flex-shrink: 0;
-  background: var(--paper-2);
+  background: var(--fill);
 }
 
 .fav-cover-img {
@@ -164,7 +167,7 @@
 }
 
 .fav-item-hover .fav-arrow {
-  color: var(--red);
+  color: var(--black);
 }
 
 .fav-desc {
@@ -172,7 +175,7 @@
   margin-top: 8rpx;
   font-size: 23rpx;
   color: var(--ink-2);
-  line-height: 1.6;
+  line-height: 1.62;
 }
 
 .fav-meta {
@@ -188,9 +191,9 @@
   align-items: center;
   flex-shrink: 0;
   padding: 3rpx 12rpx 3rpx 10rpx;
-  border: 2rpx solid var(--line-2);
+  border: 2rpx solid var(--line);
   border-radius: 999rpx;
-  background: var(--paper);
+  background: var(--fill);
 }
 
 .fav-tag-dot {
@@ -247,7 +250,7 @@
 
 .fav-item-hover .rm-x,
 .fav-item-hover .rm-y {
-  background: var(--red);
+  background: var(--black);
 }
 
 /* ================= 统计 ================= */
@@ -261,7 +264,7 @@
 .fav-count-line {
   width: 90rpx;
   height: 2rpx;
-  background: var(--line-2);
+  background: var(--line);
 }
 
 .fav-count-text {
@@ -276,6 +279,7 @@
 .state-icon.star-state {
   border-color: var(--line-2);
   position: relative;
+  background: var(--white);
 }
 
 .state-icon.star-state::before {

@@ -1,12 +1,14 @@
-/* pages/index/index.wxss —— 编辑排版风：黑 / 白 / 灰为主，红只用在强调处 */
+/* pages/index/index.wxss
+   浅色版式：白底为主（约 80%），黑用于标题/选中态（5%），灰用于文字与发丝线（5%），
+   红只出现在「刊头圆点」和「结果统计竖条」两处（全站 7 处红之二）。 */
 
 /* ================= 顶部 ================= */
 .header {
-  padding: 20rpx 32rpx 26rpx;
-  background: var(--paper);
+  padding: 20rpx 32rpx 28rpx;
+  background: var(--white);
 }
 
-/* 期刊号行 */
+/* 刊头行 */
 .issue-row {
   display: flex;
   align-items: center;
@@ -14,6 +16,7 @@
   border-bottom: 2rpx solid var(--line);
 }
 
+/* 红 1/7：刊头圆点 */
 .issue-dot {
   width: 12rpx;
   height: 12rpx;
@@ -39,11 +42,6 @@
   padding: 8rpx 0 8rpx 20rpx;
 }
 
-/* 已有收藏时书签变红（红色仅出现在这一处 + 选中态） */
-.bm-icon-on {
-  background: var(--red);
-}
-
 .issue-entry-text {
   font-size: 23rpx;
   color: var(--ink-2);
@@ -58,25 +56,29 @@
   margin-left: 8rpx;
 }
 
-/* CSS 书签图标（未收藏态：灰描边） */
+/* CSS 书签图标（灰；已有收藏时变黑，不用红） */
 .bm-icon {
   width: 20rpx;
   height: 26rpx;
-  background: var(--ink-3);
+  background: var(--ink-4);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
   flex-shrink: 0;
 }
 
-/* 大标题：实心黑 + 描边字 */
+.bm-icon-on {
+  background: var(--black);
+}
+
+/* 大标题：实心黑 + 描边字（黑，5% 额度内的高冲击元素） */
 .title-block {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
-  padding: 30rpx 0 6rpx;
+  padding: 32rpx 0 6rpx;
 }
 
 .masthead {
-  font-size: 68rpx;
+  font-size: 66rpx;
   font-weight: 800;
   line-height: 1.1;
   letter-spacing: -1rpx;
@@ -91,12 +93,11 @@
   -webkit-text-stroke: 2rpx var(--black);
 }
 
-/* 标题末尾的红色句点：整页最克制的一处红 */
 .masthead-dot {
   width: 14rpx;
   height: 14rpx;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--black);
   margin-left: 14rpx;
   transform: translateY(-6rpx);
   flex-shrink: 0;
@@ -106,7 +107,7 @@
 .rule-row {
   display: flex;
   align-items: center;
-  margin-top: 18rpx;
+  margin-top: 20rpx;
 }
 
 .rule-label {
@@ -120,7 +121,7 @@
 .rule-line {
   flex: 1;
   height: 2rpx;
-  background: var(--line-2);
+  background: var(--line);
   margin: 0 18rpx;
 }
 
@@ -137,14 +138,15 @@
   display: flex;
   align-items: center;
   height: 96rpx;
-  margin-top: 28rpx;
+  margin-top: 30rpx;
   padding: 0 26rpx;
-  background: var(--card);
-  border: 2rpx solid var(--line);
+  background: var(--white);
+  border: 2rpx solid var(--line-2);
   border-radius: var(--radius);
   transition: border-color 0.18s ease;
 }
 
+/* 聚焦：边框变黑（黑，不用红） */
 .search-bar-focus {
   border-color: var(--black);
 }
@@ -218,8 +220,8 @@
 .tabs {
   width: 100%;
   white-space: nowrap;
-  background: var(--paper);
-  padding: 4rpx 0 20rpx;
+  background: var(--white);
+  padding: 4rpx 0 22rpx;
 }
 
 .tabs-inner {
@@ -229,10 +231,6 @@
   padding: 0 32rpx;
 }
 
-.tab:last-child {
-  margin-right: 32rpx;
-}
-
 .tab {
   display: flex;
   align-items: center;
@@ -240,10 +238,14 @@
   height: 66rpx;
   padding: 0 24rpx;
   margin-right: 14rpx;
-  background: transparent;
+  background: var(--white);
   border: 2rpx solid var(--line-2);
   border-radius: 999rpx;
   transition: all 0.18s ease;
+}
+
+.tab:last-child {
+  margin-right: 32rpx;
 }
 
 .tab-hover {
@@ -264,6 +266,7 @@
   letter-spacing: 1rpx;
 }
 
+/* 选中态：黑底白字（黑，5% 额度内） */
 .tab-active {
   background: var(--black);
   border-color: var(--black);
@@ -275,11 +278,11 @@
 }
 
 .tab-active .tab-index {
-  color: var(--red);
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .tab-active .tab-text {
-  color: #fff;
+  color: var(--white);
   font-weight: 600;
 }
 
@@ -289,6 +292,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 6rpx 36rpx 18rpx;
+  background: var(--white);
 }
 
 .result-left {
@@ -297,6 +301,7 @@
   min-width: 0;
 }
 
+/* 红 2/7：结果统计竖条 */
 .result-bar-mark {
   width: 6rpx;
   height: 22rpx;
@@ -323,6 +328,7 @@
 /* ================= 卡片列表 ================= */
 .list {
   padding: 0 24rpx;
+  background: var(--white);
 }
 
 .site-card {
@@ -331,7 +337,7 @@
   align-items: stretch;
   padding: 24rpx 26rpx;
   margin-bottom: 18rpx;
-  background: var(--card);
+  background: var(--white);
   border: 2rpx solid var(--line);
   border-radius: var(--radius);
   transition: border-color 0.18s ease;
@@ -339,13 +345,14 @@
 
 .site-card-hover {
   border-color: var(--black);
+  background: var(--white);
 }
 
 /* 左上角编号 */
 .site-no {
   position: absolute;
   left: 26rpx;
-  top: 24rpx;
+  top: 26rpx;
   width: 44rpx;
   font-family: var(--mono);
   font-size: 19rpx;
@@ -363,7 +370,7 @@
   border-radius: var(--radius);
   overflow: hidden;
   flex-shrink: 0;
-  background: var(--paper-2);
+  background: var(--fill);
 }
 
 .cover {
@@ -420,7 +427,7 @@
 }
 
 .site-card-hover .site-arrow {
-  color: var(--red);
+  color: var(--black);
 }
 
 .site-desc {
@@ -428,7 +435,7 @@
   margin-top: 10rpx;
   font-size: 24rpx;
   color: var(--ink-2);
-  line-height: 1.62;
+  line-height: 1.66;
 }
 
 .site-meta {
@@ -444,9 +451,9 @@
   align-items: center;
   flex-shrink: 0;
   padding: 4rpx 14rpx 4rpx 12rpx;
-  border: 2rpx solid var(--line-2);
+  border: 2rpx solid var(--line);
   border-radius: 999rpx;
-  background: var(--paper);
+  background: var(--fill);
 }
 
 .tag-dot {
@@ -482,7 +489,7 @@
   margin-bottom: 18rpx;
   border: 2rpx dashed var(--line-2);
   border-radius: var(--radius);
-  background: transparent;
+  background: var(--white);
 }
 
 .load-more-text {
@@ -495,7 +502,7 @@
 .load-more-plus {
   font-family: var(--mono);
   font-size: 26rpx;
-  color: var(--red);
+  color: var(--black);
   margin-left: 12rpx;
 }
 
@@ -504,7 +511,7 @@
   height: 26rpx;
   margin-right: 14rpx;
   border: 3rpx solid var(--line-2);
-  border-top-color: var(--red);
+  border-top-color: var(--black);
   border-radius: 50%;
   animation: spin 0.75s linear infinite;
 }
@@ -525,7 +532,7 @@
 .load-end-line {
   width: 90rpx;
   height: 2rpx;
-  background: var(--line-2);
+  background: var(--line);
 }
 
 .load-end-text {

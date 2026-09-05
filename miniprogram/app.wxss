@@ -1,27 +1,38 @@
 /**
  * app.wxss —— 全局样式
- * 主题：黑白灰 95% + 红 5%（编辑排版 / Editorial 风格）
+ *
+ * 主题配比（按视觉面积）：
+ *   白 80%  —— 页面底色、卡片、导航栏、大量留白、反白文字
+ *   黑  5%  —— 主标题、选中态、主按钮、发丝边按下态
+ *   灰  5%  —— 正文与辅助文字、发丝分隔线、极浅填充块
+ *   红  5%  —— 仅 6 处小面积强调（见 README「设计语言」）
+ *   其他 5% —— 封面占位色块、骨架屏、图片本身
+ *
  * 全部原生组件 + 手写 WXSS，无第三方组件库，无 emoji 图标（图标均为 CSS 绘制）
  */
 
 page {
-  /* ---- 黑 ---- */
-  --black: #0c0c0c;
-  --black-2: #1a1a1a;
-  --black-3: #2e2e2e;
-
-  /* ---- 灰 ---- */
-  --ink: #111111;
-  --ink-2: #4a4a48;
-  --ink-3: #83827e;
-  --ink-4: #a9a8a3;
-  --line: #e2e1dd;
-  --line-2: #d3d2cd;
-  --paper: #f2f1ef;
-  --paper-2: #eceae6;
+  /* ---- 白（主色，80%） ---- */
+  --white: #ffffff;
+  --bg: #ffffff;
   --card: #ffffff;
 
-  /* ---- 红（唯一强调色，用量 < 5%） ---- */
+  /* ---- 黑（5%） ---- */
+  --black: #0c0c0c;
+  --black-2: #1a1a1a;
+  --black-3: #333333;
+  --ink: #111111;
+
+  /* ---- 灰（5%） ---- */
+  --ink-2: #55554f;
+  --ink-3: #8b8a85;
+  --ink-4: #b3b2ad;
+  --line: #eceae6;
+  --line-2: #dedbd5;
+  --fill: #f7f6f4;
+  --fill-2: #f1efec;
+
+  /* ---- 红（5%，唯一强调色） ---- */
   --red: #e8231a;
   --red-deep: #c81b13;
   --red-soft: #fdeceb;
@@ -29,7 +40,7 @@ page {
   --radius: 4rpx;
   --mono: 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
 
-  background-color: var(--paper);
+  background-color: var(--bg);
   color: var(--ink);
   font-size: 28rpx;
   line-height: 1.6;
@@ -64,21 +75,21 @@ button::after {
 
 .container {
   min-height: 100vh;
-  background-color: var(--paper);
+  background-color: var(--bg);
 }
 
 .safe-bottom {
   height: calc(env(safe-area-inset-bottom) + 24rpx);
 }
 
-/* ---- 通用卡片：纯白 + 发丝边，几乎不用阴影（靠线条分层） ---- */
+/* ---- 通用卡片：纯白 + 发丝边（白底上靠线条分层，不用阴影） ---- */
 .card {
   background: var(--card);
   border: 2rpx solid var(--line);
   border-radius: var(--radius);
 }
 
-/* ---- 等宽字体小标签 ---- */
+/* ---- 等宽小字 ---- */
 .mono {
   font-family: var(--mono);
   letter-spacing: 1rpx;
@@ -107,7 +118,7 @@ button::after {
 
 /* ---- 空状态 / 错误 ---- */
 .state-box {
-  padding: 140rpx 70rpx;
+  padding: 150rpx 70rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -118,7 +129,7 @@ button::after {
   height: 108rpx;
   border: 2rpx solid var(--line-2);
   border-radius: 50%;
-  background: var(--card);
+  background: var(--white);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -130,14 +141,14 @@ button::after {
 }
 
 .state-icon-warn {
-  border-color: var(--red);
-  color: var(--red);
+  border-color: var(--black);
+  color: var(--black);
 }
 
 .state-index {
   font-family: var(--mono);
-  font-size: 22rpx;
-  letter-spacing: 4rpx;
+  font-size: 21rpx;
+  letter-spacing: 5rpx;
   color: var(--ink-4);
   margin-bottom: 18rpx;
 }
@@ -154,36 +165,36 @@ button::after {
   color: var(--ink-3);
   margin-top: 14rpx;
   text-align: center;
-  line-height: 1.75;
+  line-height: 1.8;
 }
 
 .state-actions {
   display: flex;
   align-items: center;
-  margin-top: 44rpx;
+  margin-top: 46rpx;
 }
 
 .state-btn {
-  height: 76rpx;
-  line-height: 76rpx;
-  padding: 0 48rpx;
+  height: 78rpx;
+  line-height: 78rpx;
+  padding: 0 50rpx;
   background: var(--black);
-  color: #fff;
+  color: var(--white);
   font-size: 26rpx;
-  letter-spacing: 2rpx;
+  letter-spacing: 3rpx;
   border-radius: var(--radius);
 }
 
 .state-btn.ghost {
-  background: transparent;
+  background: var(--white);
   color: var(--ink-2);
   border: 2rpx solid var(--line-2);
   margin-right: 20rpx;
 }
 
-/* ---- 骨架屏：中性灰 ---- */
+/* ---- 骨架屏（计入「其他颜色」额度） ---- */
 .skeleton {
-  background: linear-gradient(90deg, #eae9e6 25%, #f4f3f1 37%, #eae9e6 63%);
+  background: linear-gradient(90deg, #f1efec 25%, #f8f7f5 37%, #f1efec 63%);
   background-size: 400% 100%;
   animation: skeleton-loading 1.5s ease infinite;
   border-radius: var(--radius);
@@ -215,5 +226,5 @@ button::after {
 }
 
 .btn-hover {
-  opacity: 0.7;
+  opacity: 0.6;
 }
