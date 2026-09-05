@@ -1,0 +1,10 @@
+{
+  "name": "goweb",
+  "version": "1.0.0",
+  "private": true,
+  "description": "网站收录导航 · 微信小程序（原生框架 + 微信云开发，纯只读展示，无用户系统）",
+  "scripts": {
+    "sync:sitemap": "node -e \"require('fs').copyFileSync('sitemap.json','miniprogram/sitemap.json');console.log('sitemap.json 已同步到 miniprogram/')\"",
+    "gen:sample": "node data/gen-sample.js"
+  }
+}

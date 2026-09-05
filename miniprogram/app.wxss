@@ -1,0 +1,175 @@
+/**
+ * app.wxss —— 全局样式（原生组件 + 手写 WXSS，无第三方组件库）
+ * 设计基调：浅灰底 + 白色圆角卡片 + 细边框 + 柔和阴影
+ */
+
+page {
+  --brand: #3d7fff;
+  --brand-soft: #eaf1ff;
+  --ink: #1c1d21;
+  --ink-2: #5b5f68;
+  --ink-3: #9aa0ab;
+  --line: #eceef2;
+  --bg: #f5f6f8;
+  --card: #ffffff;
+  --radius: 20rpx;
+
+  background-color: var(--bg);
+  color: var(--ink);
+  font-size: 28rpx;
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+view,
+text,
+scroll-view,
+input,
+button,
+image {
+  box-sizing: border-box;
+}
+
+/* 去掉 button 默认样式，全部手写 */
+button {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  line-height: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+button::after {
+  border: none;
+}
+
+/* 通用容器 */
+.container {
+  min-height: 100vh;
+  background-color: var(--bg);
+}
+
+.safe-bottom {
+  height: calc(env(safe-area-inset-bottom) + 24rpx);
+}
+
+/* 通用卡片 */
+.card {
+  background: var(--card);
+  border-radius: var(--radius);
+  border: 2rpx solid var(--line);
+  box-shadow: 0 6rpx 24rpx rgba(28, 29, 33, 0.04);
+}
+
+/* 文本截断 */
+.ellipsis {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ellipsis-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ellipsis-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+/* 空状态 / 加载中 */
+.state-box {
+  padding: 120rpx 60rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.state-icon {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  background: #eef0f4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 52rpx;
+  margin-bottom: 28rpx;
+}
+
+.state-icon-warn {
+  background: #fff2e8;
+  color: #f0803c;
+  font-weight: 700;
+}
+
+.state-icon-search {
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-weight: 700;
+}
+
+.state-title {
+  font-size: 30rpx;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+
+.state-desc {
+  font-size: 24rpx;
+  color: var(--ink-3);
+  margin-top: 10rpx;
+  text-align: center;
+}
+
+.state-btn {
+  margin-top: 36rpx;
+  padding: 16rpx 44rpx;
+  border-radius: 999rpx;
+  background: var(--brand);
+  color: #fff;
+  font-size: 26rpx;
+}
+
+/* 骨架屏 */
+.skeleton {
+  background: linear-gradient(90deg, #eef0f4 25%, #f6f7f9 37%, #eef0f4 63%);
+  background-size: 400% 100%;
+  animation: skeleton-loading 1.4s ease infinite;
+  border-radius: 12rpx;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+/* 淡入动画 */
+.fade-in {
+  animation: fade-in 0.28s ease both;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12rpx);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,63 @@
+<!--pages/favorites/favorites.wxml  我的收藏：全部来自本地 Storage-->
+<view class="container">
+
+  <view class="fav-header">
+    <view class="fav-head-text">
+      <text class="fav-title">我的收藏</text>
+      <text class="fav-sub">仅保存在本机，不上传服务器</text>
+    </view>
+    <view wx:if="{{count > 0}}" class="fav-clear" hover-class="btn-hover" bindtap="onClearAll">清空</view>
+  </view>
+
+  <!-- 空状态 -->
+  <view wx:if="{{!loading && count === 0}}" class="state-box">
+    <view class="state-icon star-state"></view>
+    <text class="state-title">还没有收藏任何网站</text>
+    <text class="state-desc">在详情页点击「收藏」，网站就会出现在这里</text>
+    <view class="state-btn" hover-class="btn-hover" bindtap="onGoIndex">去逛逛</view>
+  </view>
+
+  <!-- 列表 -->
+  <view wx:else class="fav-list">
+    <view
+      class="fav-item fade-in"
+      wx:for="{{list}}"
+      wx:key="_id"
+      data-id="{{item._id}}"
+      hover-class="fav-item-hover"
+      bindtap="onItemTap"
+    >
+      <view class="fav-cover" style="background:{{item.bgColor}}">
+        <image
+          wx:if="{{item.hasCover}}"
+          class="fav-cover-img"
+          src="{{item.coverUrl}}"
+          mode="aspectFill"
+          lazy-load="true"
+          data-id="{{item._id}}"
+          binderror="onCoverError"
+        />
+        <view wx:else class="fav-cover-fallback">
+          <text class="fav-cover-initial">{{item.initial}}</text>
+        </view>
+      </view>
+
+      <view class="fav-body">
+        <view class="fav-name-row">
+          <text class="fav-name ellipsis">{{item.name}}</text>
+          <text class="fav-tag">{{item.category}}</text>
+        </view>
+        <text class="fav-desc ellipsis-2">{{item.description}}</text>
+        <text class="fav-url ellipsis">{{item.url}}</text>
+      </view>
+
+      <view class="fav-remove" hover-class="btn-hover" catchtap="onRemove" data-id="{{item._id}}">
+        <text class="fav-remove-x">×</text>
+      </view>
+    </view>
+
+    <view wx:if="{{count > 0}}" class="fav-count">共 {{count}} 条收藏</view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

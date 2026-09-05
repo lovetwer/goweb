@@ -1,0 +1,305 @@
+/* pages/detail/detail.wxss */
+
+/* ---------------- 大图 ---------------- */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 460rpx;
+  overflow: hidden;
+  background: #eef0f4;
+}
+
+.hero-img {
+  width: 100%;
+  height: 460rpx;
+  display: block;
+}
+
+.hero-fallback {
+  width: 100%;
+  height: 460rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-initial {
+  font-size: 150rpx;
+  font-weight: 600;
+  color: rgba(28, 29, 33, 0.18);
+}
+
+.hero-mask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 180rpx;
+  background: linear-gradient(180deg, rgba(245, 246, 248, 0) 0%, rgba(245, 246, 248, 0.92) 100%);
+  pointer-events: none;
+}
+
+/* 大图右上角收藏按钮 */
+.fav-btn {
+  position: absolute;
+  top: 24rpx;
+  right: 24rpx;
+  display: flex;
+  align-items: center;
+  height: 64rpx;
+  padding: 0 26rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 6rpx 18rpx rgba(28, 29, 33, 0.12);
+}
+
+/* CSS 画的五角星，颜色随收藏状态变化 */
+.star-icon {
+  width: 26rpx;
+  height: 26rpx;
+  background: #b6bcc6;
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  flex-shrink: 0;
+}
+
+.fav-btn-on .star-icon {
+  background: #f5a623;
+}
+
+.action-fav-on .star-icon {
+  background: #f5a623;
+}
+
+.fav-btn-text {
+  margin-left: 8rpx;
+  font-size: 24rpx;
+  color: var(--ink-2);
+}
+
+.fav-btn-on .fav-btn-text {
+  color: #d98a00;
+}
+
+/* ---------------- 内容区 ---------------- */
+.detail-body {
+  position: relative;
+  margin-top: -80rpx;
+  padding: 0 24rpx 200rpx;
+}
+
+.detail-card {
+  padding: 32rpx 30rpx 34rpx;
+  margin-bottom: 20rpx;
+}
+
+.title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.site-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 42rpx;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--ink);
+  letter-spacing: 0.5rpx;
+}
+
+.site-tag {
+  flex-shrink: 0;
+  margin-left: 20rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 10rpx;
+  background: var(--brand-soft);
+  color: var(--brand);
+  font-size: 22rpx;
+  line-height: 1.5;
+}
+
+.meta-row {
+  margin-top: 14rpx;
+}
+
+.meta-item {
+  font-size: 23rpx;
+  color: var(--ink-3);
+}
+
+.divider {
+  height: 2rpx;
+  background: var(--line);
+  margin: 28rpx 0 26rpx;
+}
+
+.section-label {
+  display: block;
+  font-size: 24rpx;
+  color: var(--ink-3);
+  margin-bottom: 14rpx;
+  letter-spacing: 1rpx;
+}
+
+.site-desc {
+  display: block;
+  font-size: 29rpx;
+  line-height: 1.85;
+  color: var(--ink-2);
+  word-break: break-all;
+}
+
+/* ---------------- 网址卡 ---------------- */
+.url-card {
+  padding: 30rpx 30rpx 26rpx;
+}
+
+.url-box {
+  padding: 24rpx 26rpx;
+  border-radius: 16rpx;
+  background: #f7f8fa;
+  border: 2rpx dashed #dfe3ea;
+}
+
+.url-host {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.url-full {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 23rpx;
+  color: var(--ink-3);
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+.url-tip {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 21rpx;
+  color: #b9bec7;
+}
+
+/* ---------------- 底部操作栏 ---------------- */
+.action-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 18rpx 24rpx calc(18rpx + env(safe-area-inset-bottom));
+  background: rgba(255, 255, 255, 0.96);
+  border-top: 2rpx solid var(--line);
+  backdrop-filter: blur(10px);
+  z-index: 20;
+}
+
+.action-fav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 140rpx;
+  height: 88rpx;
+  border-radius: 18rpx;
+  background: #f4f5f7;
+  flex-shrink: 0;
+}
+
+.action-fav-text {
+  margin-top: 6rpx;
+  font-size: 20rpx;
+  color: var(--ink-2);
+}
+
+.action-fav-on .action-fav-text {
+  color: #d98a00;
+}
+
+.action-copy {
+  flex: 1;
+  height: 88rpx;
+  margin-left: 20rpx;
+  border-radius: 18rpx;
+  background: linear-gradient(135deg, #4c86ff 0%, #2f5fe0 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10rpx 24rpx rgba(61, 127, 255, 0.3);
+}
+
+.action-copy-done {
+  background: linear-gradient(135deg, #34c77b 0%, #1fa861 100%);
+  box-shadow: 0 10rpx 24rpx rgba(31, 168, 97, 0.28);
+}
+
+.action-copy-text {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #fff;
+  letter-spacing: 2rpx;
+}
+
+.btn-hover {
+  opacity: 0.86;
+}
+
+/* ---------------- 错误页 ---------------- */
+.state-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 36rpx;
+}
+
+.state-btn.ghost {
+  background: var(--card);
+  color: var(--ink-2);
+  border: 2rpx solid var(--line);
+  margin-right: 20rpx;
+}
+
+/* ---------------- 骨架屏 ---------------- */
+.detail-hero {
+  width: 100%;
+  height: 460rpx;
+  background: #eef0f4;
+}
+
+.sk-hero {
+  width: 100%;
+  height: 460rpx;
+  border-radius: 0;
+}
+
+.sk-line {
+  height: 26rpx;
+  margin-top: 18rpx;
+  border-radius: 8rpx;
+}
+
+.sk-line-title {
+  height: 44rpx;
+  width: 55%;
+  margin-top: 0;
+}
+
+.sk-line-short {
+  width: 40%;
+}
