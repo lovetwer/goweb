@@ -9,7 +9,8 @@ Page({
   data: {
     list: [],
     loading: true,
-    count: 0
+    count: 0,
+    countText: '00'
   },
 
   onLoad() {
@@ -33,6 +34,7 @@ Page({
     this.setData({
       list: local.map((item) => this.decorate(item)),
       count: local.length,
+      countText: local.length < 10 ? `0${local.length}` : `${local.length}`,
       loading: false
     });
 
@@ -79,6 +81,7 @@ Page({
       hasCover: !!raw.coverUrl,
       initial: util.firstChar(raw.name),
       bgColor: util.colorOf(raw.name),
+      inkColor: util.inkOf(raw.name),
       addedText: raw.addedAt ? util.fromNow(raw.addedAt) : ''
     };
   },

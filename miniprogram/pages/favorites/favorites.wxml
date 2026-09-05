@@ -2,19 +2,32 @@
 <view class="container">
 
   <view class="fav-header">
-    <view class="fav-head-text">
-      <text class="fav-title">我的收藏</text>
-      <text class="fav-sub">仅保存在本机，不上传服务器</text>
+    <view class="fav-head-top">
+      <text class="fav-kicker">BOOKMARKS</text>
+      <view wx:if="{{count > 0}}" class="fav-clear" hover-class="btn-hover" bindtap="onClearAll">
+        <text class="fav-clear-text">清空</text>
+      </view>
     </view>
-    <view wx:if="{{count > 0}}" class="fav-clear" hover-class="btn-hover" bindtap="onClearAll">清空</view>
+    <view class="fav-title-row">
+      <text class="fav-title">我的收藏</text>
+      <text class="fav-num">{{countText}}</text>
+    </view>
+    <view class="fav-head-rule">
+      <view class="fav-head-rule-red"></view>
+      <view class="fav-head-rule-grey"></view>
+    </view>
+    <text class="fav-sub">仅保存在本机，不上传服务器</text>
   </view>
 
   <!-- 空状态 -->
   <view wx:if="{{!loading && count === 0}}" class="state-box">
     <view class="state-icon star-state"></view>
+    <text class="state-index">EMPTY</text>
     <text class="state-title">还没有收藏任何网站</text>
     <text class="state-desc">在详情页点击「收藏」，网站就会出现在这里</text>
-    <view class="state-btn" hover-class="btn-hover" bindtap="onGoIndex">去逛逛</view>
+    <view class="state-actions">
+      <view class="state-btn" hover-class="btn-hover" bindtap="onGoIndex">去逛逛</view>
+    </view>
   </view>
 
   <!-- 列表 -->
@@ -38,25 +51,36 @@
           binderror="onCoverError"
         />
         <view wx:else class="fav-cover-fallback">
-          <text class="fav-cover-initial">{{item.initial}}</text>
+          <text class="fav-cover-initial" style="color:{{item.inkColor}}">{{item.initial}}</text>
         </view>
       </view>
 
       <view class="fav-body">
         <view class="fav-name-row">
           <text class="fav-name ellipsis">{{item.name}}</text>
-          <text class="fav-tag">{{item.category}}</text>
+          <text class="fav-arrow">→</text>
         </view>
         <text class="fav-desc ellipsis-2">{{item.description}}</text>
-        <text class="fav-url ellipsis">{{item.url}}</text>
+        <view class="fav-meta">
+          <view class="fav-tag">
+            <text class="fav-tag-dot"></text>
+            <text class="fav-tag-text">{{item.category}}</text>
+          </view>
+          <text class="fav-url ellipsis">{{item.url}}</text>
+        </view>
       </view>
 
       <view class="fav-remove" hover-class="btn-hover" catchtap="onRemove" data-id="{{item._id}}">
-        <text class="fav-remove-x">×</text>
+        <view class="rm-x"></view>
+        <view class="rm-y"></view>
       </view>
     </view>
 
-    <view wx:if="{{count > 0}}" class="fav-count">共 {{count}} 条收藏</view>
+    <view wx:if="{{count > 0}}" class="fav-count">
+      <view class="fav-count-line"></view>
+      <text class="fav-count-text">共 {{count}} 条</text>
+      <view class="fav-count-line"></view>
+    </view>
   </view>
 
   <view class="safe-bottom"></view>

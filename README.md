@@ -5,6 +5,49 @@
 
 ---
 
+## 〇、设计语言：黑 / 白 / 灰 95% + 红 5%
+
+整体是「编辑排版 / 杂志目录」的路子：靠**发丝线（2rpx 灰边框）+ 留白 + 字号层级**分层，
+几乎不用阴影和圆角（圆角统一 4rpx），红色只作强调，出现的位置是固定且克制的。
+
+| 用途 | 变量 | 色值 |
+| --- | --- | --- |
+| 主黑（标题、选中态、主按钮） | `--black` | `#0c0c0c` |
+| 正文黑 | `--ink` | `#111111` |
+| 次级文字 | `--ink-2` | `#4a4a48` |
+| 辅助文字 | `--ink-3` | `#83827e` |
+| 弱文字 / 等宽小字 | `--ink-4` | `#a9a8a3` |
+| 发丝线 | `--line` / `--line-2` | `#e2e1dd` / `#d3d2cd` |
+| 页面底色（暖灰纸感） | `--paper` | `#f2f1ef` |
+| 卡片 | `--card` | `#ffffff` |
+| **红（唯一强调色）** | `--red` | `#e8231a` |
+
+红色只出现在这 7 处：
+
+1. 首页刊头行的实心小圆点；
+2. 首页大标题「导航」后面的句点；
+3. 分类 Tab 选中态里的序号（`00`/`01`…，底色是黑）；
+4. 首页结果统计前的竖条 mark；
+5. 详情页大图左下角的分类角标（红底白字）；
+6. 详情页标题下的分隔线首段（88rpx 红 + 其余灰）；
+7. 「复制网址」成功的瞬时反馈（黑按钮变红 2 秒）与「已收藏」的书签。
+
+其余一律黑白灰。图标全部 CSS 绘制（放大镜、书签、叉号、五角星已弃用），**不使用 emoji、不使用图片图标、不引第三方组件库**。
+中英文混排：中文用系统黑体，英文/数字/域名统一走等宽字体（`--mono`），强化「目录 / 索引」的观感。
+
+### 在浏览器里先看效果
+
+```bash
+node preview/build.js          # 用真实 wxml + wxss 渲染出 preview/*.html
+open preview/preview.html      # 三屏总览（首页 / 详情页 / 收藏页）
+```
+
+`preview/` 是纯设计预览工具：读的是仓库里真实的 `pages/*.wxml` 和 `pages/*.wxss`（样式 1:1），
+数据是本地假数据，不联网、不访问云开发；`rpx` 按 1rpx = 0.5px 换算。
+该目录已在 `project.config.json` 的 `packOptions.ignore` 中排除，不会被打包上传，改完样式重跑一次即可。
+
+---
+
 ## 一、功能一览
 
 | 页面 | 路径 | 说明 |
@@ -30,7 +73,10 @@ goweb/
 ├── project.config.json          # 项目配置（appid 为占位符，导入时填自己的）
 ├── project.private.config.json  # 工具本地私有配置（已在 .gitignore 中）
 ├── sitemap.json                 # 根目录副本：{"rules":[{"action":"allow","page":"*"}]}
-├── package.json                 # 两个便捷脚本（同步 sitemap / 生成示例数据）
+├── package.json                 # 便捷脚本（同步 sitemap / 生成示例数据 / 重建设计预览）
+├── preview/                     # 设计预览（浏览器看效果用，不参与小程序打包）
+│   ├── build.js                 # 用真实 wxml + wxss 静态渲染出 HTML
+│   └── preview.html             # 三屏总览入口
 ├── data/
 │   ├── sites.sample.json        # ★ 10 条示例数据，云开发控制台可直接导入（JSON Lines）
 │   ├── sites.sample.pretty.json # 同样 10 条，格式化数组，方便手动新增记录时复制
@@ -140,7 +186,9 @@ return db.command.and(conditions);
 - 用户输入先经过 `escapeRegExp` 转义，避免 `.` `*` `(` 之类字符破坏正则或造成异常匹配；
 - 输入框有 300ms 防抖（`config.SEARCH_DEBOUNCE`），不会每敲一个字就打一次数据库；
 - 分页：`count()` + `skip/limit`，`PAGE_SIZE` 默认 20，触底自动加载，也可点「点击加载更多」；
-- 下拉刷新已开启（`index.json` 的 `enablePullDownRefresh`）。
+- 下拉刷新已开启（`index.json` 的 `enablePullDownRefresh`）；
+- 卡片左上角的序号、Tab 上的分类编号（`00`/`01`…）都在 `index.js` 里预计算好再下发
+  （`tabs`、`site.no`），WXML 模板里不做运算 —— 既省心也更稳。
 
 > 提示：模糊搜索是全表扫描，数据量上千后建议在控制台给 `sites` 加索引
 > （`category` 单字段索引、`createTime` 倒序索引），查询会明显变快。

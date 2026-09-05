@@ -3,11 +3,9 @@
 
   <!-- 加载中 -->
   <block wx:if="{{loading}}">
-    <view class="detail-hero">
-      <view class="sk-hero skeleton"></view>
-    </view>
+    <view class="sk-hero skeleton"></view>
     <view class="detail-body">
-      <view class="card detail-card">
+      <view class="sheet">
         <view class="sk-line sk-line-title skeleton"></view>
         <view class="sk-line skeleton"></view>
         <view class="sk-line skeleton"></view>
@@ -19,7 +17,8 @@
   <!-- 错误 / 不存在 -->
   <view wx:elif="{{errorText}}" class="state-box">
     <view class="state-icon state-icon-warn">!</view>
-    <text class="state-title">没能打开这个网站的信息</text>
+    <text class="state-index">ERROR</text>
+    <text class="state-title">没能打开这条收录</text>
     <text class="state-desc">{{errorText}}</text>
     <view class="state-actions">
       <view class="state-btn ghost" hover-class="btn-hover" bindtap="onRetry">重新加载</view>
@@ -31,7 +30,7 @@
   <block wx:elif="{{site}}">
 
     <!-- 大图 -->
-    <view class="hero" style="background:{{site.bgColor}}">
+    <view class="hero">
       <image
         wx:if="{{site.hasCover && !coverFailed}}"
         class="hero-img"
@@ -42,50 +41,73 @@
       />
       <view wx:else class="hero-fallback">
         <text class="hero-initial">{{site.initial}}</text>
+        <text class="hero-fallback-tip">NO COVER</text>
       </view>
-      <view class="hero-mask"></view>
+      <view class="hero-shade"></view>
+
+      <!-- 分类角标 -->
+      <view class="hero-badge">
+        <text class="hero-badge-text">{{site.category}}</text>
+      </view>
 
       <!-- 收藏按钮 -->
       <view
-        class="fav-btn {{isFavorite ? 'fav-btn-on' : ''}}"
+        class="hero-fav {{isFavorite ? 'hero-fav-on' : ''}}"
         hover-class="btn-hover"
         bindtap="onToggleFavorite"
       >
-        <view class="star-icon"></view>
-        <text class="fav-btn-text">{{isFavorite ? '已收藏' : '收藏'}}</text>
+        <view class="bm-icon-lg"></view>
       </view>
     </view>
 
     <view class="detail-body">
+      <view class="sheet {{coverFailed || !site.hasCover ? 'sheet-dark' : ''}}">
 
-      <!-- 标题区 -->
-      <view class="card detail-card fade-in">
-        <view class="title-row">
+        <!-- 标题区 -->
+        <view class="sheet-head">
+          <view class="head-top">
+            <text class="head-no">收录编号</text>
+            <text class="head-date" wx:if="{{site.timeText}}">{{site.timeText}}</text>
+          </view>
           <text class="site-name">{{site.name}}</text>
-          <text class="site-tag">{{site.category}}</text>
+          <view class="head-rule">
+            <view class="head-rule-red"></view>
+            <view class="head-rule-grey"></view>
+          </view>
+          <text class="site-host">{{site.hostText}}</text>
         </view>
 
-        <view wx:if="{{site.timeText}}" class="meta-row">
-          <text class="meta-item">收录于 {{site.timeText}}</text>
+        <!-- 完整简介 -->
+        <view class="section">
+          <view class="section-label">
+            <text class="label-mark"></text>
+            <text class="label-text">网站简介</text>
+            <text class="label-en">DESCRIPTION</text>
+          </view>
+          <text class="site-desc">{{site.description}}</text>
         </view>
 
-        <view class="divider"></view>
+        <!-- 网址：只展示 + 只复制，无任何跳转 -->
+        <view class="section">
+          <view class="section-label">
+            <text class="label-mark"></text>
+            <text class="label-text">网站地址</text>
+            <text class="label-en">URL</text>
+          </view>
+          <view class="url-box" bindlongpress="onUrlLongPress">
+            <text class="url-host">{{site.hostText}}</text>
+            <text class="url-full">{{site.url}}</text>
+            <view class="url-hint">
+              <text class="url-hint-text">长按可复制</text>
+            </view>
+          </view>
+        </view>
 
-        <text class="section-label">网站简介</text>
-        <text class="site-desc">{{site.description}}</text>
+        <view class="sheet-foot">
+          <text class="foot-text">本页面仅提供信息展示与网址复制</text>
+        </view>
+
       </view>
-
-      <!-- 网址区：只展示 + 只复制，无任何跳转 -->
-      <view class="card url-card fade-in">
-        <text class="section-label">网站地址</text>
-        <view class="url-box" bindlongpress="onUrlLongPress">
-          <text class="url-host ellipsis">{{site.hostText}}</text>
-          <text class="url-full ellipsis-2">{{site.url}}</text>
-        </view>
-        <text class="url-tip">长按地址也可复制</text>
-      </view>
-
-      <view class="safe-bottom"></view>
     </view>
 
     <!-- 底部操作栏 -->
@@ -95,7 +117,7 @@
         hover-class="btn-hover"
         bindtap="onToggleFavorite"
       >
-        <view class="star-icon"></view>
+        <view class="bm-icon-lg"></view>
         <text class="action-fav-text">{{isFavorite ? '已收藏' : '收藏'}}</text>
       </view>
       <view class="action-copy {{copied ? 'action-copy-done' : ''}}" hover-class="btn-hover" bindtap="onCopyUrl">

@@ -48,25 +48,32 @@ function firstChar(name) {
 }
 
 /**
- * 根据名称生成一个稳定的柔和底色（占位块用）
+ * 根据名称生成一个稳定的中性底色（封面占位块用）
+ * 主题：黑白灰红 —— 这里只输出灰阶，红色留给强调元素
  * @param {string} name
- * @returns {string} 形如 #eaf1ff
+ * @returns {string} 形如 #efeeec
  */
 function colorOf(name) {
-  const palette = [
-    '#eaf1ff',
-    '#e9f7f1',
-    '#fff3e6',
-    '#f3ecff',
-    '#ffeef0',
-    '#e8f6ff',
-    '#fff8e1',
-    '#eef0f4'
-  ];
+  const palette = ['#efeeec', '#e9e8e5', '#f3f2f0', '#e4e3e0', '#eceae7', '#e7e6e3'];
   const s = String(name || '');
   let hash = 0;
   for (let i = 0; i < s.length; i += 1) {
     hash = (hash * 31 + s.charCodeAt(i)) % 9973;
+  }
+  return palette[hash % palette.length];
+}
+
+/**
+ * 占位块上的首字母颜色（深灰，压在浅灰底上）
+ * @param {string} name
+ * @returns {string}
+ */
+function inkOf(name) {
+  const palette = ['#8e8d8a', '#7c7b78', '#9a9996', '#74736f', '#86857f', '#6e6d69'];
+  const s = String(name || '');
+  let hash = 0;
+  for (let i = 0; i < s.length; i += 1) {
+    hash = (hash * 37 + s.charCodeAt(i)) % 7919;
   }
   return palette[hash % palette.length];
 }
@@ -135,6 +142,7 @@ module.exports = {
   trim,
   firstChar,
   colorOf,
+  inkOf,
   formatDate,
   fromNow
 };

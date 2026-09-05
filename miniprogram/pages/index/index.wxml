@@ -1,21 +1,27 @@
-<!--pages/index/index.wxml  首页：搜索框 + 分类横向 Tab + 网站卡片列表-->
+<!--pages/index/index.wxml  首页：搜索框 + 分类横向 Tab + 网站卡片列表（黑白灰 + 红）-->
 <view class="container">
 
-  <!-- 顶部区域 -->
+  <!-- 顶部 -->
   <view class="header">
-    <view class="header-top">
-      <view class="brand">
-        <view class="brand-mark">导</view>
-        <view class="brand-text">
-          <text class="brand-title">网站收录导航</text>
-          <text class="brand-sub">精选好用的网站，一站直达</text>
-        </view>
+    <view class="issue-row">
+      <text class="issue-dot"></text>
+      <text class="issue-no">SITE INDEX / 只读收录 · 无需登录</text>
+      <view class="issue-entry" hover-class="btn-hover" bindtap="onFavEntryTap">
+        <view class="bm-icon {{favCount > 0 ? 'bm-icon-on' : ''}}"></view>
+        <text class="issue-entry-text">收藏 {{favCount > 0 ? favCount : ''}}</text>
+        <text class="issue-arrow">→</text>
       </view>
-      <view class="fav-entry" hover-class="fav-entry-hover" bindtap="onFavEntryTap">
-        <view class="fav-star"></view>
-        <text class="fav-label">收藏</text>
-        <text wx:if="{{favCount > 0}}" class="fav-badge">{{favCount > 99 ? '99+' : favCount}}</text>
-      </view>
+    </view>
+
+    <view class="title-block">
+      <text class="masthead">网站收录</text>
+      <text class="masthead masthead-outline">导航</text>
+      <view class="masthead-dot"></view>
+    </view>
+    <view class="rule-row">
+      <text class="rule-label">SITE INDEX</text>
+      <view class="rule-line"></view>
+      <text class="rule-count">{{tabCount}} CATEGORIES</text>
     </view>
 
     <!-- 搜索框 -->
@@ -29,13 +35,15 @@
         placeholder-class="search-placeholder"
         confirm-type="search"
         cursor-spacing="20"
+        cursor-color="#e8231a"
         bindinput="onSearchInput"
         bindconfirm="onSearchConfirm"
         bindfocus="onSearchFocus"
         bindblur="onSearchBlur"
       />
-      <view wx:if="{{keyword}}" class="search-clear" hover-class="search-clear-hover" catchtap="onClearKeyword">
-        <text class="search-clear-x">×</text>
+      <view wx:if="{{keyword}}" class="search-clear" hover-class="btn-hover" catchtap="onClearKeyword">
+        <view class="clear-x"></view>
+        <view class="clear-y"></view>
       </view>
     </view>
   </view>
@@ -48,21 +56,30 @@
         data-index="0"
         hover-class="tab-hover"
         bindtap="onTabTap"
-      >全部</view>
+      >
+        <text class="tab-index">00</text>
+        <text class="tab-text">全部</text>
+      </view>
       <view
-        wx:for="{{categories}}"
-        wx:key="*this"
+        wx:for="{{tabs}}"
+        wx:key="name"
         class="tab {{activeIndex === index + 1 ? 'tab-active' : ''}}"
         data-index="{{index + 1}}"
         hover-class="tab-hover"
         bindtap="onTabTap"
-      >{{item}}</view>
+      >
+        <text class="tab-index">{{item.no}}</text>
+        <text class="tab-text">{{item.name}}</text>
+      </view>
     </view>
   </scroll-view>
 
   <!-- 结果统计 -->
   <view wx:if="{{!loading && !errorText && firstLoaded}}" class="result-bar">
-    <text class="result-text">{{totalText}}</text>
+    <view class="result-left">
+      <text class="result-bar-mark"></text>
+      <text class="result-text">{{totalText}}</text>
+    </view>
     <text wx:if="{{keyword || activeCategory}}" class="result-reset" bindtap="onReset">清除条件</text>
   </view>
 
@@ -84,17 +101,23 @@
     <!-- 错误 -->
     <view wx:elif="{{errorText}}" class="state-box">
       <view class="state-icon state-icon-warn">!</view>
+      <text class="state-index">ERROR</text>
       <text class="state-title">数据没能加载出来</text>
       <text class="state-desc">{{errorText}}</text>
-      <view class="state-btn" hover-class="btn-hover" bindtap="onRetry">重新加载</view>
+      <view class="state-actions">
+        <view class="state-btn" hover-class="btn-hover" bindtap="onRetry">重新加载</view>
+      </view>
     </view>
 
     <!-- 空结果 -->
     <view wx:elif="{{sites.length === 0}}" class="state-box">
-      <view class="state-icon state-icon-search">?</view>
+      <view class="state-icon">?</view>
+      <text class="state-index">NO RESULT</text>
       <text class="state-title">没有找到相关网站</text>
-      <text class="state-desc">换个关键词，或者切换到「全部」分类看看</text>
-      <view class="state-btn" hover-class="btn-hover" bindtap="onReset">查看全部</view>
+      <text class="state-desc">换个关键词，或者切回「全部」分类看看</text>
+      <view class="state-actions">
+        <view class="state-btn" hover-class="btn-hover" bindtap="onReset">查看全部</view>
+      </view>
     </view>
 
     <!-- 卡片 -->
@@ -108,6 +131,8 @@
         hover-stay-time="80"
         bindtap="onCardTap"
       >
+        <text class="site-no">{{item.no}}</text>
+
         <view class="cover-wrap" style="background:{{item.bgColor}}">
           <image
             wx:if="{{item.hasCover}}"
@@ -119,35 +144,41 @@
             binderror="onCoverError"
           />
           <view wx:else class="cover-fallback">
-            <text class="cover-initial">{{item.initial}}</text>
+            <text class="cover-initial" style="color:{{item.inkColor}}">{{item.initial}}</text>
           </view>
         </view>
 
         <view class="site-body">
           <view class="site-title-row">
             <text class="site-name ellipsis">{{item.name}}</text>
-            <text class="site-tag">{{item.category}}</text>
+            <text class="site-arrow">→</text>
           </view>
+
           <text class="site-desc ellipsis-2">{{item.description}}</text>
-          <view class="site-foot">
-            <text class="site-url ellipsis">{{item.url}}</text>
-            <text wx:if="{{item.timeText}}" class="site-time">{{item.timeText}}</text>
+
+          <view class="site-meta">
+            <view class="site-tag">
+              <text class="tag-dot"></text>
+              <text class="tag-text">{{item.category}}</text>
+            </view>
+            <text class="site-url ellipsis">{{item.hostText}}</text>
           </view>
         </view>
-
-        <text class="site-arrow">›</text>
       </view>
 
       <!-- 加载更多 -->
       <view wx:if="{{loadingMore}}" class="load-more">
         <view class="spinner"></view>
-        <text class="load-more-text">正在加载…</text>
+        <text class="load-more-text">LOADING</text>
       </view>
-      <view wx:elif="{{hasMore}}" class="load-more" bindtap="onLoadMore">
-        <text class="load-more-text">点击加载更多</text>
+      <view wx:elif="{{hasMore}}" class="load-more" hover-class="btn-hover" bindtap="onLoadMore">
+        <text class="load-more-text">加载更多</text>
+        <text class="load-more-plus">+</text>
       </view>
       <view wx:elif="{{sites.length > 0}}" class="load-end">
-        <text class="load-end-text">— 已经到底啦 —</text>
+        <view class="load-end-line"></view>
+        <text class="load-end-text">END</text>
+        <view class="load-end-line"></view>
       </view>
     </block>
 

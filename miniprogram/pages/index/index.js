@@ -6,8 +6,10 @@ const favorites = require('../../utils/favorites.js');
 
 Page({
   data: {
-    // 分类 Tab
+    // 分类 Tab（编号在 onLoad 里预计算，WXML 里不再做表达式运算）
     categories: config.CATEGORIES || [],
+    tabs: [],
+    tabCount: (config.CATEGORIES || []).length + 1,
     activeIndex: 0,
     activeCategory: '',
 
@@ -33,6 +35,13 @@ Page({
   },
 
   onLoad() {
+    this.setData({
+      tabs: (config.CATEGORIES || []).map((name, i) => ({
+        name,
+        no: i < 9 ? `0${i + 1}` : `${i + 1}`
+      }))
+    });
+
     this._debouncedSearch = util.debounce(() => {
       this.loadData({ reset: true });
     }, config.SEARCH_DEBOUNCE || 300);
@@ -212,7 +221,12 @@ Page({
           .then((res) => ({ total, list: (res && res.data) || [] }));
       })
       .then(({ total, list }) => {
-        const decorated = list.map((item) => this.decorate(item));
+        const base = reset ? 0 : this.data.sites.length;
+        const decorated = list.map((item, i) =>
+          Object.assign(this.decorate(item), {
+            no: base + i < 9 ? `0${base + i + 1}` : `${base + i + 1}`
+          })
+        );
         const sites = reset ? decorated : this.data.sites.concat(decorated);
         const loaded = (page + 1) * this.data.pageSize;
 
@@ -264,8 +278,19 @@ Page({
       timeText: util.fromNow(raw.createTime),
       initial: util.firstChar(raw.name),
       bgColor: util.colorOf(raw.name),
+      inkColor: util.inkOf(raw.name),
+      hostText: this.hostOf(raw.url),
       hasCover: !!raw.coverUrl
     };
+  },
+
+  /**
+   * 从 url 中取出域名，仅用于界面展示，不做任何跳转
+   */
+  hostOf(url) {
+    const s = String(url || '');
+    const m = s.match(/^(?:https?:\/\/)?([^\/?#]+)/i);
+    return m ? m[1] : s;
   },
 
   friendlyError(err) {

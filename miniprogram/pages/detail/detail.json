@@ -1,8 +1,9 @@
 {
   "navigationBarTitleText": "网站详情",
-  "navigationBarBackgroundColor": "#f5f6f8",
-  "navigationBarTextStyle": "black",
-  "backgroundColor": "#f5f6f8",
+  "navigationBarBackgroundColor": "#0c0c0c",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#0c0c0c",
+  "backgroundTextStyle": "light",
   "enablePullDownRefresh": false,
   "usingComponents": {}
 }

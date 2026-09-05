@@ -1,20 +1,35 @@
 /**
- * app.wxss —— 全局样式（原生组件 + 手写 WXSS，无第三方组件库）
- * 设计基调：浅灰底 + 白色圆角卡片 + 细边框 + 柔和阴影
+ * app.wxss —— 全局样式
+ * 主题：黑白灰 95% + 红 5%（编辑排版 / Editorial 风格）
+ * 全部原生组件 + 手写 WXSS，无第三方组件库，无 emoji 图标（图标均为 CSS 绘制）
  */
 
 page {
-  --brand: #3d7fff;
-  --brand-soft: #eaf1ff;
-  --ink: #1c1d21;
-  --ink-2: #5b5f68;
-  --ink-3: #9aa0ab;
-  --line: #eceef2;
-  --bg: #f5f6f8;
-  --card: #ffffff;
-  --radius: 20rpx;
+  /* ---- 黑 ---- */
+  --black: #0c0c0c;
+  --black-2: #1a1a1a;
+  --black-3: #2e2e2e;
 
-  background-color: var(--bg);
+  /* ---- 灰 ---- */
+  --ink: #111111;
+  --ink-2: #4a4a48;
+  --ink-3: #83827e;
+  --ink-4: #a9a8a3;
+  --line: #e2e1dd;
+  --line-2: #d3d2cd;
+  --paper: #f2f1ef;
+  --paper-2: #eceae6;
+  --card: #ffffff;
+
+  /* ---- 红（唯一强调色，用量 < 5%） ---- */
+  --red: #e8231a;
+  --red-deep: #c81b13;
+  --red-soft: #fdeceb;
+
+  --radius: 4rpx;
+  --mono: 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
+
+  background-color: var(--paper);
   color: var(--ink);
   font-size: 28rpx;
   line-height: 1.6;
@@ -32,7 +47,6 @@ image {
   box-sizing: border-box;
 }
 
-/* 去掉 button 默认样式，全部手写 */
 button {
   margin: 0;
   padding: 0;
@@ -48,25 +62,29 @@ button::after {
   border: none;
 }
 
-/* 通用容器 */
 .container {
   min-height: 100vh;
-  background-color: var(--bg);
+  background-color: var(--paper);
 }
 
 .safe-bottom {
   height: calc(env(safe-area-inset-bottom) + 24rpx);
 }
 
-/* 通用卡片 */
+/* ---- 通用卡片：纯白 + 发丝边，几乎不用阴影（靠线条分层） ---- */
 .card {
   background: var(--card);
-  border-radius: var(--radius);
   border: 2rpx solid var(--line);
-  box-shadow: 0 6rpx 24rpx rgba(28, 29, 33, 0.04);
+  border-radius: var(--radius);
 }
 
-/* 文本截断 */
+/* ---- 等宽字体小标签 ---- */
+.mono {
+  font-family: var(--mono);
+  letter-spacing: 1rpx;
+}
+
+/* ---- 文本截断 ---- */
 .ellipsis {
   overflow: hidden;
   white-space: nowrap;
@@ -87,66 +105,88 @@ button::after {
   -webkit-line-clamp: 3;
 }
 
-/* 空状态 / 加载中 */
+/* ---- 空状态 / 错误 ---- */
 .state-box {
-  padding: 120rpx 60rpx;
+  padding: 140rpx 70rpx;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .state-icon {
-  width: 120rpx;
-  height: 120rpx;
+  width: 108rpx;
+  height: 108rpx;
+  border: 2rpx solid var(--line-2);
   border-radius: 50%;
-  background: #eef0f4;
+  background: var(--card);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 52rpx;
-  margin-bottom: 28rpx;
+  font-family: var(--mono);
+  font-size: 44rpx;
+  font-weight: 600;
+  color: var(--ink-4);
+  margin-bottom: 34rpx;
 }
 
 .state-icon-warn {
-  background: #fff2e8;
-  color: #f0803c;
-  font-weight: 700;
+  border-color: var(--red);
+  color: var(--red);
 }
 
-.state-icon-search {
-  background: var(--brand-soft);
-  color: var(--brand);
-  font-weight: 700;
+.state-index {
+  font-family: var(--mono);
+  font-size: 22rpx;
+  letter-spacing: 4rpx;
+  color: var(--ink-4);
+  margin-bottom: 18rpx;
 }
 
 .state-title {
-  font-size: 30rpx;
-  color: var(--ink-2);
-  font-weight: 500;
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 1rpx;
 }
 
 .state-desc {
-  font-size: 24rpx;
+  font-size: 25rpx;
   color: var(--ink-3);
-  margin-top: 10rpx;
+  margin-top: 14rpx;
   text-align: center;
+  line-height: 1.75;
+}
+
+.state-actions {
+  display: flex;
+  align-items: center;
+  margin-top: 44rpx;
 }
 
 .state-btn {
-  margin-top: 36rpx;
-  padding: 16rpx 44rpx;
-  border-radius: 999rpx;
-  background: var(--brand);
+  height: 76rpx;
+  line-height: 76rpx;
+  padding: 0 48rpx;
+  background: var(--black);
   color: #fff;
   font-size: 26rpx;
+  letter-spacing: 2rpx;
+  border-radius: var(--radius);
 }
 
-/* 骨架屏 */
+.state-btn.ghost {
+  background: transparent;
+  color: var(--ink-2);
+  border: 2rpx solid var(--line-2);
+  margin-right: 20rpx;
+}
+
+/* ---- 骨架屏：中性灰 ---- */
 .skeleton {
-  background: linear-gradient(90deg, #eef0f4 25%, #f6f7f9 37%, #eef0f4 63%);
+  background: linear-gradient(90deg, #eae9e6 25%, #f4f3f1 37%, #eae9e6 63%);
   background-size: 400% 100%;
-  animation: skeleton-loading 1.4s ease infinite;
-  border-radius: 12rpx;
+  animation: skeleton-loading 1.5s ease infinite;
+  border-radius: var(--radius);
 }
 
 @keyframes skeleton-loading {
@@ -158,18 +198,22 @@ button::after {
   }
 }
 
-/* 淡入动画 */
+/* ---- 进场动画 ---- */
 .fade-in {
-  animation: fade-in 0.28s ease both;
+  animation: fade-in 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) both;
 }
 
 @keyframes fade-in {
   from {
     opacity: 0;
-    transform: translateY(12rpx);
+    transform: translateY(14rpx);
   }
   to {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.btn-hover {
+  opacity: 0.7;
 }

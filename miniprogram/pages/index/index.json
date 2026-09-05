@@ -1,8 +1,8 @@
 {
   "navigationBarTitleText": "网站收录导航",
-  "navigationBarBackgroundColor": "#f5f6f8",
+  "navigationBarBackgroundColor": "#f2f1ef",
   "navigationBarTextStyle": "black",
-  "backgroundColor": "#f5f6f8",
+  "backgroundColor": "#f2f1ef",
   "backgroundTextStyle": "dark",
   "enablePullDownRefresh": true,
   "onReachBottomDistance": 120,

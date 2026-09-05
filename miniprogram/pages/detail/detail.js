@@ -105,6 +105,7 @@ Page({
       timeText: util.formatDate(item.createTime, 'YYYY-MM-DD'),
       initial: util.firstChar(item.name),
       bgColor: util.colorOf(item.name),
+      inkColor: util.inkOf(item.name),
       hasCover: !!item.coverUrl,
       hostText: this.hostOf(item.url)
     };
