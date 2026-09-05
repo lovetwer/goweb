@@ -35,17 +35,6 @@
 其余一律黑白灰。图标全部 CSS 绘制（放大镜、书签、叉号、五角星已弃用），**不使用 emoji、不使用图片图标、不引第三方组件库**。
 中英文混排：中文用系统黑体，英文/数字/域名统一走等宽字体（`--mono`），强化「目录 / 索引」的观感。
 
-### 在浏览器里先看效果
-
-```bash
-node preview/build.js          # 用真实 wxml + wxss 渲染出 preview/*.html
-open preview/preview.html      # 三屏总览（首页 / 详情页 / 收藏页）
-```
-
-`preview/` 是纯设计预览工具：读的是仓库里真实的 `pages/*.wxml` 和 `pages/*.wxss`（样式 1:1），
-数据是本地假数据，不联网、不访问云开发；`rpx` 按 1rpx = 0.5px 换算。
-该目录已在 `project.config.json` 的 `packOptions.ignore` 中排除，不会被打包上传，改完样式重跑一次即可。
-
 ---
 
 ## 一、功能一览
@@ -73,10 +62,7 @@ goweb/
 ├── project.config.json          # 项目配置（appid 为占位符，导入时填自己的）
 ├── project.private.config.json  # 工具本地私有配置（已在 .gitignore 中）
 ├── sitemap.json                 # 根目录副本：{"rules":[{"action":"allow","page":"*"}]}
-├── package.json                 # 便捷脚本（同步 sitemap / 生成示例数据 / 重建设计预览）
-├── preview/                     # 设计预览（浏览器看效果用，不参与小程序打包）
-│   ├── build.js                 # 用真实 wxml + wxss 静态渲染出 HTML
-│   └── preview.html             # 三屏总览入口
+├── package.json                 # 便捷脚本（同步 sitemap / 生成示例数据）
 ├── data/
 │   ├── sites.sample.json        # ★ 10 条示例数据，云开发控制台可直接导入（JSON Lines）
 │   ├── sites.sample.pretty.json # 同样 10 条，格式化数组，方便手动新增记录时复制

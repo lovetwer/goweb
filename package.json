@@ -5,8 +5,6 @@
   "description": "网站收录导航 · 微信小程序（原生框架 + 微信云开发，纯只读展示，无用户系统；黑白灰 + 红 编辑排版风）",
   "scripts": {
     "sync:sitemap": "node -e \"require('fs').copyFileSync('sitemap.json','miniprogram/sitemap.json');console.log('sitemap.json 已同步到 miniprogram/')\"",
-    "gen:sample": "node data/gen-sample.js",
-    "preview": "node preview/build.js",
-    "preview:serve": "node preview/build.js && python3 -m http.server 4173 --directory preview"
+    "gen:sample": "node data/gen-sample.js"
   }
 }

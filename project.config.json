@@ -13,10 +13,6 @@
         "value": "data"
       },
       {
-        "type": "folder",
-        "value": "preview"
-      },
-      {
         "type": "file",
         "value": "README.md"
       },
