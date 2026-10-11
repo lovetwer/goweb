@@ -64,10 +64,11 @@ Page({
       name: (t && t.name) || item.name || '未命名工具',
       desc: (t && t.desc) || item.desc || '',
       icon: (t && t.icon) || item.icon || util.firstChar(item.name),
+      image: (t && t.image) || item.image || '',
       path: (t && t.path) || item.path || '',
       categoryName: (cat && cat.name) || '',
-      soft: (cat && cat.soft) || '#f5f0e8',
-      color: (cat && cat.color) || '#8b8279',
+      soft: (cat && cat.soft) || '#eaf3e9',
+      color: (cat && cat.color) || '#849287',
       alive: !!t,
       addedText: item.addedAt ? util.fromNow(item.addedAt) : ''
     };
@@ -87,6 +88,7 @@ Page({
       name: tool.name,
       desc: tool.desc,
       icon: tool.icon,
+      image: tool.image,
       path: tool.path,
       category: tool.category
     });
@@ -107,7 +109,7 @@ Page({
       title: '清空收藏',
       content: `确定要清空全部 ${this.data.count} 条本地收藏吗？收藏只存在这台设备上，清空后无法恢复。`,
       confirmText: '清空',
-      confirmColor: '#b84827',
+      confirmColor: '#5b9468',
       cancelText: '再想想',
       success: (res) => {
         if (!res.confirm) return;

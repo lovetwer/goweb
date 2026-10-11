@@ -1,4 +1,4 @@
-<!--pages/beauty-result/beauty-result.wxml  分析结果（暖纸版式，仅供娱乐参考）-->
+<!--pages/beauty-result/beauty-result.wxml  分析结果（薄荷清新版式，仅供娱乐参考）-->
 <view class="container">
 
   <block wx:if="{{ready && result}}">

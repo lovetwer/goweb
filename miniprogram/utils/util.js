@@ -39,13 +39,12 @@ function firstChar(name) {
 }
 
 /**
- * 根据名称生成一个稳定的中性底色（图标兜底块用）
- * 主题：暖纸底 —— 这里只输出暖灰阶，陶土红留给强调元素
+ * 根据名称生成一个稳定的浅绿底色（图标兜底块用）
  * @param {string} name
- * @returns {string} 形如 #f2ece3
+ * @returns {string} 形如 #edf4ed
  */
 function colorOf(name) {
-  const palette = ['#f2ece3', '#ece4d8', '#f5f1ea', '#e8dfd1', '#efe9df', '#eae2d6'];
+  const palette = ['#eaf3e9', '#edf4ed', '#e5f1eb', '#eef3e8', '#e7f0f2', '#eef1f8'];
   const s = String(name || '');
   let hash = 0;
   for (let i = 0; i < s.length; i += 1) {
@@ -55,15 +54,12 @@ function colorOf(name) {
 }
 
 /**
- * 占位块上的首字母颜色（暖深灰，压在暖浅底上）
- *
- * 6 个值按 WCAG 校准过：在 colorOf 的 6 种暖浅底上，最差一档也有 3.07:1
- * （首字母 52–60rpx 属大字，阈值 3:1）。
+ * 占位块上的首字母颜色（植物绿系深色，压在柔和浅底上）
  * @param {string} name
- * @returns {string} 形如 #7c7469
+ * @returns {string} 形如 #55765c
  */
 function inkOf(name) {
-  const palette = ['#7c7469', '#867d71', '#6f675e', '#776f64', '#5f584f', '#6a6258'];
+  const palette = ['#55765c', '#697b57', '#617d80', '#726f91', '#84713f', '#5b806e'];
   const s = String(name || '');
   let hash = 0;
   for (let i = 0; i < s.length; i += 1) {

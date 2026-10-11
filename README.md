@@ -56,7 +56,8 @@ goweb/
   name: '单位换算',
   desc: '长度、重量、温度等常用单位一键换算',
   category: 'calc',              // 取自 CATEGORIES 的 key
-  icon: '换',                    // 图标字符，留空则用名称首字兜底
+  icon: '换',                    // 图片缺省时用名称首字兜底
+  image: '../../assets/illustrations/unit-converter.png', // 可选：功能插画
   path: '/pages/unit-converter/unit-converter',
   keywords: ['unit', '长度'],    // 可选，额外搜索词
   vipOnly: false                 // 可选，true = 会员专属工具
@@ -90,9 +91,8 @@ goweb/
 
 ## 四、设计语言
 
-沿用原「暖纸底」体系：页面底色 `#faf7f2`、白卡片、暖灰文字、陶土红 `#b84827`
-唯一强调色。全部色值集中在 `app.wxss` 的 `page{}` 变量里，换肤只改这一处。
-工具图标用「分类浅底 + 分类色字符」的色块方案，无图片资源、无第三方组件库。
+采用清新薄荷绿视觉：页面底色 `#f5f8f4`、白色圆角卡片、柔和绿 `#5b9468` 作主强调色，辅以淡紫、浅杏与雾蓝区分功能。全局色值集中在 `miniprogram/app.wxss` 的 `page{}` 变量中。
+首页、最近使用、收藏和历史卡片复用工具对应的本地 PNG 插画（`miniprogram/assets/illustrations/`），无需远程图片请求；插画的 SVG 源文件保存在 `scripts/artwork-src/`。仍为原生 WXML / WXSS / JS，无第三方组件库。
 
 ## 五、会员功能
 

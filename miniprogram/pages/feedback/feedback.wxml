@@ -21,7 +21,7 @@
           placeholder="写点什么…"
           placeholder-class="field-placeholder"
           cursor-spacing="20"
-          cursor-color="#b84827"
+          cursor-color="#5b9468"
           bindinput="onInput"
         />
         <view wx:if="{{error}}" class="field-foot">

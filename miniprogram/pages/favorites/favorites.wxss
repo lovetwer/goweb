@@ -1,4 +1,4 @@
-/* pages/favorites/favorites.wxss —— 与首页同一套暖纸版式（暖白底，白卡片，陶土红仅「清空」等少数处） */
+/* pages/favorites/favorites.wxss —— 与首页同一套薄荷清新版式（清新浅底，白卡片，清新绿仅「清空」等少数处） */
 
 /* ================= 头部 ================= */
 .fav-header {
@@ -27,11 +27,11 @@
   background: var(--card);
 }
 
-/* 破坏性操作（清空）：陶土红文字提示 */
+/* 破坏性操作（清空）：清新绿文字提示 */
 .fav-clear-text {
   font-size: 22rpx;
   letter-spacing: 1rpx;
-  color: var(--red);
+  color: var(--primary);
 }
 
 .fav-title-row {
@@ -65,7 +65,7 @@
 .fav-head-rule-mark {
   width: 88rpx;
   height: 6rpx;
-  background: var(--red);
+  background: var(--primary);
 }
 
 .fav-head-rule-grey {
@@ -214,7 +214,7 @@
 
 /* 删除按钮：CSS 画的叉。
    破坏性操作的图标必须看得见 —— 用 --ink-3，
-   hover 时再变陶土红，形成「平时清楚 / 悬停警示」两级。 */
+   hover 时再变清新绿，形成「平时清楚 / 悬停警示」两级。 */
 .fav-remove {
   position: absolute;
   right: 20rpx;
@@ -244,7 +244,7 @@
 
 .fav-item-hover .rm-x,
 .fav-item-hover .rm-y {
-  background: var(--red);
+  background: var(--primary);
 }
 
 /* 已下架条目整体压淡 */
@@ -296,4 +296,14 @@
   margin: -28rpx 0 0 -20rpx;
   background: var(--line-2);
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 74%, 0 100%);
+}
+
+/* 工具预览：使用工具对应插画，非字符占位图标 */
+.fav-image {
+  display: block;
+  flex: 0 0 84rpx;
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 18rpx;
+  background: #eaf3e9;
 }

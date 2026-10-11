@@ -91,8 +91,9 @@ Page({
         id: item.id,
         name: item.name || '未命名工具',
         icon: (t && t.icon) || item.icon || util.firstChar(item.name),
-        soft: colorCat.soft || '#f5f0e8',
-        color: colorCat.color || '#8b8279',
+        image: (t && t.image) || item.image || '',
+        soft: colorCat.soft || '#eaf3e9',
+        color: colorCat.color || '#849287',
         alive: !!t
       };
     });
@@ -161,6 +162,7 @@ Page({
       name: tool.name,
       desc: tool.desc,
       icon: tool.icon,
+      image: tool.image,
       path: tool.path,
       category: tool.category
     });

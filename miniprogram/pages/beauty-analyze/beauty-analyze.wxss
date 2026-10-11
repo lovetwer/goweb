@@ -1,4 +1,4 @@
-/* pages/beauty-analyze/beauty-analyze.wxss —— 选图分析页（暖纸版式） */
+/* pages/beauty-analyze/beauty-analyze.wxss —— 选图分析页（薄荷清新版式） */
 
 /* ================= 刊头 ================= */
 .a-header {
@@ -15,8 +15,8 @@
   width: 14rpx;
   height: 14rpx;
   border-radius: 50%;
-  background: var(--red);
-  box-shadow: 0 0 0 6rpx var(--red-soft);
+  background: var(--primary);
+  box-shadow: 0 0 0 6rpx var(--primary-soft);
   margin-right: 14rpx;
   flex-shrink: 0;
 }
@@ -49,46 +49,23 @@
   justify-content: center;
 }
 
-/* 空状态：CSS 相机图形（无 emoji、无图片资源） */
+/* 轻松自然的功能插画，作为选图空状态 */
+.ph-empty-art {
+  display: block;
+  width: 430rpx;
+  height: 248rpx;
+  margin-bottom: 10rpx;
+  border-radius: 22rpx;
+}
+
 .ph-empty {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.ph-camera-body {
-  position: relative;
-  width: 96rpx;
-  height: 70rpx;
-  border: 4rpx solid var(--ink-4);
-  border-radius: 12rpx;
-}
-
-.ph-camera-top {
-  position: absolute;
-  top: -16rpx;
-  left: 50%;
-  width: 34rpx;
-  height: 12rpx;
-  margin-left: -17rpx;
-  border: 4rpx solid var(--ink-4);
-  border-bottom: none;
-  border-radius: 8rpx 8rpx 0 0;
-}
-
-.ph-camera-lens {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 34rpx;
-  height: 34rpx;
-  margin: -17rpx 0 0 -17rpx;
-  border: 4rpx solid var(--ink-4);
-  border-radius: 50%;
-}
-
 .ph-empty-text {
-  margin-top: 30rpx;
+  margin-top: 2rpx;
   font-size: 27rpx;
   font-weight: 600;
   color: var(--ink-2);
@@ -113,7 +90,7 @@
   right: 16rpx;
   bottom: 16rpx;
   padding: 8rpx 20rpx;
-  background: rgba(43, 37, 33, 0.72);
+  background: rgba(35, 56, 43, 0.76);
   border-radius: 999rpx;
 }
 
@@ -129,7 +106,7 @@
   right: 0;
   top: 0;
   bottom: 0;
-  background: rgba(250, 247, 242, 0.88);
+  background: rgba(245, 248, 244, 0.9);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -147,7 +124,7 @@
   width: 52rpx;
   height: 52rpx;
   border: 5rpx solid var(--line-2);
-  border-top-color: var(--red);
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -183,15 +160,15 @@
 .ph-error-retry {
   margin-top: 18rpx;
   padding: 10rpx 34rpx;
-  background: var(--red-soft);
-  border: 2rpx solid var(--red-line);
+  background: var(--primary-soft);
+  border: 2rpx solid var(--primary-line);
   border-radius: 999rpx;
 }
 
 .ph-error-retry-text {
   font-size: 23rpx;
   font-weight: 600;
-  color: var(--red-deep);
+  color: var(--primary-deep);
 }
 
 /* ================= 操作按钮 ================= */
@@ -223,12 +200,12 @@
 }
 
 .act-main {
-  background: var(--red);
+  background: var(--primary);
 }
 
 .act-full {
   flex: 1;
-  background: var(--red);
+  background: var(--primary);
 }
 
 .act-disabled {
@@ -258,6 +235,6 @@
 .privacy-link {
   margin-left: 14rpx;
   font-size: 22rpx;
-  color: var(--red);
+  color: var(--primary);
   text-decoration: underline;
 }

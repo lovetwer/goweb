@@ -1,5 +1,5 @@
 /* pages/vip/vip.wxss —— 会员中心
-   沿用全站暖纸版式：暖白底 + 白卡片 + 陶土红强调。
+   沿用全站薄荷清新版式：清新浅底 + 白卡片 + 清新绿强调。
    强调色只用在三处：提交按钮、选中套餐的边框与勾、会员标识。
    刻意不用大色块，避免会员页变成「付费页」的视觉调性。 */
 
@@ -30,7 +30,7 @@
 .head-rule {
   width: 44rpx;
   height: 4rpx;
-  background: var(--red);
+  background: var(--primary);
   margin: 26rpx 0;
 }
 
@@ -48,7 +48,7 @@
   background: var(--card);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  border-left: 8rpx solid var(--red);
+  border-left: 8rpx solid var(--primary);
 }
 
 .member-top {
@@ -62,8 +62,8 @@
   display: flex;
   align-items: center;
   padding: 8rpx 20rpx 8rpx 16rpx;
-  background: var(--red-soft);
-  border: 2rpx solid var(--red);
+  background: var(--primary-soft);
+  border: 2rpx solid var(--primary);
   border-radius: 999rpx;
 }
 
@@ -71,7 +71,7 @@
   font-size: 23rpx;
   font-weight: 600;
   letter-spacing: 2rpx;
-  color: var(--red-deep);
+  color: var(--primary-deep);
 }
 
 .member-plan {
@@ -92,9 +92,9 @@
   letter-spacing: 1rpx;
 }
 
-/* 即将到期：用陶土红提示（不催促，只陈述事实） */
+/* 即将到期：用清新绿提示（不催促，只陈述事实） */
 .member-expire-warn .member-expire-text {
-  color: var(--red-deep);
+  color: var(--primary-deep);
   font-weight: 600;
 }
 
@@ -109,8 +109,8 @@
   align-items: center;
   margin: 0 24rpx 24rpx;
   padding: 18rpx 20rpx;
-  background: var(--red-soft);
-  border: 2rpx solid var(--red-line);
+  background: var(--primary-soft);
+  border: 2rpx solid var(--primary-line);
   border-radius: var(--radius);
 }
 
@@ -118,11 +118,11 @@
   flex-shrink: 0;
   margin-right: 14rpx;
   padding: 2rpx 10rpx;
-  border: 2rpx solid var(--red);
+  border: 2rpx solid var(--primary);
   border-radius: var(--radius);
   font-family: var(--mono);
   font-size: 19rpx;
-  color: var(--red-deep);
+  color: var(--primary-deep);
 }
 
 .notice-text {
@@ -155,7 +155,7 @@
 
 /* 选中态：3rpx 正陶土描边（与首页分类 Tab 同一规格） */
 .plan-on {
-  border-color: var(--red);
+  border-color: var(--primary);
   border-width: 3rpx;
   padding: 27rpx 25rpx; /* 负 1rpx 抵消加粗的描边，内容不位移 */
 }
@@ -191,7 +191,7 @@
 .plan-currency {
   font-size: 26rpx;
   font-weight: 600;
-  color: var(--red);
+  color: var(--primary);
   margin-right: 4rpx;
 }
 
@@ -226,7 +226,7 @@
   width: 40rpx;
   height: 40rpx;
   border-radius: 50%;
-  background: var(--red);
+  background: var(--primary);
 }
 
 .check-x,
@@ -258,15 +258,15 @@
 
 .err-text {
   font-size: 23rpx;
-  color: var(--red-deep);
+  color: var(--primary-deep);
 }
 
-/* ---- 购买按钮（唯一的大块陶土红，与全站主操作一致） ---- */
+/* ---- 购买按钮（唯一的大块清新绿，与全站主操作一致） ---- */
 .submit {
   margin: 32rpx 24rpx 0;
   height: 96rpx;
   border-radius: var(--radius);
-  background: var(--red);
+  background: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -285,7 +285,7 @@
 }
 
 /* ---- 协议同意（勾选框 + 可点开的协议链接） ----
-   默认不勾选；勾选后小方块填充陶土红并画出对勾。 */
+   默认不勾选；勾选后小方块填充清新绿并画出对勾。 */
 .consent {
   display: flex;
   align-items: flex-start;
@@ -306,8 +306,8 @@
 }
 
 .consent-on {
-  background: var(--red);
-  border-color: var(--red);
+  background: var(--primary);
+  border-color: var(--primary);
 }
 
 /* 对勾：用旋转的两条边拼出，不依赖字体图标 */
@@ -334,7 +334,7 @@
 .consent-link {
   font-size: 23rpx;
   line-height: 1.6;
-  color: var(--red);
+  color: var(--primary);
 }
 
 /* ---- 权益 / 规则区块 ---- */
@@ -357,7 +357,7 @@
 .sec-mark {
   width: 8rpx;
   height: 28rpx;
-  background: var(--red);
+  background: var(--primary);
   margin-right: 14rpx;
   flex-shrink: 0;
 }
@@ -430,7 +430,7 @@
 .bm-sm {
   width: 18rpx;
   height: 24rpx;
-  border: 3rpx solid var(--red);
+  border: 3rpx solid var(--primary);
   border-bottom: none;
   clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
   margin-right: 10rpx;
@@ -466,7 +466,7 @@
 .rc-price {
   font-family: var(--mono);
   font-size: 24rpx;
-  color: var(--red);
+  color: var(--primary);
 }
 
 /* 已退款的单子：金额与时间置灰，不再用红色强调 */
@@ -498,8 +498,8 @@
 
 .rc-copy {
   font-size: 20rpx;
-  color: var(--red);
-  border: 2rpx solid var(--red-line);
+  color: var(--primary);
+  border: 2rpx solid var(--primary-line);
   border-radius: 6rpx;
   padding: 2rpx 12rpx;
   flex-shrink: 0;

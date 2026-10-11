@@ -1,4 +1,4 @@
-<!--pages/agreement/agreement.wxml  隐私政策 + 用户协议（暖纸版式，纯静态展示）-->
+<!--pages/agreement/agreement.wxml  隐私政策 + 用户协议（薄荷清新版式，纯静态展示）-->
 <view class="container">
 
   <!-- 顶部双 Tab -->

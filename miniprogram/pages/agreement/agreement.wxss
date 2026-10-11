@@ -1,4 +1,4 @@
-/* pages/agreement/agreement.wxss  暖纸版式：暖白底 + 发丝线，无冷色无重阴影 */
+/* pages/agreement/agreement.wxss  薄荷清新版式：清新浅底 + 发丝线，无冷色无重阴影 */
 
 .container {
   min-height: 100vh;
@@ -32,7 +32,7 @@
 }
 
 .seg-on .seg-text {
-  color: var(--red-deep);
+  color: var(--primary-deep);
   font-weight: 700;
 }
 
@@ -44,7 +44,7 @@
   transform: translateX(-50%);
   width: 56rpx;
   height: 6rpx;
-  background: var(--red);
+  background: var(--primary);
   border-radius: 3rpx;
 }
 

@@ -16,26 +16,26 @@
  * key    分类标识（TOOLS 里 category 字段的取值）
  * name   分类中文名（首页分区标题）
  * en     分区英文刊头（装饰用）
- * color  分类强调色（图标前景 / 分区标记，低饱和暖调）
- * soft   分类浅底色（图标底 / 工具卡点缀）
+ * color  分类强调色（图标前景 / 分区标记，低饱和清新色）
+ * soft   分类浅底色（工具分类标签背景）
  */
 const CATEGORIES = [
-  { key: 'calc', name: '计算换算', en: 'CALC', color: '#b84827', soft: '#f8e3d9' },
-  { key: 'text', name: '文本处理', en: 'TEXT', color: '#a8762a', soft: '#f5ead6' },
-  { key: 'datetime', name: '日期时间', en: 'DATE', color: '#6b7f3f', soft: '#eaefdd' },
-  { key: 'life', name: '生活查询', en: 'LIFE', color: '#4f6d8c', soft: '#e2ebf3' }
+  { key: 'calc', name: '计算换算', en: 'CALC', color: '#5b9468', soft: '#eaf3e9' },
+  { key: 'text', name: '文本处理', en: 'TEXT', color: '#b38b55', soft: '#fbf3e5' },
+  { key: 'datetime', name: '日期时间', en: 'DATE', color: '#7b8eb6', soft: '#eef1f8' },
+  { key: 'life', name: '生活查询', en: 'LIFE', color: '#548b79', soft: '#e6f2ee' }
 ];
 
 /**
- * 工具清单 —— 当前为空，等工具定下来后在这里注册。
+ * 工具清单 —— 首页工具卡片由这里驱动，新增工具只需补齐页面与一条记录。
  *
  * 每条记录的字段约定：
  *   id        string  唯一标识（收藏 / 历史用它做 key，定好不要再改）
  *   name      string  工具名（搜索字段）
  *   desc      string  一句话简介（首页卡片展示 + 搜索字段）
  *   category  string  分类 key，必须取自上面的 CATEGORIES
- *   icon      string  图标字符（首页 / 收藏 / 历史卡片上直接渲染；
- *                     留空则用名称首字兜底）
+ *   icon      string  图片缺省时用于兜底的字符图标
+ *   image     string  可选，小程序包内插画路径（如 ../../assets/illustrations/tool.png）
  *   path      string  工具页面路径，如 '/pages/calc/calc'
  *   keywords  array   可选，额外搜索词（别名 / 英文名 / 场景词）
  *   vipOnly   boolean 可选，true = 会员专属工具（缺省 = 公开）
@@ -47,6 +47,7 @@ const TOOLS = [
     desc: '上传一张照片，AI 给出娱乐向颜值参考分',
     category: 'life',
     icon: '颜',
+    image: '../../assets/illustrations/tool-beauty.png',
     path: '/pages/beauty/beauty',
     keywords: ['颜值', '打分', '照片', '人脸', 'beauty', '相貌', '长相']
     // vipOnly: false
@@ -58,6 +59,7 @@ const TOOLS = [
   //   desc: '长度、重量、温度等常用单位一键换算',
   //   category: 'calc',
   //   icon: '换',
+  //   image: '../../assets/illustrations/unit-converter.png', // 可选功能插画
   //   path: '/pages/unit-converter/unit-converter',
   //   keywords: ['unit', '长度', '重量']
   //   vipOnly: false
@@ -137,7 +139,7 @@ function searchTools(keyword) {
 
 /**
  * 给工具补全渲染所需字段：
- *   categoryName 分类中文名 / color·soft 分类色 / initial 图标兜底字符
+ *   categoryName 分类中文名 / color·soft 分类色 / image 功能插画 / initial 图标兜底字符
  */
 function decorate(tool) {
   const raw = tool || {};
@@ -148,9 +150,10 @@ function decorate(tool) {
     desc: raw.desc || '',
     category: raw.category || '',
     categoryName: cat ? cat.name : '未分类',
-    color: cat ? cat.color : '#8b8279',
-    soft: cat ? cat.soft : '#f5f0e8',
+    color: cat ? cat.color : '#849287',
+    soft: cat ? cat.soft : '#eaf3e9',
     icon: raw.icon || '',
+    image: raw.image || '',
     initial: raw.icon || (raw.name || '工').slice(0, 1),
     path: raw.path || '',
     keywords: Array.isArray(raw.keywords) ? raw.keywords.slice() : [],

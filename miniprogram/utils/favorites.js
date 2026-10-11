@@ -12,6 +12,7 @@
  *     name: '工具名',
  *     desc: '一句话简介',
  *     icon: '图标字符',
+ *     image: '本地功能插画路径（可选）',
  *     path: '/pages/xxx/xxx',
  *     category: '分类 key',
  *     addedAt: 1717200000000
@@ -84,6 +85,7 @@ function toggle(tool) {
     name: tool.name || '',
     desc: tool.desc || '',
     icon: tool.icon || '',
+    image: tool.image || '',
     path: tool.path || '',
     category: tool.category || '',
     addedAt: Date.now()

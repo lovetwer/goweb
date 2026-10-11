@@ -2,7 +2,7 @@
   "name": "goweb",
   "version": "1.1.0",
   "private": true,
-  "description": "网站收录导航 · 微信小程序（原生框架 + 微信云开发，纯只读展示，无用户系统；黑白灰 + 红 编辑排版风）",
+  "description": "实用工具箱微信小程序（原生框架 + 微信云开发，清新薄荷绿设计）",
   "scripts": {
     "admin": "node scripts/admin-server.mjs",
     "sync:sitemap": "node -e \"require('fs').copyFileSync('sitemap.json','miniprogram/sitemap.json');console.log('sitemap.json 已同步到 miniprogram/')\""

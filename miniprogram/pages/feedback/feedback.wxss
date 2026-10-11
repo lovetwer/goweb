@@ -1,4 +1,4 @@
-/* pages/feedback/feedback.wxss  意见反馈：暖纸底 + 暖黑标题 + 陶土红点缀，与详情页同一套版式 */
+/* pages/feedback/feedback.wxss  意见反馈：薄荷浅底 + 暖黑标题 + 清新绿点缀，与详情页同一套版式 */
 
 .sheet {
   background: var(--bg);
@@ -28,7 +28,7 @@
 .head-rule {
   width: 44rpx;
   height: 4rpx;
-  background: var(--red);
+  background: var(--primary);
   margin: 30rpx 0;
 }
 
@@ -68,7 +68,7 @@
 }
 
 .field-input-err {
-  border-color: var(--red);
+  border-color: var(--primary);
 }
 
 /* 占位符「写点什么…」：页面上的第一句引导语，
@@ -88,7 +88,7 @@
 .field-error {
   font-size: 23rpx;
   line-height: 1.6;
-  color: var(--red-deep);
+  color: var(--primary-deep);
 }
 
 /* ---------- 提交按钮 ---------- */
@@ -96,7 +96,7 @@
   margin-top: 48rpx;
   height: 96rpx;
   border-radius: var(--radius);
-  background: var(--red);
+  background: var(--primary);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,7 +122,7 @@
 .ok-mark {
   width: 12rpx;
   height: 12rpx;
-  background: var(--red);
+  background: var(--primary);
   margin-bottom: 30rpx;
 }
 

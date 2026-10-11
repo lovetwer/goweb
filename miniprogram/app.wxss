@@ -1,56 +1,24 @@
-/**
- * app.wxss —— 全局样式
- *
- * 设计语言：暖纸底 + 白卡片 + 陶土红点缀
- *   暖白 60%  —— 页面底色 (#faf7f2)，取代原来的纯白
- *   纯白 25%  —— 卡片、输入框、底部工具条
- *   暖灰 10%  —— 正文与辅助文字、发丝分隔线
- *   陶土红 5% —— 唯一强调色：选中态、主按钮、重点标记
- *
- * 全站颜色只在这组变量里定义，换肤改这里一处即可（各页 WXSS 都用 var() 引用）。
- * 变量名沿用早期的 --black / --red，语义已变为「暖黑 / 陶土红」，不改名是为了
- * 避免遗漏引用导致样式失效。
- *
- * 全部原生组件 + 手写 WXSS，无第三方组件库，无 emoji 图标（图标均为 CSS 绘制）
- */
-
+/* GoWeb Mini Program · fresh green design system
+   Light botanical tones, soft cards and generous spacing. */
 page {
-  /* ---- 纯白（卡片与反白文字） ---- */
   --white: #ffffff;
   --card: #ffffff;
-
-  /* ---- 页面底色：暖白 ---- */
-  --bg: #faf7f2;
-
-  /* ---- 暖黑（标题、图标，取代原来的 #0c0c0c） ---- */
-  --black: #2b2521;
-  --ink: #2b2521;
-
-  /* ---- 暖灰（正文与发丝线，统一暖调，不混冷灰） ----
-     ink-3 / ink-4 的值经过 WCAG 对比度核算后下调（原 #8b8279 / #b5aa9c 在暖白底上
-     只有 3.53:1 和 2.14:1，后者连"域名""浏览时间"这类真信息都读不清）。
-     现在：ink-3 = 5.29:1（正文级达标），ink-4 = 3.53:1（大字/次要信息达标）。
-     两者的 R>G>B 关系保持不变，暖调没有被改冷。 */
-  --ink-2: #5f5850;
-  --ink-3: #6e665c;
-  --ink-4: #8b8279;
-  --line: #ece5da;
-  --line-2: #ded4c5;
-  --fill: #f5f0e8;
-
-  /* ---- 陶土红（唯一强调色，降饱和、不刺眼） ----
-     --red 由 #c1502e 微调至 #b84827：暖白底对比度 4.41 → 4.92（跨过AA 正文线），
-     主按钮上的反白字 4.71 → 5.26。色相不变，肉眼仍认得出是同一个陶土红。 */
-  --red: #b84827;
-  --red-deep: #9c3d20;
-  --red-soft: #f8e3d9;
-  --red-line: #ecc9b6;
-
-  /* ---- 卡片投影：带背景色相，不用纯黑阴影 ---- */
-  --shadow: 0 4rpx 18rpx rgba(126, 99, 71, 0.06);
-  --shadow-hover: 0 8rpx 26rpx rgba(126, 99, 71, 0.13);
-
-  --radius: 12rpx;
+  --bg: #f5f8f4;
+  --black: #23382b;
+  --ink: #293d30;
+  --ink-2: #56695b;
+  --ink-3: #718176;
+  --ink-4: #8e9b91;
+  --line: #e5ece4;
+  --line-2: #d7e3d7;
+  --fill: #edf4ed;
+  --primary: #5b9468;
+  --primary-deep: #3f704d;
+  --primary-soft: #eaf3e9;
+  --primary-line: #d4e5d3;
+  --shadow: 0 8rpx 28rpx rgba(47, 82, 52, 0.055);
+  --shadow-hover: 0 12rpx 34rpx rgba(47, 82, 52, 0.11);
+  --radius: 22rpx;
   --mono: 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
 
   background-color: var(--bg);
@@ -82,162 +50,28 @@ button {
   color: inherit;
 }
 
-button::after {
-  border: none;
-}
+button::after { border: none; }
 
-.container {
-  min-height: 100vh;
-  background-color: var(--bg);
-}
+.container { min-height: 100vh; background-color: var(--bg); }
+.safe-bottom { height: calc(env(safe-area-inset-bottom) + 24rpx); }
+.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
+.mono { font-family: var(--mono); letter-spacing: 1rpx; }
+.ellipsis { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ellipsis-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.ellipsis-3 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
 
-.safe-bottom {
-  height: calc(env(safe-area-inset-bottom) + 24rpx);
-}
+.state-box { padding: 150rpx 70rpx; display: flex; flex-direction: column; align-items: center; }
+.state-icon { width: 108rpx; height: 108rpx; border: 2rpx solid var(--line-2); border-radius: 50%; background: var(--white); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 44rpx; font-weight: 600; color: var(--ink-4); margin-bottom: 34rpx; }
+.state-icon-warn { border-color: #e7c6aa; color: #be8d5f; }
+.state-index { font-family: var(--mono); font-size: 21rpx; letter-spacing: 5rpx; color: var(--ink-4); margin-bottom: 18rpx; }
+.state-title { font-size: 34rpx; font-weight: 700; color: var(--ink); letter-spacing: 1rpx; }
+.state-desc { font-size: 25rpx; color: var(--ink-3); margin-top: 14rpx; text-align: center; line-height: 1.8; }
+.state-actions { display: flex; align-items: center; margin-top: 46rpx; }
+.state-btn { height: 78rpx; line-height: 78rpx; padding: 0 50rpx; background: var(--primary); color: var(--white); font-size: 26rpx; letter-spacing: 3rpx; border-radius: 999rpx; }
+.state-btn.ghost { background: var(--white); color: var(--ink-2); border: 2rpx solid var(--line-2); margin-right: 20rpx; }
 
-/* ---- 通用卡片：纯白浮在暖底上，靠微暖投影分层（不用冷黑阴影） ---- */
-.card {
-  background: var(--card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-/* ---- 等宽小字 ---- */
-.mono {
-  font-family: var(--mono);
-  letter-spacing: 1rpx;
-}
-
-/* ---- 文本截断 ---- */
-.ellipsis {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
-.ellipsis-2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-}
-
-.ellipsis-3 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
-}
-
-/* ---- 空状态 / 错误 ---- */
-.state-box {
-  padding: 150rpx 70rpx;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.state-icon {
-  width: 108rpx;
-  height: 108rpx;
-  border: 2rpx solid var(--line-2);
-  border-radius: 50%;
-  background: var(--white);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--mono);
-  font-size: 44rpx;
-  font-weight: 600;
-  color: var(--ink-4);
-  margin-bottom: 34rpx;
-}
-
-.state-icon-warn {
-  border-color: var(--red);
-  color: var(--red);
-}
-
-.state-index {
-  font-family: var(--mono);
-  font-size: 21rpx;
-  letter-spacing: 5rpx;
-  color: var(--ink-4);
-  margin-bottom: 18rpx;
-}
-
-.state-title {
-  font-size: 34rpx;
-  font-weight: 700;
-  color: var(--ink);
-  letter-spacing: 1rpx;
-}
-
-.state-desc {
-  font-size: 25rpx;
-  color: var(--ink-3);
-  margin-top: 14rpx;
-  text-align: center;
-  line-height: 1.8;
-}
-
-.state-actions {
-  display: flex;
-  align-items: center;
-  margin-top: 46rpx;
-}
-
-.state-btn {
-  height: 78rpx;
-  line-height: 78rpx;
-  padding: 0 50rpx;
-  background: var(--red);
-  color: var(--white);
-  font-size: 26rpx;
-  letter-spacing: 3rpx;
-  border-radius: var(--radius);
-}
-
-.state-btn.ghost {
-  background: var(--white);
-  color: var(--ink-2);
-  border: 2rpx solid var(--line-2);
-  margin-right: 20rpx;
-}
-
-/* ---- 骨架屏（计入「其他颜色」额度） ---- */
-.skeleton {
-  background: linear-gradient(90deg, #efe8dc 25%, #f8f4ec 37%, #efe8dc 63%);
-  background-size: 400% 100%;
-  animation: skeleton-loading 1.5s ease infinite;
-  border-radius: var(--radius);
-}
-
-@keyframes skeleton-loading {
-  0% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0 50%;
-  }
-}
-
-/* ---- 进场动画 ---- */
-.fade-in {
-  animation: fade-in 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) both;
-}
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: translateY(14rpx);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.btn-hover {
-  opacity: 0.6;
-}
+.skeleton { background: linear-gradient(90deg, #e8eee6 25%, #f4f7f2 37%, #e8eee6 63%); background-size: 400% 100%; animation: skeleton-loading 1.5s ease infinite; border-radius: var(--radius); }
+@keyframes skeleton-loading { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+.fade-in { animation: fade-in 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+@keyframes fade-in { from { opacity: 0; transform: translateY(14rpx); } to { opacity: 1; transform: translateY(0); } }
+.btn-hover { opacity: 0.72; }

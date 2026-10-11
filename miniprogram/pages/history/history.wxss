@@ -1,4 +1,4 @@
-/* pages/history/history.wxss —— 使用记录（暖纸版式，与收藏页同一套语汇） */
+/* pages/history/history.wxss —— 使用记录（薄荷清新版式，与收藏页同一套语汇） */
 
 /* ================= 头部 ================= */
 .hist-header {
@@ -60,7 +60,7 @@
 .hist-rule-mark {
   width: 60rpx;
   height: 2rpx;
-  background: var(--red);
+  background: var(--primary);
 }
 
 .hist-rule-grey {
@@ -265,4 +265,14 @@
   font-size: 20rpx;
   letter-spacing: 2rpx;
   color: var(--ink-4);
+}
+
+/* 工具预览：使用工具对应插画，非字符占位图标 */
+.hist-image {
+  display: block;
+  flex: 0 0 84rpx;
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 18rpx;
+  background: #eaf3e9;
 }

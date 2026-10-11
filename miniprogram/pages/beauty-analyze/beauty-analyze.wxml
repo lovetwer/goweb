@@ -1,4 +1,4 @@
-<!--pages/beauty-analyze/beauty-analyze.wxml  选图 → 预览 → 分析（暖纸版式）-->
+<!--pages/beauty-analyze/beauty-analyze.wxml  选图 → 预览 → 分析（薄荷清新版式）-->
 <view class="container">
 
   <!-- 刊头 -->
@@ -15,12 +15,7 @@
       <!-- 未选图：虚线框 + 相机图形 -->
       <block wx:if="{{!imgPath}}">
         <view class="ph-empty">
-          <view class="ph-camera">
-            <view class="ph-camera-body">
-              <view class="ph-camera-top"></view>
-              <view class="ph-camera-lens"></view>
-            </view>
-          </view>
+          <image class="ph-empty-art" src="../../assets/illustrations/tool-beauty.png" mode="aspectFit" />
           <text class="ph-empty-text">点击选择照片</text>
           <text class="ph-empty-sub">支持拍照或从相册选择</text>
         </view>

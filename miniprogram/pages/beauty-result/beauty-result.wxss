@@ -1,4 +1,4 @@
-/* pages/beauty-result/beauty-result.wxss —— 分析结果页（暖纸版式） */
+/* pages/beauty-result/beauty-result.wxss —— 分析结果页（薄荷清新版式） */
 
 /* ================= 综合分 ================= */
 .score-wrap {
@@ -14,7 +14,7 @@
   height: 300rpx;
   border-radius: 50%;
   background: var(--card);
-  border: 6rpx solid var(--red-soft);
+  border: 6rpx solid var(--primary-soft);
   box-shadow: var(--shadow);
   display: flex;
   align-items: center;
@@ -25,7 +25,7 @@
   width: 244rpx;
   height: 244rpx;
   border-radius: 50%;
-  background: var(--red-soft);
+  background: var(--primary-soft);
   display: flex;
   align-items: baseline;
   justify-content: center;
@@ -36,13 +36,13 @@
   font-size: 108rpx;
   font-weight: 700;
   line-height: 244rpx;
-  color: var(--red-deep);
+  color: var(--primary-deep);
   letter-spacing: -2rpx;
 }
 
 .score-unit {
   font-size: 28rpx;
-  color: var(--red-deep);
+  color: var(--primary-deep);
   opacity: 0.8;
   margin-left: 6rpx;
 }
@@ -51,11 +51,11 @@
   margin-top: 30rpx;
   padding: 8rpx 30rpx;
   background: var(--card);
-  border: 2rpx solid var(--red-line);
+  border: 2rpx solid var(--primary-line);
   border-radius: 999rpx;
   font-size: 27rpx;
   font-weight: 700;
-  color: var(--red-deep);
+  color: var(--primary-deep);
   letter-spacing: 2rpx;
 }
 
@@ -137,7 +137,7 @@
 
 .dim-value {
   font-size: 24rpx;
-  color: var(--red-deep);
+  color: var(--primary-deep);
 }
 
 .dim-track {
@@ -150,7 +150,7 @@
 
 .dim-fill {
   height: 100%;
-  background: var(--red);
+  background: var(--primary);
   border-radius: 999rpx;
   transition: width 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -169,11 +169,11 @@
   align-items: center;
 }
 
-/* 陶土红竖条标题标记（8×28rpx，与工具箱首页同一套语汇） */
+/* 清新绿竖条标题标记（8×28rpx，与工具箱首页同一套语汇） */
 .verdict-mark {
   width: 8rpx;
   height: 28rpx;
-  background: var(--red);
+  background: var(--primary);
   border-radius: 2rpx;
   margin-right: 14rpx;
 }
@@ -189,7 +189,7 @@
   margin-top: 18rpx;
   font-size: 30rpx;
   font-weight: 700;
-  color: var(--red-deep);
+  color: var(--primary-deep);
   line-height: 1.6;
 }
 
@@ -236,7 +236,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--red);
+  background: var(--primary);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }

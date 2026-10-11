@@ -42,7 +42,7 @@
         placeholder-class="search-placeholder"
         confirm-type="search"
         cursor-spacing="20"
-        cursor-color="#b84827"
+        cursor-color="#5b9468"
         bindinput="onSearchInput"
         bindconfirm="onSearchConfirm"
         bindfocus="onSearchFocus"
@@ -87,7 +87,8 @@
         hover-stay-time="80"
         bindtap="onToolTap"
       >
-        <view class="tool-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.initial}}</view>
+        <image wx:if="{{item.image}}" class="tool-art" src="{{item.image}}" mode="aspectFill" />
+        <view wx:else class="tool-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.initial}}</view>
         <view class="tool-body">
           <text class="tool-name ellipsis">{{item.name}}</text>
           <text class="tool-desc ellipsis-2">{{item.desc}}</text>
@@ -125,7 +126,8 @@
             data-id="{{item.id}}"
             bindtap="onRecentTap"
           >
-            <view class="recent-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.icon}}</view>
+            <image wx:if="{{item.image}}" class="recent-image" src="{{item.image}}" mode="aspectFill" />
+            <view wx:else class="recent-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.icon}}</view>
             <text class="recent-name ellipsis">{{item.name}}</text>
           </view>
         </scroll-view>
@@ -149,7 +151,8 @@
               hover-stay-time="80"
               bindtap="onToolTap"
             >
-              <view class="tool-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.initial}}</view>
+              <image wx:if="{{item.image}}" class="tool-art" src="{{item.image}}" mode="aspectFill" />
+              <view wx:else class="tool-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.initial}}</view>
               <view class="tool-body">
                 <text class="tool-name ellipsis">{{item.name}}</text>
                 <text class="tool-desc ellipsis-2">{{item.desc}}</text>

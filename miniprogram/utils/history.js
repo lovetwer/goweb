@@ -6,7 +6,7 @@
  *
  * 存储结构（Storage key = config.HISTORY_KEY）：
  * [
- *   { id, name, desc, icon, path, category, usedAt }
+ *   { id, name, desc, icon, image, path, category, usedAt }
  * ]
  */
 
@@ -50,6 +50,7 @@ function push(tool) {
     name: tool.name || '',
     desc: tool.desc || '',
     icon: tool.icon || '',
+    image: tool.image || '',
     path: tool.path || '',
     category: tool.category || '',
     usedAt: Date.now()
