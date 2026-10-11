@@ -50,7 +50,7 @@ Page({
   onShareAppMessage() {
     return {
       title: '我用工具箱测了下颜值，你也来试试（仅供娱乐）',
-      path: '/pages/beauty/beauty'
+      path: '/pages/beauty-analyze/beauty-analyze'
     };
   },
 

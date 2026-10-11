@@ -1,21 +1,4 @@
 <view class="home-page">
-  <view class="hero-shell">
-    <view class="masthead">
-      <view class="brand-line">
-        <view class="brand-stamp"><text>日</text></view>
-        <view class="brand-caption"><text class="brand-kicker">THE LITTLE DAYBOOK</text><text class="brand-subtitle">A quiet place for useful things</text></view>
-        <view class="brand-edition">VOL. 01</view>
-      </view>
-      <view class="hero-copy">
-        <text class="hero-overline">轻一点，也好用一点</text>
-        <view class="hero-title"><text>把日常，</text><text>整理得刚刚好。</text></view>
-        <text class="hero-description">在忙碌的缝隙里，留几个顺手的小工具。</text>
-      </view>
-      <image class="hero-art" src="../../assets/illustrations/home-bloom.png" mode="aspectFit" />
-      <view class="hero-footer"><view class="hero-footer-dot"></view><text>打开即用</text><view class="hero-footer-rule"></view><text>无需登录</text><text class="hero-edition-mobile">A LITTLE TOOLKIT</text></view>
-    </view>
-  </view>
-
   <view class="home-content">
     <view class="search-wrap">
       <view class="search-bar {{searchFocus ? 'search-bar-focus' : ''}}">

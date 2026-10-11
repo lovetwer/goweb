@@ -48,7 +48,7 @@ const TOOLS = [
     category: 'life',
     icon: '颜',
     image: '../../assets/illustrations/tool-beauty.png',
-    path: '/pages/beauty/beauty',
+    path: '/pages/beauty-analyze/beauty-analyze',
     keywords: ['颜值', '打分', '照片', '人脸', 'beauty', '相貌', '长相']
     // vipOnly: false
   }
