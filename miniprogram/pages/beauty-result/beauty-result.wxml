@@ -1,98 +1,30 @@
-<!--pages/beauty-result/beauty-result.wxml  分析结果（薄荷清新版式，仅供娱乐参考）-->
-<view class="container">
-
+<view class="result-page">
   <block wx:if="{{ready && result}}">
-
-    <!-- 综合分 -->
-    <view class="score-wrap fade-in">
-      <view class="score-ring">
-        <view class="score-ring-inner">
-          <text class="score-num">{{result.score}}</text>
-          <text class="score-unit">分</text>
-        </view>
+    <view class="result-hero fade-in">
+      <view class="result-hero-ornament result-ornament-one"></view><view class="result-hero-ornament result-ornament-two"></view>
+      <view class="result-overline"><text class="result-overline-mark">✳</text><text>YOUR LITTLE PORTRAIT NOTE</text><text class="result-edition">№ 01</text></view>
+      <view class="score-layout">
+        <view class="score-ring"><view class="score-ring-inner"><text class="score-num">{{result.score}}</text><text class="score-unit">/ 100</text></view></view>
+        <view class="score-summary"><text class="score-summary-label">今天的参考分</text><text class="score-band">{{result.bandTitle}}</text><text class="score-caption">轻松看看 · 仅供娱乐</text><view class="score-summary-rule"></view><text class="score-summary-note">每个人的美，都不需要被分数定义。</text></view>
       </view>
-      <text class="score-band">{{result.bandTitle}}</text>
-      <text class="score-caption">颜值参考分 · 仅供娱乐</text>
+      <view class="result-hero-footer"><text>FACE STUDY</text><view></view><text>JUST FOR FUN</text></view>
     </view>
 
-    <!-- 属性三格 -->
-    <view class="attrs fade-in">
-      <view class="attr">
-        <text class="attr-value">{{result.age || '—'}}</text>
-        <text class="attr-label">年龄感</text>
-      </view>
-      <view class="attr-div"></view>
-      <view class="attr">
-        <text class="attr-value">{{result.gender || '—'}}</text>
-        <text class="attr-label">性别</text>
-      </view>
-      <view class="attr-div"></view>
-      <view class="attr">
-        <text class="attr-value">{{result.shapeText}}</text>
-        <text class="attr-label">脸型</text>
-      </view>
-    </view>
+    <view class="result-content">
+      <view class="result-section-head"><view><text class="section-kicker">A FEW DETAILS</text><text class="section-title">照片里的小观察</text></view><text class="section-number">01</text></view>
+      <view class="attrs-card fade-in"><view class="attr"><text class="attr-label">年龄感</text><text class="attr-value">{{result.age || '—'}}</text></view><view class="attr-divider"></view><view class="attr"><text class="attr-label">性别</text><text class="attr-value">{{result.gender || '—'}}</text></view><view class="attr-divider"></view><view class="attr"><text class="attr-label">脸型</text><text class="attr-value">{{result.shapeText}}</text></view></view>
 
-    <!-- 维度条 -->
-    <view class="dims fade-in">
-      <view class="dim">
-        <view class="dim-head">
-          <text class="dim-name">面部清晰度</text>
-          <text class="dim-value mono">{{result.clarity}}%</text>
-        </view>
-        <view class="dim-track">
-          <view class="dim-fill" style="width:{{result.clarity}}%"></view>
-        </view>
+      <view class="dims-card fade-in"><view class="dims-heading"><view><text class="section-kicker">IMAGE NOTES</text><text class="dims-title">照片状态</text></view><text class="dims-note">两项参考</text></view>
+        <view class="dim"><view class="dim-head"><text class="dim-name">面部清晰度</text><text class="dim-value mono">{{result.clarity}}%</text></view><view class="dim-track"><view class="dim-fill dim-fill-rose" style="width:{{result.clarity}}%"></view></view></view>
+        <view class="dim"><view class="dim-head"><text class="dim-name">五官协调度</text><text class="dim-value mono">{{result.harmony}}%</text></view><view class="dim-track"><view class="dim-fill dim-fill-lavender" style="width:{{result.harmony}}%"></view></view></view>
       </view>
-      <view class="dim">
-        <view class="dim-head">
-          <text class="dim-name">五官协调度</text>
-          <text class="dim-value mono">{{result.harmony}}%</text>
-        </view>
-        <view class="dim-track">
-          <view class="dim-fill" style="width:{{result.harmony}}%"></view>
-        </view>
-      </view>
-    </view>
 
-    <!-- 气质评语 -->
-    <view class="verdict fade-in">
-      <view class="verdict-head">
-        <view class="verdict-mark"></view>
-        <text class="verdict-title">气质风格</text>
-      </view>
-      <text class="verdict-style">{{result.styleText}}</text>
-      <view class="verdict-lines">
-        <view class="verdict-line" wx:for="{{result.comments}}" wx:key="*this">
-          <view class="verdict-dot"></view>
-          <text class="verdict-text">{{item}}</text>
-        </view>
-      </view>
-      <text wx:if="{{result.uncertain}}" class="verdict-uncertain">这张照片的置信度一般，结果波动较大，换个角度再测一次会更准。</text>
-    </view>
+      <view class="verdict-card fade-in"><view class="verdict-topline"><text class="section-kicker">YOUR ATMOSPHERE</text><text class="verdict-seal">✳</text></view><text class="verdict-label">气质风格</text><text class="verdict-style">{{result.styleText}}</text><view class="verdict-rule"></view><view class="verdict-lines"><view class="verdict-line" wx:for="{{result.comments}}" wx:key="*this"><view class="verdict-dot"></view><text class="verdict-text">{{item}}</text></view></view><text wx:if="{{result.uncertain}}" class="verdict-uncertain">这张照片的置信度一般，结果波动较大，换个角度再测一次会更准。</text></view>
 
-    <!-- 再测一张 -->
-    <view class="retake-btn" hover-class="btn-hover" bindtap="onRetake">
-      <text class="retake-text">再测一张</text>
+      <view class="retake-btn" hover-class="btn-hover" bindtap="onRetake"><view class="retake-button-icon">↗</view><view class="retake-button-copy"><text class="retake-kicker">ANOTHER LITTLE TRY</text><text class="retake-text">换一张照片，再看看</text></view></view>
+      <view class="disclaimer"><text class="disclaimer-mark">i</text><text class="disclaimer-text">本结果由算法估算，仅供娱乐参考，不构成对任何人外貌的任何评价。照片已在分析完成后立即删除。</text></view>
     </view>
-
-    <!-- 免责声明 -->
-    <view class="disclaimer">
-      <text class="disclaimer-text">本结果由算法估算，仅供娱乐参考，不构成对任何人外貌的任何评价。照片已在分析完成后立即删除。</text>
-    </view>
-
   </block>
-
-  <!-- 兜底空状态（eventChannel 与 storage 都没拿到数据） -->
-  <view wx:else class="state-box">
-    <view class="state-icon">?</view>
-    <text class="state-index">NO DATA</text>
-    <text class="state-title">结果没有带过来</text>
-    <text class="state-desc">返回上一页重新分析一次即可</text>
-    <view class="state-actions">
-      <view class="state-btn" hover-class="btn-hover" bindtap="onRetake">重新分析</view>
-    </view>
-  </view>
-
+  <view wx:else class="result-empty state-box"><view class="state-icon">?</view><text class="state-index">NO DATA</text><text class="state-title">结果没有带过来</text><text class="state-desc">返回上一页重新分析一次即可</text><view class="state-actions"><view class="state-btn" hover-class="btn-hover" bindtap="onRetake">重新分析</view></view></view>
   <view class="safe-bottom"></view>
 </view>

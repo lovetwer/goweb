@@ -1,52 +1,17 @@
-<!--pages/feedback/feedback.wxml  意见反馈：写一段话 → 云函数校验 → 入库-->
-<view class="container">
+<view class="feedback-page">
+  <view class="feedback-cover"><view class="feedback-brand"><view class="feedback-brand-mark">✳</view><text>THE OPEN POSTCARD</text><text class="feedback-edition">NO. 01</text></view><image class="feedback-cover-art" src="../../assets/illustrations/shortcut-feedback.png" mode="aspectFill"/><text class="feedback-kicker">WE’RE LISTENING</text><text class="feedback-title">留一张小纸条</text><view class="feedback-desc"><text>用得不顺手、想收录什么工具，</text><text>或发现哪里写错了，都可以告诉我们。</text></view><view class="feedback-cover-stamp"><view class="stamp-line"></view><text>一封写给工具箱的信</text><view class="stamp-star">✳</view></view></view>
 
-  <view class="sheet">
-
-    <!-- 刊头：标签 / 标题 / 分隔线 / 说明，四段各自留白 -->
-    <view class="head">
-      <text class="head-label">FEEDBACK</text>
-      <text class="head-title">意见反馈</text>
-      <view class="head-rule"></view>
-      <text class="head-desc">用得不顺手、想收录什么工具、发现哪里写错了，都可以告诉我们。</text>
-    </view>
-
-    <!-- 未提交：填写 -->
+  <view class="feedback-sheet">
     <block wx:if="{{!sent}}">
-      <view class="field">
-        <text class="field-label">反馈内容</text>
-        <textarea
-          class="field-area {{error ? 'field-input-err' : ''}}"
-          value="{{content}}"
-          placeholder="写点什么…"
-          placeholder-class="field-placeholder"
-          cursor-spacing="20"
-          cursor-color="#5b9468"
-          bindinput="onInput"
-        />
-        <view wx:if="{{error}}" class="field-foot">
-          <text class="field-error">{{error}}</text>
-        </view>
-      </view>
-
-      <view
-        class="submit {{submitting ? 'submit-disabled' : ''}}"
-        hover-class="btn-hover"
-        bindtap="onSubmit"
-      >
-        <text class="submit-text">{{submitting ? '提交中' : '提交反馈'}}</text>
-      </view>
+      <view class="field-head"><view><text class="field-kicker">YOUR NOTE</text><text class="field-title">写下你想说的</text></view><text class="field-optional">诚恳 · 简短 · 随意</text></view>
+      <view class="field"><textarea class="field-area {{error ? 'field-input-err' : ''}}" value="{{content}}" placeholder="比如：希望增加一个……" placeholder-class="field-placeholder" cursor-spacing="20" cursor-color="#a97079" bindinput="onInput"/><view wx:if="{{error}}" class="field-error-row"><view class="field-error-mark">!</view><text class="field-error">{{error}}</text></view></view>
+      <view class="feedback-form-bottom"><text class="feedback-form-note">每一条建议都会被认真读到。</text><view class="submit {{submitting ? 'submit-disabled' : ''}}" hover-class="btn-hover" bindtap="onSubmit"><text class="submit-text">{{submitting ? '正在寄出…' : '寄出这张纸条'}}</text><text class="submit-arrow">↗</text></view></view>
     </block>
 
-    <!-- 已提交 -->
-    <view wx:else class="ok">
-      <view class="ok-mark"></view>
-      <text class="ok-title">已收到，谢谢你的反馈</text>
-      <view class="ok-again" hover-class="btn-hover" bindtap="onAgain">
-        <text class="ok-again-text">再写一条</text>
-      </view>
-    </view>
+    <view wx:else class="ok"><view class="ok-stamp"><text>✓</text><view></view></view><text class="ok-kicker">NOTE RECEIVED</text><text class="ok-title">已收到，谢谢你的反馈</text><text class="ok-desc">谢谢你愿意花一点时间，让这个小工具箱变得更好。</text><view class="ok-again" hover-class="btn-hover" bindtap="onAgain"><text class="ok-again-text">再写一张</text><text>↗</text></view></view>
 
-    <text class="foot-tip">反馈内容保存在云端，仅用于改进本小程序，不会公开或展示给其他用户。</text>  </view>
-
+    <view class="foot-tip"><view class="foot-tip-mark">i</view><text>反馈内容保存在云端，仅用于改进本小程序，不会公开或展示给其他用户。</text></view>
+  </view>
+  <view class="feedback-bottom-note"><text>THANK YOU FOR MAKING THIS A LITTLE BETTER</text><text>♥</text></view>
+  <view class="safe-bottom"></view>
 </view>

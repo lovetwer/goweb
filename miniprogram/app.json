@@ -12,10 +12,10 @@
   ],
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#f5f8f4",
+    "navigationBarBackgroundColor": "#f0e9eb",
     "navigationBarTitleText": "工具箱",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#f5f8f4",
+    "backgroundColor": "#f8f5ef",
     "enablePullDownRefresh": false
   },
   "permission": {},
