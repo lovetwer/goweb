@@ -92,8 +92,8 @@ Page({
         name: item.name || '未命名工具',
         icon: (t && t.icon) || item.icon || util.firstChar(item.name),
         image: (t && t.image) || item.image || '',
-        soft: colorCat.soft || '#f4e7e8',
-        color: colorCat.color || '#8c7b91',
+        soft: colorCat.soft || '#ffe9e1',
+        color: colorCat.color || '#967baa',
         alive: !!t
       };
     });

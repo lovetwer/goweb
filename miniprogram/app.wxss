@@ -1,30 +1,29 @@
-/* The Daybook — 小小日常工具箱
-   以奶油纸、鸢尾紫与干燥玫瑰为主色的独立视觉系统。 */
+/* Sweet Daybook — 马卡龙甜系原生小程序视觉系统 */
 page {
-  --white: #fffefa;
-  --card: #fffefa;
-  --bg: #f8f5ef;
-  --ink: #302e36;
-  --black: #302e36;
-  --ink-2: #625b65;
-  --ink-3: #857d88;
-  --ink-4: #a49ba5;
-  --line: #ebe4e1;
-  --line-2: #ddd1d3;
-  --fill: #f2ebea;
-  --primary: #a97079;
-  --primary-deep: #7e515b;
-  --primary-soft: #f4e7e8;
-  --primary-line: #e8d0d4;
-  --lavender: #efebf4;
-  --sage: #ecebe2;
-  --honey: #f5eddc;
-  --sky: #eaf0f2;
-  --shadow: 0 10rpx 30rpx rgba(94, 71, 78, .065);
-  --shadow-hover: 0 16rpx 34rpx rgba(94, 71, 78, .12);
-  --radius: 26rpx;
+  --white: #fffefd;
+  --card: #fffefd;
+  --bg: #fffaf5;
+  --ink: #594541;
+  --black: #594541;
+  --ink-2: #78615b;
+  --ink-3: #9a8179;
+  --ink-4: #b7a19a;
+  --line: #f1e2da;
+  --line-2: #ead3c9;
+  --fill: #fff0e8;
+  --primary: #ee9d8a;
+  --primary-deep: #aa5750;
+  --primary-soft: #ffe9e1;
+  --primary-line: #f2cfc4;
+  --lavender: #f2eafa;
+  --butter: #fff1d1;
+  --honey: #fff1d5;
+  --sky: #edf0fa;
+  --shadow: 0 10rpx 30rpx rgba(151, 93, 75, .075);
+  --shadow-hover: 0 16rpx 34rpx rgba(151, 93, 75, .14);
+  --radius: 27rpx;
   --mono: 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
-  --display: 'Noto Serif SC', 'Songti SC', 'STSong', Georgia, serif;
+  --display: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
 
   background-color: var(--bg);
   color: var(--ink);
@@ -46,18 +45,18 @@ button::after { border: none; }
 .ellipsis-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 .ellipsis-3 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
 
-.state-box { display: flex; flex-direction: column; align-items: center; padding: 150rpx 64rpx 130rpx; text-align: center; }
-.state-icon { display: flex; align-items: center; justify-content: center; width: 112rpx; height: 112rpx; margin-bottom: 30rpx; color: var(--primary); background: #f2e8e9; border: 1rpx solid #ead9dc; border-radius: 38rpx 38rpx 38rpx 10rpx; font-family: var(--display); font-size: 48rpx; }
-.state-icon-warn { color: #aa8460; background: var(--honey); border-color: #eadcbf; }
-.state-index { margin-bottom: 12rpx; color: var(--ink-4); font-family: var(--mono); font-size: 18rpx; letter-spacing: 4rpx; }
-.state-title { color: var(--ink); font-family: var(--display); font-size: 36rpx; font-weight: 600; letter-spacing: 1rpx; }
-.state-desc { margin-top: 12rpx; color: var(--ink-3); font-size: 24rpx; line-height: 1.8; }
-.state-actions { display: flex; align-items: center; margin-top: 34rpx; }
-.state-btn { height: 78rpx; padding: 0 38rpx; color: #fffefa; background: var(--primary); border-radius: 999rpx; font-size: 25rpx; font-weight: 600; letter-spacing: 2rpx; line-height: 78rpx; }
-.state-btn.ghost { margin-right: 18rpx; color: var(--primary-deep); background: #f7eeee; border: 1rpx solid var(--primary-line); }
+.state-box { display: flex; flex-direction: column; align-items: center; padding: 128rpx 64rpx 110rpx; text-align: center; }
+.state-icon { display: flex; align-items: center; justify-content: center; width: 108rpx; height: 108rpx; margin-bottom: 26rpx; color: var(--primary-deep); background: #ffede5; border: 1rpx solid #f5d5c9; border-radius: 38rpx 38rpx 38rpx 12rpx; font-family: var(--display); font-size: 46rpx; }
+.state-icon-warn { color: #ad825b; background: var(--honey); border-color: #f0ddb6; }
+.state-index { margin-bottom: 11rpx; color: var(--ink-4); font-family: var(--mono); font-size: 18rpx; letter-spacing: 4rpx; }
+.state-title { color: var(--ink); font-family: var(--display); font-size: 35rpx; font-weight: 600; letter-spacing: 1rpx; }
+.state-desc { margin-top: 11rpx; color: var(--ink-3); font-size: 23rpx; line-height: 1.8; }
+.state-actions { display: flex; align-items: center; margin-top: 32rpx; }
+.state-btn { height: 76rpx; padding: 0 37rpx; color: #fffefd; background: var(--primary-deep); border-radius: 999rpx; font-size: 25rpx; font-weight: 600; letter-spacing: 1rpx; line-height: 76rpx; }
+.state-btn.ghost { margin-right: 18rpx; color: var(--primary-deep); background: #fff0e9; border: 1rpx solid var(--primary-line); }
 
-.skeleton { background: linear-gradient(90deg, #efe9e7 25%, #f8f4ef 37%, #efe9e7 63%); background-size: 400% 100%; animation: skeleton-loading 1.5s ease infinite; border-radius: var(--radius); }
+.skeleton { background: linear-gradient(90deg, #f3e9e2 25%, #fff8f1 37%, #f3e9e2 63%); background-size: 400% 100%; animation: skeleton-loading 1.5s ease infinite; border-radius: var(--radius); }
 @keyframes skeleton-loading { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
 .fade-in { animation: fade-in .36s cubic-bezier(.22,.61,.36,1) both; }
 @keyframes fade-in { from { opacity: 0; transform: translateY(14rpx); } to { opacity: 1; transform: translateY(0); } }
-.btn-hover { opacity: .68; }
+.btn-hover { opacity: .72; }

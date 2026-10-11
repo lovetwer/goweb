@@ -4,7 +4,7 @@
   <view class="feedback-sheet">
     <block wx:if="{{!sent}}">
       <view class="field-head"><view><text class="field-kicker">YOUR NOTE</text><text class="field-title">写下你想说的</text></view><text class="field-optional">诚恳 · 简短 · 随意</text></view>
-      <view class="field"><textarea class="field-area {{error ? 'field-input-err' : ''}}" value="{{content}}" placeholder="比如：希望增加一个……" placeholder-class="field-placeholder" cursor-spacing="20" cursor-color="#a97079" bindinput="onInput"/><view wx:if="{{error}}" class="field-error-row"><view class="field-error-mark">!</view><text class="field-error">{{error}}</text></view></view>
+      <view class="field"><textarea class="field-area {{error ? 'field-input-err' : ''}}" value="{{content}}" placeholder="比如：希望增加一个……" placeholder-class="field-placeholder" cursor-spacing="20" cursor-color="#ee9d8a" bindinput="onInput"/><view wx:if="{{error}}" class="field-error-row"><view class="field-error-mark">!</view><text class="field-error">{{error}}</text></view></view>
       <view class="feedback-form-bottom"><text class="feedback-form-note">每一条建议都会被认真读到。</text><view class="submit {{submitting ? 'submit-disabled' : ''}}" hover-class="btn-hover" bindtap="onSubmit"><text class="submit-text">{{submitting ? '正在寄出…' : '寄出这张纸条'}}</text><text class="submit-arrow">↗</text></view></view>
     </block>
 

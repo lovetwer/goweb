@@ -20,10 +20,10 @@
  * soft   分类浅底色（工具分类标签背景）
  */
 const CATEGORIES = [
-  { key: 'calc', name: '计算换算', en: 'CALC', color: '#90789b', soft: '#efeaf4' },
-  { key: 'text', name: '文本处理', en: 'TEXT', color: '#a88753', soft: '#f5eddc' },
-  { key: 'datetime', name: '日期时间', en: 'DATE', color: '#7a839b', soft: '#ecebf1' },
-  { key: 'life', name: '生活查询', en: 'LIFE', color: '#a97079', soft: '#f4e7e8' }
+  { key: 'calc', name: '计算换算', en: 'CALC', color: '#967baa', soft: '#f1e9f8' },
+  { key: 'text', name: '文本处理', en: 'TEXT', color: '#ae894e', soft: '#fff3d8' },
+  { key: 'datetime', name: '日期时间', en: 'DATE', color: '#7d89ad', soft: '#edf0fa' },
+  { key: 'life', name: '生活查询', en: 'LIFE', color: '#ee9d8a', soft: '#ffe9e1' }
 ];
 
 /**
@@ -150,8 +150,8 @@ function decorate(tool) {
     desc: raw.desc || '',
     category: raw.category || '',
     categoryName: cat ? cat.name : '未分类',
-    color: cat ? cat.color : '#8c7b91',
-    soft: cat ? cat.soft : '#efeaf4',
+    color: cat ? cat.color : '#967baa',
+    soft: cat ? cat.soft : '#f1e9f8',
     icon: raw.icon || '',
     image: raw.image || '',
     initial: raw.icon || (raw.name || '工').slice(0, 1),

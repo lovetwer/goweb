@@ -41,10 +41,10 @@ function firstChar(name) {
 /**
  * 根据名称生成一个稳定的浅色底色（图标兜底块用）
  * @param {string} name
- * @returns {string} 形如 #efeaf4
+ * @returns {string} 形如 #f1e9f8
  */
 function colorOf(name) {
-  const palette = ['#f4e7e8', '#efeaf4', '#f5eddc', '#ecebf1', '#eaf0f2', '#f1e9e7'];
+  const palette = ['#ffe9e1', '#f1e9f8', '#fff3d8', '#edf0fa', '#fff1ed', '#f5e4ef'];
   const s = String(name || '');
   let hash = 0;
   for (let i = 0; i < s.length; i += 1) {
@@ -56,10 +56,10 @@ function colorOf(name) {
 /**
  * 占位块上的首字母颜色（暖调玫瑰与鸢尾紫）
  * @param {string} name
- * @returns {string} 形如 #746481
+ * @returns {string} 形如 #8d70a0
  */
 function inkOf(name) {
-  const palette = ['#925e69', '#746481', '#8b704c', '#6c738e', '#926e67', '#7a657f'];
+  const palette = ['#b96b61', '#8d70a0', '#b08349', '#7183a7', '#b16f7d', '#986b88'];
   const s = String(name || '');
   let hash = 0;
   for (let i = 0; i < s.length; i += 1) {

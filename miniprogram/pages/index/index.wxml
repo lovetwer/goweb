@@ -20,7 +20,7 @@
     <view class="search-wrap">
       <view class="search-bar {{searchFocus ? 'search-bar-focus' : ''}}">
         <view class="search-loupe"></view>
-        <input class="search-input" type="text" value="{{keyword}}" placeholder="找一个小工具…" placeholder-class="search-placeholder" confirm-type="search" cursor-spacing="20" cursor-color="#a97079" bindinput="onSearchInput" bindconfirm="onSearchConfirm" bindfocus="onSearchFocus" bindblur="onSearchBlur" />
+        <input class="search-input" type="text" value="{{keyword}}" placeholder="找一个小工具…" placeholder-class="search-placeholder" confirm-type="search" cursor-spacing="20" cursor-color="#ee9d8a" bindinput="onSearchInput" bindconfirm="onSearchConfirm" bindfocus="onSearchFocus" bindblur="onSearchBlur" />
         <view wx:if="{{keyword}}" class="search-clear" hover-class="btn-hover" catchtap="onClearKeyword"><text>×</text></view>
         <text wx:else class="search-hint">搜索</text>
       </view>

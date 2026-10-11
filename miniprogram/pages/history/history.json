@@ -1,9 +1,9 @@
 {
   "usingComponents": {},
   "navigationBarTitleText": "使用记录",
-  "navigationBarBackgroundColor": "#f0e9eb",
+  "navigationBarBackgroundColor": "#fff5ef",
   "navigationBarTextStyle": "black",
-  "backgroundColor": "#f8f5ef",
+  "backgroundColor": "#fffaf5",
   "backgroundTextStyle": "dark",
   "enablePullDownRefresh": false
 }
