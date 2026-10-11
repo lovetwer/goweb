@@ -1,0 +1,25 @@
+<view class="mine-page">
+  <view class="mine-content">
+    <view class="mine-heading"><view><text class="section-kicker">YOUR PERSONAL CORNER</text><text class="mine-title">我的</text></view><view class="mine-heading-mark">✳</view></view>
+
+    <view class="mine-note"><view class="mine-note-mark">♡</view><view class="mine-note-copy"><text class="mine-note-title">把喜欢的工具，轻轻收好</text><text class="mine-note-desc">无需登录 · 收藏和使用记录只保存在本机</text></view></view>
+
+    <view class="mine-stats">
+      <view class="mine-stat mine-stat-fav" hover-class="mine-stat-hover" bindtap="onFavoritesTap"><view class="mine-stat-top"><text class="mine-stat-icon">♡</text><text class="mine-stat-arrow">↗</text></view><view class="mine-stat-count">{{favoriteCount}}<text> 件</text></view><text class="mine-stat-label">我的收藏</text></view>
+      <view class="mine-stat mine-stat-history" hover-class="mine-stat-hover" bindtap="onHistoryTap"><view class="mine-stat-top"><text class="mine-stat-icon">↺</text><text class="mine-stat-arrow">↗</text></view><view class="mine-stat-count">{{historyCount}}<text> 条</text></view><text class="mine-stat-label">使用记录</text></view>
+    </view>
+
+    <view wx:if="{{vipEnabled}}" class="mine-vip" hover-class="mine-vip-hover" bindtap="onVipTap"><image class="mine-vip-art" src="../../assets/illustrations/shortcut-vip.png" mode="aspectFill"/><view class="mine-vip-copy"><text class="mine-vip-kicker">A LITTLE EXTRA, IF YOU LIKE</text><text class="mine-vip-title">{{isMember ? '谢谢你成为会员' : '会员中心'}}</text><text class="mine-vip-desc">{{isMember ? '查看会员状态与支付记录' : '了解权益与开通说明'}} <text>↗</text></text></view><view class="mine-vip-stamp">✦</view></view>
+
+    <view class="mine-section"><view class="mine-section-heading"><text class="mine-section-title">更多服务</text><text class="mine-section-kicker">A FEW USEFUL LINKS</text></view>
+      <view class="mine-menu">
+        <view class="mine-row" hover-class="mine-row-hover" bindtap="onFeedbackTap"><view class="mine-row-icon mine-icon-feedback">✉</view><view class="mine-row-copy"><text class="mine-row-title">意见反馈</text><text class="mine-row-desc">告诉我们你想要什么工具</text></view><text class="mine-row-arrow">↗</text></view>
+        <view class="mine-row" hover-class="mine-row-hover" bindtap="onLegalTap"><view class="mine-row-icon mine-icon-legal">§</view><view class="mine-row-copy"><text class="mine-row-title">隐私政策与使用协议</text><text class="mine-row-desc">数据如何使用，我们都说清楚</text></view><text class="mine-row-arrow">↗</text></view>
+      </view>
+    </view>
+
+    <view class="mine-footnote"><view class="mine-footnote-mark">i</view><text>收藏和使用记录保存在本地；会员与反馈数据依隐私说明处理。</text></view>
+    <view class="mine-signature"><text>TOOLBOX · A LITTLE DAYBOOK</text><text>♥</text></view>
+  </view>
+  <view class="tab-safe-bottom"></view>
+</view>

@@ -5,7 +5,7 @@
  *   前端压缩后上传云存储临时文件 → 传 fileID 到本云函数
  *   → 下载文件转 base64 → 调腾讯云「人脸检测与分析」DetectFace
  *   → 解析 Beauty / Age / Gender / 质量分
- *   → 规则生成综合分（0~100）与预置评语
+ *   → 规则生成综合分（70~95 区间）与预置评语，并临时返回人脸框供小程序本机裁切头像
  *   → 无论成功失败，finally 里删除云存储临时文件
  *
  * 接口：iai.tencentcloudapi.com / DetectFace / Version 2020-03-03（人脸识别）
@@ -354,6 +354,13 @@ function buildResult(faceInfo) {
     harmony,
     styleText,
     comments,
+    // 仅临时返回检测框，供小程序本机裁切漫画头像；不写入云端存储。
+    faceBox: {
+      x: Number(faceInfo.X) || 0,
+      y: Number(faceInfo.Y) || 0,
+      width: Number(faceInfo.Width) || 0,
+      height: Number(faceInfo.Height) || 0
+    },
     // 置信度不足时前端弱化「精确感」
     uncertain: beautyUncertain
   };

@@ -34,11 +34,19 @@ Page({
   },
 
   onUnload() {
-    // 结果用完即清：不留任何分析数据在本机
+    // 结果用完即清：不留分析数据或临时头像在本机。
     try {
       wx.removeStorageSync('beauty_result_tmp');
     } catch (e) {
       /* 忽略 */
+    }
+    const avatarPath = this.data.result && this.data.result.avatarPath;
+    if (avatarPath && wx.env && avatarPath.indexOf(wx.env.USER_DATA_PATH) === 0) {
+      try {
+        wx.getFileSystemManager().unlinkSync(avatarPath);
+      } catch (e) {
+        /* 临时目录由微信后续清理 */
+      }
     }
   },
 

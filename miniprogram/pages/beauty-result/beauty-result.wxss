@@ -21,6 +21,23 @@
 .result-hero-footer { position: relative; z-index: 1; display: flex; align-items: center; color: #ad9da4; font-family: var(--mono); font-size: 13rpx; letter-spacing: 1.7rpx; }
 .result-hero-footer view { flex: 1; height: 1rpx; margin: 0 13rpx; background: rgba(238,157,138,.2); }
 .result-content { padding: 0 37rpx 23rpx; }
+.q-avatar-card { position: relative; margin-top: 21rpx; padding: 20rpx 20rpx 15rpx; overflow: hidden; background: linear-gradient(145deg, #fff4e9, #f7eafb); border: 1rpx solid #f0dfdc; border-radius: 25rpx; box-shadow: 0 10rpx 25rpx rgba(151,93,75,.06); }
+.q-avatar-heading { position: relative; z-index: 2; display: flex; align-items: center; justify-content: space-between; }
+.q-avatar-title { display: block; margin-top: 4rpx; color: var(--ink); font-family: var(--display); font-size: 27rpx; font-weight: 600; }
+.q-avatar-stamp { display: flex; align-items: center; justify-content: center; width: 43rpx; height: 43rpx; color: #a76862; background: rgba(255,255,255,.7); border: 1rpx solid rgba(222,185,175,.7); border-radius: 15rpx 15rpx 15rpx 5rpx; font-family: var(--display); font-size: 22rpx; font-weight: 700; }
+.q-avatar-stage { position: relative; display: flex; align-items: center; justify-content: center; height: 280rpx; margin-top: 4rpx; overflow: hidden; }
+.q-avatar-orbit { position: absolute; top: 50%; left: 50%; border: 1rpx solid rgba(190,141,144,.25); border-radius: 50%; transform: translate(-50%,-50%); }
+.q-avatar-orbit-one { width: 250rpx; height: 250rpx; }
+.q-avatar-orbit-two { width: 218rpx; height: 218rpx; border-color: rgba(176,153,185,.23); }
+.q-avatar-frame { position: relative; z-index: 1; width: 202rpx; height: 202rpx; padding: 6rpx; background: #fffdf9; border: 1rpx solid rgba(226,191,183,.9); border-radius: 50%; box-shadow: 0 12rpx 25rpx rgba(143,97,91,.18); }
+.q-avatar-image { display: block; width: 100%; height: 100%; background: #f8e8e2; border-radius: 50%; }
+.q-avatar-star { position: absolute; z-index: 2; color: #c78376; text-shadow: 0 4rpx 13rpx rgba(197,131,118,.18); }
+.q-avatar-star-one { top: 37rpx; left: 23%; font-size: 27rpx; }
+.q-avatar-star-two { top: 68rpx; right: 19%; color: #9d84a7; font-size: 35rpx; }
+.q-avatar-star-three { right: 26%; bottom: 31rpx; color: #d1a65f; font-size: 19rpx; }
+.q-avatar-foot { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; padding-top: 8rpx; border-top: 1rpx solid rgba(220,198,190,.55); }
+.q-avatar-foot-mark { display: flex; align-items: center; justify-content: center; width: 25rpx; height: 25rpx; margin-right: 8rpx; color: #fffaf5; background: #aa817f; border-radius: 50%; font-size: 14rpx; }
+.q-avatar-note { color: #93818a; font-size: 16rpx; }
 .result-section-head { display: flex; align-items: flex-end; justify-content: space-between; margin: 31rpx 2rpx 16rpx; }
 .section-kicker { display: block; color: #a097a0; font-family: var(--mono); font-size: 15rpx; letter-spacing: 1.7rpx; }
 .section-title { display: block; margin-top: 4rpx; color: var(--ink); font-family: var(--display); font-size: 29rpx; font-weight: 600; }
