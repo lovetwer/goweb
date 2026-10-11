@@ -11,6 +11,12 @@
     </view>
 
     <view class="result-content">
+      <view wx:if="{{result.avatarPath}}" class="q-avatar-card fade-in">
+        <view class="q-avatar-heading"><view><text class="section-kicker">YOUR Q MINI PORTRAIT</text><text class="q-avatar-title">专属Q版头像</text></view><text class="q-avatar-stamp">Q</text></view>
+        <view class="q-avatar-stage"><view class="q-avatar-orbit q-avatar-orbit-one"></view><view class="q-avatar-orbit q-avatar-orbit-two"></view><view class="q-avatar-frame"><image class="q-avatar-image" src="{{result.avatarPath}}" mode="aspectFill" /></view><text class="q-avatar-star q-avatar-star-one">✦</text><text class="q-avatar-star q-avatar-star-two">✧</text><text class="q-avatar-star q-avatar-star-three">✳</text></view>
+        <view class="q-avatar-foot"><view class="q-avatar-foot-mark">✓</view><text class="q-avatar-note">本机漫画化生成 · 不额外上传头像</text></view>
+      </view>
+
       <view class="result-section-head"><view><text class="section-kicker">A FEW DETAILS</text><text class="section-title">照片里的小观察</text></view><text class="section-number">01</text></view>
       <view class="attrs-card fade-in"><view class="attr"><text class="attr-label">年龄感</text><text class="attr-value">{{result.age || '—'}}</text></view><view class="attr-divider"></view><view class="attr"><text class="attr-label">性别</text><text class="attr-value">{{result.gender || '—'}}</text></view><view class="attr-divider"></view><view class="attr"><text class="attr-label">脸型</text><text class="attr-value">{{result.shapeText}}</text></view></view>
 
@@ -22,7 +28,7 @@
       <view class="verdict-card fade-in"><view class="verdict-topline"><text class="section-kicker">YOUR ATMOSPHERE</text><text class="verdict-seal">✳</text></view><text class="verdict-label">气质风格</text><text class="verdict-style">{{result.styleText}}</text><view class="verdict-rule"></view><view class="verdict-lines"><view class="verdict-line" wx:for="{{result.comments}}" wx:key="*this"><view class="verdict-dot"></view><text class="verdict-text">{{item}}</text></view></view><text wx:if="{{result.uncertain}}" class="verdict-uncertain">这张照片的置信度一般，结果波动较大，换个角度再测一次会更准。</text></view>
 
       <view class="retake-btn" hover-class="btn-hover" bindtap="onRetake"><view class="retake-button-icon">↗</view><view class="retake-button-copy"><text class="retake-kicker">ANOTHER LITTLE TRY</text><text class="retake-text">换一张照片，再看看</text></view></view>
-      <view class="disclaimer"><text class="disclaimer-mark">i</text><text class="disclaimer-text">本结果由算法估算，仅供娱乐参考，不构成对任何人外貌的任何评价。照片已在分析完成后立即删除。</text></view>
+      <view class="disclaimer"><text class="disclaimer-mark">i</text><text class="disclaimer-text">本结果由算法估算，仅供娱乐参考，不构成对任何人外貌的任何评价。云端照片用后即删；Q版头像仅在本机生成，离开结果页后清理。</text></view>
     </view>
   </block>
   <view wx:else class="result-empty state-box"><view class="state-icon">?</view><text class="state-index">NO DATA</text><text class="state-title">结果没有带过来</text><text class="state-desc">返回上一页重新分析一次即可</text><view class="state-actions"><view class="state-btn" hover-class="btn-hover" bindtap="onRetake">重新分析</view></view></view>

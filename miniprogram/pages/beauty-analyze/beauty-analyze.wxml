@@ -18,7 +18,7 @@
         <image class="ph-preview" src="{{imgPath}}" mode="aspectFit" />
         <view wx:if="{{!analyzing}}" class="ph-change" hover-class="btn-hover" catchtap="onRechoose"><text class="ph-change-text">换一张</text></view>
       </block>
-      <view wx:if="{{analyzing}}" class="ph-mask"><view class="spinner"></view><text class="ph-mask-kicker">PLEASE WAIT</text><text class="ph-mask-text">{{statusText || '正在仔细看一看…'}}</text></view>
+      <view wx:if="{{analyzing}}" class="ph-mask"><view class="scan-scene"><view class="scan-ring scan-ring-outer"></view><view class="scan-ring scan-ring-inner"></view><view class="scan-line"></view><view class="scan-corner scan-corner-tl"></view><view class="scan-corner scan-corner-tr"></view><view class="scan-corner scan-corner-bl"></view><view class="scan-corner scan-corner-br"></view><text class="scan-sparkle scan-sparkle-one">✦</text><text class="scan-sparkle scan-sparkle-two">✧</text><text class="scan-sparkle scan-sparkle-three">✳</text></view><view class="analysis-status"><view class="spinner"></view><text class="ph-mask-kicker">A LITTLE MAGIC IN PROGRESS</text><text class="ph-mask-text">{{statusText || '正在仔细看一看…'}}</text></view></view>
     </view>
     <view wx:if="{{errorText}}" class="ph-error"><view class="ph-error-mark">!</view><view class="ph-error-copy"><text class="ph-error-label">没有完成</text><text class="ph-error-text">{{errorText}}</text></view><view class="ph-error-retry" hover-class="btn-hover" bindtap="onAnalyze">再试一次 ↗</view></view>
   </view>
@@ -30,6 +30,6 @@
     <block wx:else><view class="act-btn act-main {{analyzing ? 'act-disabled' : ''}}" hover-class="btn-hover" bindtap="onAnalyze"><view class="act-main-copy"><text class="act-main-kicker">READY WHEN YOU ARE</text><text class="act-main-title">{{analyzing ? '正在分析…' : '开始分析'}}</text></view><view class="act-main-arrow">↗</view></view></block>
   </view>
 
-  <view class="privacy-row"><view class="privacy-lock">✓</view><view class="privacy-copy"><text class="privacy-text">照片仅用于本次分析，完成后立即删除。</text><text class="privacy-sub">经腾讯云处理；不留存照片或人脸特征</text></view><text class="privacy-link" bindtap="onOpenAgreement">隐私政策 ↗</text></view>
+  <view class="privacy-row"><view class="privacy-lock">✓</view><view class="privacy-copy"><text class="privacy-text">照片仅用于本次分析，云端完成后立即删除。</text><text class="privacy-sub">腾讯云处理 · Q版头像本机生成，不额外上传</text></view><text class="privacy-link" bindtap="onOpenAgreement">隐私政策 ↗</text></view>
   <view class="safe-bottom"></view>
 </view>
