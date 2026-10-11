@@ -7,7 +7,7 @@
     <view class="collection-hero-orb"></view>
   </view>
 
-  <view wx:if="{{!loading && count === 0}}" class="collection-empty"><view class="empty-bookmark"><text>♡</text></view><text class="empty-kicker">A SPACE TO SAVE</text><text class="state-title">这里还空着</text><text class="state-desc">还没有收藏任何工具。遇见喜欢的工具时，收在这里会更容易找到。</text><view class="empty-action" hover-class="btn-hover" bindtap="onGoIndex">去工具架逛逛 <text>↗</text></view></view>
+  <view wx:if="{{!loading && count === 0}}" class="collection-empty"><view class="empty-bookmark"><text>♡</text></view><text class="empty-kicker">A SPACE TO SAVE</text><text class="state-title">这里还空着</text><text class="state-desc">还没有收藏任何工具。遇见喜欢的工具时，收在这里会更容易找到。</text><view class="empty-action" hover-class="btn-hover" bindtap="onGoTools">去工具架逛逛 <text>↗</text></view></view>
 
   <view wx:else class="collection-list fav-list">
     <view class="list-heading"><view><text class="list-kicker">YOUR SAVED TOOLS</text><text class="list-title">收起来的日常</text></view><text class="list-count">{{count}} <text>ITEMS</text></text></view>

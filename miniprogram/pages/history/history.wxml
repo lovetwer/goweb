@@ -7,7 +7,7 @@
     <view class="collection-hero-orb"></view>
   </view>
 
-  <view wx:if="{{!loading && count === 0}}" class="collection-empty"><view class="empty-bookmark history-empty-mark"><text>↺</text></view><text class="empty-kicker">A LITTLE ARCHIVE</text><text class="state-title">还没有足迹</text><text class="state-desc">用过的工具会自动留在这里。下次回来，就能从刚才的地方继续。</text><view class="empty-action" hover-class="btn-hover" bindtap="onGoIndex">去工具架逛逛 <text>↗</text></view></view>
+  <view wx:if="{{!loading && count === 0}}" class="collection-empty"><view class="empty-bookmark history-empty-mark"><text>↺</text></view><text class="empty-kicker">A LITTLE ARCHIVE</text><text class="state-title">还没有足迹</text><text class="state-desc">用过的工具会自动留在这里。下次回来，就能从刚才的地方继续。</text><view class="empty-action" hover-class="btn-hover" bindtap="onGoTools">去工具架逛逛 <text>↗</text></view></view>
 
   <view wx:else class="collection-list hist-list">
     <view class="list-heading"><view><text class="list-kicker">YOUR RECENT TRACES</text><text class="list-title">刚刚走过的路</text></view><text class="list-count">{{count}} <text>ITEMS</text></text></view>

@@ -120,7 +120,7 @@ Page({
     });
   },
 
-  onGoIndex() {
-    wx.reLaunch({ url: '/pages/index/index' });
+  onGoTools() {
+    wx.switchTab({ url: '/pages/tools/tools' });
   }
 });

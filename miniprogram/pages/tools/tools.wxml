@@ -1,0 +1,49 @@
+<view class="tools-page">
+  <view class="tools-content">
+    <view class="tools-heading">
+      <view><text class="section-kicker">THE LITTLE TOOL SHELF</text><text class="tools-title">工具</text><text class="tools-subtitle">日常需要的小帮手，都收在这里。</text></view>
+      <view class="tools-total"><text class="tools-total-no">{{toolTotal < 10 ? '0' + toolTotal : toolTotal}}</text><text class="tools-total-label">TOOLS</text></view>
+    </view>
+
+    <view class="search-wrap">
+      <view class="search-bar {{searchFocus ? 'search-bar-focus' : ''}}">
+        <view class="search-loupe"></view>
+        <input class="search-input" type="text" value="{{keyword}}" placeholder="按名称或用途搜索…" placeholder-class="search-placeholder" confirm-type="search" cursor-spacing="20" cursor-color="#ee9d8a" bindinput="onSearchInput" bindconfirm="onSearchConfirm" bindfocus="onSearchFocus" bindblur="onSearchBlur" />
+        <view wx:if="{{keyword}}" class="search-clear" hover-class="btn-hover" catchtap="onClearKeyword"><text>×</text></view>
+        <text wx:else class="search-hint">搜索</text>
+      </view>
+    </view>
+
+    <view wx:if="{{keyword}}" class="search-results fade-in">
+      <view class="results-heading"><view><text class="section-kicker">SEARCH / {{results.length < 10 ? '0' + results.length : results.length}}</text><text class="results-title">和「{{keyword}}」有关</text></view><text class="result-reset" hover-class="btn-hover" bindtap="onReset">清空 ×</text></view>
+      <view wx:if="{{results.length === 0}}" class="empty-search"><view class="empty-search-mark">?</view><text class="empty-search-title">暂时没有找到</text><text class="empty-search-desc">试着换个词，工具架还在慢慢添置。</text><view class="search-return" hover-class="btn-hover" bindtap="onReset">返回工具架 <text>↗</text></view></view>
+      <view wx:else class="result-list">
+        <view wx:for="{{results}}" wx:key="id" class="result-card" data-id="{{item.id}}" hover-class="result-card-hover" bindtap="onToolTap">
+          <image wx:if="{{item.image}}" class="result-art" src="{{item.image}}" mode="aspectFill" />
+          <view wx:else class="result-initial" style="background:{{item.soft}};color:{{item.color}}">{{item.initial}}</view>
+          <view class="result-copy"><text class="result-category">{{item.categoryName}} · {{item.vipOnly ? '会员工具' : '随时可用'}}</text><text class="result-name">{{item.name}}</text><text class="result-desc ellipsis-2">{{item.desc}}</text></view>
+          <view class="result-arrow">↗</view>
+        </view>
+      </view>
+    </view>
+
+    <block wx:else>
+      <view wx:if="{{toolTotal === 0}}" class="empty-tools"><view class="empty-ornament">✳</view><text class="section-kicker">A NEW PAGE IS COMING</text><text class="empty-tools-title">工具正在路上</text><text class="empty-tools-desc">小小的实用工具会慢慢到来，<text>先在这里歇一会儿吧。</text></text></view>
+      <block wx:else>
+        <view class="tool-library-head"><view><text class="section-kicker">BROWSE BY CATEGORY</text><text class="library-title">慢慢挑，慢慢用</text></view><text class="library-count">{{sections.length}} 个分类</text></view>
+        <view class="sections">
+          <view wx:for="{{sections}}" wx:for-item="sec" wx:key="key" class="tool-section">
+            <view class="category-heading"><view class="category-index"><text class="category-index-dot" style="background:{{sec.color}}"></text><text>{{sec.en}}</text></view><text class="category-name">{{sec.name}}</text><view class="category-heading-rule"></view><text class="category-count">{{sec.tools.length}} 件</text></view>
+            <view wx:for="{{sec.tools}}" wx:key="id" class="feature-tool fade-in" data-id="{{item.id}}" hover-class="feature-tool-hover" hover-stay-time="80" bindtap="onToolTap">
+              <view class="feature-copy"><text class="feature-serial">NO. {{item.no < 10 ? '0' + item.no : item.no}} <text> / {{sec.en}}</text></text><text class="feature-name">{{item.name}}</text><text class="feature-desc ellipsis-2">{{item.desc}}</text><view class="feature-action"><text>开始探索</text><view class="feature-action-arrow">↗</view></view></view>
+              <image wx:if="{{item.image}}" class="feature-art" src="{{item.image}}" mode="aspectFill" />
+              <view wx:else class="feature-art-fallback" style="background:{{item.soft}};color:{{item.color}}">{{item.initial}}</view>
+              <view class="feature-card-index">{{item.no < 10 ? '0' + item.no : item.no}}</view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </block>
+  </view>
+  <view class="tab-safe-bottom"></view>
+</view>

@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/tools/tools",
+    "pages/mine/mine",
     "pages/beauty-analyze/beauty-analyze",
     "pages/beauty-result/beauty-result",
     "pages/favorites/favorites",
@@ -16,6 +18,32 @@
     "navigationBarTextStyle": "black",
     "backgroundColor": "#fffaf5",
     "enablePullDownRefresh": false
+  },
+  "tabBar": {
+    "color": "#9a8179",
+    "selectedColor": "#aa5750",
+    "backgroundColor": "#fffaf5",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "assets/tabbar/home.png",
+        "selectedIconPath": "assets/tabbar/home-selected.png"
+      },
+      {
+        "pagePath": "pages/tools/tools",
+        "text": "工具",
+        "iconPath": "assets/tabbar/tools.png",
+        "selectedIconPath": "assets/tabbar/tools-selected.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "assets/tabbar/mine.png",
+        "selectedIconPath": "assets/tabbar/mine-selected.png"
+      }
+    ]
   },
   "permission": {},
   "requiredPrivateInfos": [],

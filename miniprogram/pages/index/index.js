@@ -1,100 +1,53 @@
-// pages/index/index.js —— 工具箱首页
-// 数据全部来自 utils/tools.js 注册表（内置本地），无网络请求、无数据库查询。
-const config = require('../../config.js');
+// pages/index/index.js —— 首页
+// 首页保留快速搜索、最近使用与轻量推荐；完整工具目录位于「工具」Tab。
 const util = require('../../utils/util.js');
 const tools = require('../../utils/tools.js');
-const favorites = require('../../utils/favorites.js');
 const history = require('../../utils/history.js');
-const vip = require('../../utils/vip.js');
 
 const RECENT_MAX = 8;
 
 Page({
   data: {
-    // 注册表状态
     toolTotal: 0,
-    sections: [],
-
-    // 最近使用（本地历史，最多 8 个）
+    featuredTool: null,
     recent: [],
-
-    // 搜索（本地过滤，300ms 防抖）
     keyword: '',
     searchFocus: false,
-    results: [],
-
-    // 收藏 / 历史入口角标
-    favCount: 0,
-    histCount: 0,
-
-    // 会员（vipEnabled=false 时整块隐藏，页面上看不到任何会员痕迹）
-    vipEnabled: config.VIP_ENABLED,
-    isMember: false
+    results: []
   },
 
   onLoad() {
-    this._isMember = false;
-
     this.buildRegistry();
-
-    this._debouncedSearch = util.debounce(() => {
-      this.runSearch();
-    }, 300);
+    this._debouncedSearch = util.debounce(() => this.runSearch(), 300);
   },
 
   onShow() {
-    // 从工具页 / 收藏页返回时同步本地计数与最近使用（纯本地存储，无网络请求）
     this.setData({
-      favCount: favorites.count(),
-      histCount: history.count(),
       recent: this.decorateRecent(history.getAll().slice(0, RECENT_MAX))
     });
-
-    // 会员状态：从会员页返回时可能已变化
-    if (config.VIP_ENABLED) {
-      vip.refresh().then((state) => {
-        const isMember = vip.isActive(state);
-        if (this._isMember !== isMember) {
-          this._isMember = isMember;
-          this.setData({ isMember });
-        }
-      });
-    }
   },
 
-  /**
-   * 从注册表构建首页分区数据。
-   * 注册表为空时 sections=[]，页面显示「工具上架中」空状态。
-   */
   buildRegistry() {
-    const sections = tools.getSections().map((sec) => ({
-      key: sec.category.key,
-      name: sec.category.name,
-      en: sec.category.en,
-      color: sec.category.color,
-      tools: sec.tools.map((t, i) => Object.assign(t, { no: i + 1 }))
-    }));
-
+    const first = tools.getAllTools()[0];
     this.setData({
       toolTotal: tools.count(),
-      sections,
+      featuredTool: first ? tools.getTool(first.id) : null,
       results: this.data.keyword ? tools.searchTools(this.data.keyword) : []
     });
   },
 
   decorateRecent(list) {
     return list.map((item) => {
-      const t = tools.getTool(item.id);
-      // 工具已下架时仍显示本地快照，但点击后提示
-      const colorCat = t || tools.getCategory(item.category) || {};
+      const tool = tools.getTool(item.id);
+      const category = tool || tools.getCategory(item.category) || {};
       return {
         id: item.id,
         name: item.name || '未命名工具',
-        icon: (t && t.icon) || item.icon || util.firstChar(item.name),
-        image: (t && t.image) || item.image || '',
-        soft: colorCat.soft || '#ffe9e1',
-        color: colorCat.color || '#967baa',
-        alive: !!t
+        icon: (tool && tool.icon) || item.icon || util.firstChar(item.name),
+        image: (tool && tool.image) || item.image || '',
+        soft: category.soft || '#ffe9e1',
+        color: category.color || '#967baa',
+        alive: !!tool
       };
     });
   },
@@ -112,8 +65,6 @@ Page({
       query: ''
     };
   },
-
-  /* ------------------------------ 搜索 ------------------------------ */
 
   onSearchInput(e) {
     this.setData({ keyword: e.detail.value });
@@ -136,25 +87,15 @@ Page({
     this.setData({ keyword: '', results: [] });
   },
 
-  runSearch() {
-    const kw = util.trim(this.data.keyword);
-    if (!kw) {
-      this.setData({ results: [] });
-      return;
-    }
-    this.setData({ results: tools.searchTools(kw) });
-  },
-
   onReset() {
-    this.setData({ keyword: '', results: [] });
+    this.onClearKeyword();
   },
 
-  /* ------------------------------ 交互 ------------------------------ */
+  runSearch() {
+    const keyword = util.trim(this.data.keyword);
+    this.setData({ results: keyword ? tools.searchTools(keyword) : [] });
+  },
 
-  /**
-   * 打开工具：先记一笔使用历史（本地），再跳到工具页面。
-   * @param {Object} tool 已装饰的工具对象（注册表条目或本地收藏/历史快照）
-   */
   openTool(tool) {
     if (!tool || !tool.path) return;
     history.push({
@@ -171,20 +112,17 @@ Page({
 
   onToolTap(e) {
     const id = e.currentTarget.dataset.id;
-    if (!id) return;
-    const tool = tools.getTool(id);
+    const tool = id && tools.getTool(id);
     if (tool) {
       this.openTool(tool);
       return;
     }
-    // 注册表里找不到：工具已下架
     wx.showToast({ title: '该工具已下架', icon: 'none', duration: 1500 });
   },
 
   onRecentTap(e) {
     const id = e.currentTarget.dataset.id;
-    if (!id) return;
-    const tool = tools.getTool(id);
+    const tool = id && tools.getTool(id);
     if (tool) {
       this.openTool(tool);
       return;
@@ -192,23 +130,7 @@ Page({
     wx.showToast({ title: '该工具已下架', icon: 'none', duration: 1500 });
   },
 
-  onVipTap() {
-    wx.navigateTo({ url: '/pages/vip/vip' });
-  },
-
-  onFavEntryTap() {
-    wx.navigateTo({ url: '/pages/favorites/favorites' });
-  },
-
-  onHistoryTap() {
-    wx.navigateTo({ url: '/pages/history/history' });
-  },
-
-  onFeedbackTap() {
-    wx.navigateTo({ url: '/pages/feedback/feedback' });
-  },
-
-  onLegalTap() {
-    wx.navigateTo({ url: '/pages/agreement/agreement' });
+  onGoTools() {
+    wx.switchTab({ url: '/pages/tools/tools' });
   }
 });
