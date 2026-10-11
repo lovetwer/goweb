@@ -59,8 +59,8 @@ Page({
       image: (t && t.image) || item.image || '',
       path: (t && t.path) || item.path || '',
       categoryName: (cat && cat.name) || '',
-      soft: (cat && cat.soft) || '#eaf3e9',
-      color: (cat && cat.color) || '#849287',
+      soft: (cat && cat.soft) || '#f4e7e8',
+      color: (cat && cat.color) || '#8c7b91',
       alive: !!t,
       timeText: item.usedAt ? util.fromNow(item.usedAt) : ''
     };
@@ -100,7 +100,7 @@ Page({
       title: '清空使用记录',
       content: '清空后无法恢复，确定继续吗？',
       confirmText: '清空',
-      confirmColor: '#5b9468',
+      confirmColor: '#a97079',
       success: (res) => {
         if (!res.confirm) return;
         history.clear();

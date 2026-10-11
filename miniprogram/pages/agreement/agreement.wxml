@@ -1,5 +1,6 @@
-<!--pages/agreement/agreement.wxml  隐私政策 + 用户协议（薄荷清新版式，纯静态展示）-->
-<view class="container">
+<!--pages/agreement/agreement.wxml  隐私政策 + 用户协议（清晰易读的原生文档页）-->
+<view class="container legal-page">
+  <view class="legal-cover"><view class="legal-cover-overline"><text>PLAINLY, AND WITH CARE</text><text class="legal-cover-number">LEGAL NOTES</text></view><text class="legal-cover-title">重要的说明</text><text class="legal-cover-subtitle">隐私、数据与使用方式，我们都尽量说清楚。</text></view>
 
   <!-- 顶部双 Tab -->
   <view class="seg">
@@ -142,6 +143,7 @@
 
     <view class="doc-foot">
       <text class="doc-foot-text">工具箱 · 实用工具集合</text>
+      <text class="doc-back-home" hover-class="btn-hover" bindtap="onBackHome">回到工具箱 ↗</text>
     </view>
 
     <view class="safe-bottom"></view>

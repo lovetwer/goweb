@@ -67,8 +67,8 @@ Page({
       image: (t && t.image) || item.image || '',
       path: (t && t.path) || item.path || '',
       categoryName: (cat && cat.name) || '',
-      soft: (cat && cat.soft) || '#eaf3e9',
-      color: (cat && cat.color) || '#849287',
+      soft: (cat && cat.soft) || '#f4e7e8',
+      color: (cat && cat.color) || '#8c7b91',
       alive: !!t,
       addedText: item.addedAt ? util.fromNow(item.addedAt) : ''
     };
@@ -109,7 +109,7 @@ Page({
       title: '清空收藏',
       content: `确定要清空全部 ${this.data.count} 条本地收藏吗？收藏只存在这台设备上，清空后无法恢复。`,
       confirmText: '清空',
-      confirmColor: '#5b9468',
+      confirmColor: '#a97079',
       cancelText: '再想想',
       success: (res) => {
         if (!res.confirm) return;

@@ -133,7 +133,7 @@ Page({
     // 环境提示（iOS 微信版本过低时展示）
     needWechatUpdate: false,
 
-    // 沙箱环境提示（由云函数告知，true 时页面显示「不扣款」提示条）
+    // 沙箱环境提示（由云函数告知；页面明确提示沙箱不代表付款免费）
     sandbox: false
   },
 
@@ -205,7 +205,7 @@ Page({
       planName: state.planName || '',
       expireLabel: vip.expireText(state.expireAt),
       expiringSoon: vip.isExpiring(state.expireAt),
-      // 沙箱时页面顶部会显示「不会真实扣款」的提示条，让用户在点支付前就心里有数
+      // 沙箱环境只展示环境标记与谨慎付款提示，不对是否扣款作承诺
       sandbox: !!state.sandbox,
       loading: false,
     });

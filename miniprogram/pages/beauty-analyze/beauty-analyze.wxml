@@ -1,77 +1,35 @@
-<!--pages/beauty-analyze/beauty-analyze.wxml  选图 → 预览 → 分析（薄荷清新版式）-->
-<view class="container">
-
-  <!-- 刊头 -->
-  <view class="a-header">
-    <view class="issue-row">
-      <text class="issue-dot"></text>
-      <text class="issue-no">STEP 01 / 选择一张清晰的正脸照</text>
-    </view>
+<view class="analyze-page">
+  <view class="analyze-intro">
+    <view class="analyze-step"><view class="step-number">02</view><view class="step-copy"><text class="step-kicker">A PHOTO, PLEASE</text><text class="step-caption">轻轻一步，开始之前</text></view><view class="step-progress"><view class="step-progress-active"></view><view></view><view></view></view></view>
+    <text class="analyze-title">选一张自然的照片</text>
+    <text class="analyze-subtitle">光线明亮、正脸清晰，会更容易读出温柔的细节。</text>
   </view>
 
-  <!-- 照片区 -->
   <view class="photo-card">
-    <view class="photo-frame" bindtap="onRechoose">
-      <!-- 未选图：虚线框 + 相机图形 -->
+    <view class="photo-card-heading"><text class="photo-card-label">YOUR PORTRAIT</text><text class="photo-card-note">一张就好</text></view>
+    <view class="photo-frame {{imgPath ? 'photo-frame-ready' : ''}}" bindtap="onRechoose">
       <block wx:if="{{!imgPath}}">
         <view class="ph-empty">
-          <image class="ph-empty-art" src="../../assets/illustrations/tool-beauty.png" mode="aspectFit" />
-          <text class="ph-empty-text">点击选择照片</text>
-          <text class="ph-empty-sub">支持拍照或从相册选择</text>
+          <image class="ph-empty-art" src="../../assets/illustrations/tool-beauty.png" mode="aspectFill" />
+          <view class="ph-empty-overlay"><view class="ph-camera-mark"><view class="camera-lens"></view></view><text class="ph-empty-text">轻触这里，选择照片</text><text class="ph-empty-sub">正脸、自然光 · 拍照或从相册选择</text></view>
         </view>
       </block>
-
-      <!-- 已选图：预览 -->
       <block wx:else>
         <image class="ph-preview" src="{{imgPath}}" mode="aspectFit" />
-        <view wx:if="{{!analyzing}}" class="ph-change" hover-class="btn-hover" catchtap="onRechoose">
-          <text class="ph-change-text">重新选择</text>
-        </view>
+        <view wx:if="{{!analyzing}}" class="ph-change" hover-class="btn-hover" catchtap="onRechoose"><text class="ph-change-text">换一张</text></view>
       </block>
-
-      <!-- 分析中遮罩 -->
-      <view wx:if="{{analyzing}}" class="ph-mask">
-        <view class="spinner"></view>
-        <text class="ph-mask-text">{{statusText || '分析中…'}}</text>
-      </view>
+      <view wx:if="{{analyzing}}" class="ph-mask"><view class="spinner"></view><text class="ph-mask-kicker">PLEASE WAIT</text><text class="ph-mask-text">{{statusText || '正在仔细看一看…'}}</text></view>
     </view>
-
-    <!-- 错误提示 -->
-    <view wx:if="{{errorText}}" class="ph-error">
-      <view class="state-icon state-icon-warn ph-error-icon">!</view>
-      <text class="ph-error-text">{{errorText}}</text>
-      <view class="ph-error-retry" hover-class="btn-hover" bindtap="onAnalyze">
-        <text class="ph-error-retry-text">再试一次</text>
-      </view>
-    </view>
+    <view wx:if="{{errorText}}" class="ph-error"><view class="ph-error-mark">!</view><view class="ph-error-copy"><text class="ph-error-label">没有完成</text><text class="ph-error-text">{{errorText}}</text></view><view class="ph-error-retry" hover-class="btn-hover" bindtap="onAnalyze">再试一次 ↗</view></view>
   </view>
 
-  <!-- 操作按钮 -->
+  <view class="photo-advice"><view class="advice-mark">✳</view><view class="advice-copy"><text class="advice-title">一张清楚的正脸照就够了</text><text class="advice-desc">建议不要戴口罩，脸部不要被头发遮住。</text></view></view>
+
   <view class="actions">
-    <block wx:if="{{!imgPath}}">
-      <view class="act-btn act-ghost" hover-class="btn-hover" bindtap="onChooseCamera">
-        <text class="act-ghost-text">拍照</text>
-      </view>
-      <view class="act-btn act-main" hover-class="btn-hover" bindtap="onChooseAlbum">
-        <text class="act-main-text">从相册选择</text>
-      </view>
-    </block>
-    <block wx:else>
-      <view
-        class="act-btn act-full {{analyzing ? 'act-disabled' : ''}}"
-        hover-class="btn-hover"
-        bindtap="onAnalyze"
-      >
-        <text class="act-main-text">{{analyzing ? '分析中…' : '开始分析'}}</text>
-      </view>
-    </block>
+    <block wx:if="{{!imgPath}}"><view class="act-btn act-camera" hover-class="btn-hover" bindtap="onChooseCamera"><view class="camera-icon"><view></view></view><text>现在拍一张</text></view><view class="act-btn act-album" hover-class="btn-hover" bindtap="onChooseAlbum"><text>从相册选择</text><text class="act-arrow">↗</text></view></block>
+    <block wx:else><view class="act-btn act-main {{analyzing ? 'act-disabled' : ''}}" hover-class="btn-hover" bindtap="onAnalyze"><view class="act-main-copy"><text class="act-main-kicker">READY WHEN YOU ARE</text><text class="act-main-title">{{analyzing ? '正在分析…' : '开始分析'}}</text></view><view class="act-main-arrow">↗</view></view></block>
   </view>
 
-  <!-- 隐私提示 -->
-  <view class="privacy-row">
-    <text class="privacy-text">照片不会保存，分析后立即删除。</text>
-    <text class="privacy-link" bindtap="onOpenAgreement">隐私政策</text>
-  </view>
-
+  <view class="privacy-row"><view class="privacy-lock">✓</view><view class="privacy-copy"><text class="privacy-text">照片不会保存，分析后立即删除。</text><text class="privacy-sub">本次用途结束后即清理</text></view><text class="privacy-link" bindtap="onOpenAgreement">隐私政策 ↗</text></view>
   <view class="safe-bottom"></view>
 </view>

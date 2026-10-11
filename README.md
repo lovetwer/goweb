@@ -91,8 +91,8 @@ goweb/
 
 ## 四、设计语言
 
-采用清新薄荷绿视觉：页面底色 `#f5f8f4`、白色圆角卡片、柔和绿 `#5b9468` 作主强调色，辅以淡紫、浅杏与雾蓝区分功能。全局色值集中在 `miniprogram/app.wxss` 的 `page{}` 变量中。
-首页、最近使用、收藏和历史卡片复用工具对应的本地 PNG 插画（`miniprogram/assets/illustrations/`），无需远程图片请求；插画的 SVG 源文件保存在 `scripts/artwork-src/`。仍为原生 WXML / WXSS / JS，无第三方组件库。
+采用清新唯美的「小小日常手帐」视觉：奶油纸底色 `#f8f5ef`、干燥玫瑰主色 `#a97079`，以鸢尾紫、浅杏与雾蓝分层点缀；不使用薄荷绿作为主题色。全局色值集中在 `miniprogram/app.wxss` 的 `page{}` 变量中。
+首页、颜值分析全流程、收藏、历史、会员与反馈等页面均以原生 WXML / WXSS 重新编排版式，并配套本地功能插画（`miniprogram/assets/illustrations/`），无需远程图片请求；插画的 SVG 源文件保存在 `scripts/artwork-src/`。仍为原生微信小程序，无第三方组件库。
 
 ## 五、会员功能
 

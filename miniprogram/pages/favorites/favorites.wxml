@@ -1,76 +1,23 @@
-<!--pages/favorites/favorites.wxml  我的收藏：全部来自本地 Storage，收藏对象是工具-->
-<view class="container">
-
-  <view class="fav-header">
-    <view class="fav-head-top">
-      <text class="fav-kicker">BOOKMARKS</text>
-      <view wx:if="{{count > 0}}" class="fav-clear" hover-class="btn-hover" bindtap="onClearAll">
-        <text class="fav-clear-text">清空</text>
-      </view>
-    </view>
-    <view class="fav-title-row">
-      <text class="fav-title">我的收藏</text>
-      <text class="fav-num">{{countText}}</text>
-    </view>
-    <view class="fav-head-rule">
-      <view class="fav-head-rule-mark"></view>
-      <view class="fav-head-rule-grey"></view>
-    </view>
-    <text class="fav-sub">仅保存在本机，不上传服务器</text>
+<view class="collection-page favorites-page">
+  <view class="collection-hero">
+    <view class="collection-hero-top"><view class="collection-mark">♡</view><text class="collection-edition">PERSONAL INDEX / 01</text><view wx:if="{{count > 0}}" class="collection-clear" hover-class="btn-hover" bindtap="onClearAll">整理一下 <text>↗</text></view></view>
+    <text class="collection-kicker">KEPT CLOSE, FOR LATER</text><view class="collection-title-row"><text class="collection-title">我的收藏</text><text class="collection-num">{{countText}}</text></view>
+    <text class="collection-desc">把喜欢的工具收好，留给下一个需要它的时刻。</text>
+    <view class="collection-footline"><text class="collection-local-dot"></text><text>只保存在这台设备</text><view></view><text>不上传服务器</text></view>
+    <view class="collection-hero-orb"></view>
   </view>
 
-  <!-- 空状态 -->
-  <view wx:if="{{!loading && count === 0}}" class="state-box">
-    <view class="state-icon star-state"></view>
-    <text class="state-index">EMPTY</text>
-    <text class="state-title">还没有收藏任何工具</text>
-    <text class="state-desc">常用的工具会陆续上架，收藏后就能在这里快速找到</text>
-    <view class="state-actions">
-      <view class="state-btn" hover-class="btn-hover" bindtap="onGoIndex">去逛逛</view>
+  <view wx:if="{{!loading && count === 0}}" class="collection-empty"><view class="empty-bookmark"><text>♡</text></view><text class="empty-kicker">A SPACE TO SAVE</text><text class="state-title">这里还空着</text><text class="state-desc">还没有收藏任何工具。遇见喜欢的工具时，收在这里会更容易找到。</text><view class="empty-action" hover-class="btn-hover" bindtap="onGoIndex">去工具架逛逛 <text>↗</text></view></view>
+
+  <view wx:else class="collection-list fav-list">
+    <view class="list-heading"><view><text class="list-kicker">YOUR SAVED TOOLS</text><text class="list-title">收起来的日常</text></view><text class="list-count">{{count}} <text>ITEMS</text></text></view>
+    <view wx:for="{{list}}" wx:key="id" class="collection-item fav-item {{item.alive ? '' : 'item-unavailable'}}" data-id="{{item.id}}" hover-class="collection-item-hover" bindtap="onItemTap">
+      <image wx:if="{{item.image}}" class="item-art fav-image" src="{{item.image}}" mode="aspectFill"/><view wx:else class="item-art item-icon fav-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.icon}}</view>
+      <view class="item-spine"><text>№</text></view>
+      <view class="item-body fav-body"><view class="item-overline"><text class="item-category">{{item.categoryName || '收藏的工具'}}</text><text wx:if="{{!item.alive}}" class="item-status">已下架</text></view><text class="item-name fav-name ellipsis">{{item.name}}</text><text class="item-desc fav-desc ellipsis-2">{{item.desc}}</text><view class="item-meta"><text class="item-time">{{item.addedText || '已加入收藏'}}</text><text class="item-open">打开 ↗</text></view></view>
+      <view class="item-remove fav-remove" hover-class="btn-hover" catchtap="onRemove" data-id="{{item.id}}"><text>移除</text><text class="remove-cross">×</text></view>
     </view>
+    <view wx:if="{{count > 0}}" class="collection-end"><view></view><text>共 {{count}} 件收好的小事</text><view></view></view>
   </view>
-
-  <!-- 列表 -->
-  <view wx:else class="fav-list">
-    <view
-      class="fav-item fade-in {{item.alive ? '' : 'fav-item-dead'}}"
-      wx:for="{{list}}"
-      wx:key="id"
-      data-id="{{item.id}}"
-      hover-class="fav-item-hover"
-      bindtap="onItemTap"
-    >
-      <image wx:if="{{item.image}}" class="fav-image" src="{{item.image}}" mode="aspectFill" />
-      <view wx:else class="fav-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.icon}}</view>
-
-      <view class="fav-body">
-        <view class="fav-name-row">
-          <text class="fav-name ellipsis">{{item.name}}</text>
-          <text wx:if="{{!item.alive}}" class="fav-dead-tag">已下架</text>
-          <text class="fav-arrow">→</text>
-        </view>
-        <text class="fav-desc ellipsis-2">{{item.desc}}</text>
-        <view class="fav-meta">
-          <view wx:if="{{item.categoryName}}" class="fav-tag">
-            <text class="fav-tag-dot"></text>
-            <text class="fav-tag-text">{{item.categoryName}}</text>
-          </view>
-          <text wx:if="{{item.addedText}}" class="fav-time">{{item.addedText}}</text>
-        </view>
-      </view>
-
-      <view class="fav-remove" hover-class="btn-hover" catchtap="onRemove" data-id="{{item.id}}">
-        <view class="rm-x"></view>
-        <view class="rm-y"></view>
-      </view>
-    </view>
-
-    <view wx:if="{{count > 0}}" class="fav-count">
-      <view class="fav-count-line"></view>
-      <text class="fav-count-text">共 {{count}} 条</text>
-      <view class="fav-count-line"></view>
-    </view>
-  </view>
-
   <view class="safe-bottom"></view>
 </view>

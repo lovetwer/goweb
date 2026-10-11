@@ -1,187 +1,28 @@
-<!--pages/vip/vip.wxml  会员中心：套餐选择 + 支付 + 权益说明
-     合规约束（提审重点）：
-     - 不出现「限时」「最后机会」「立省」等催促性/诱导性话术
-     - 不承诺任何收益或服务响应时间
-     - 价格如实展示，不做虚假折扣对比 -->
-<view class="container">
+<view class="vip-page">
+  <view class="vip-cover"><image class="vip-cover-art" src="../../assets/illustrations/shortcut-vip.png" mode="aspectFill"/><view class="vip-cover-content"><view class="vip-cover-edition"><text class="vip-crown">✦</text><text>MEMBERSHIP / A LITTLE EXTRA</text></view><text class="vip-cover-title">会员</text><text class="vip-cover-desc">开通后可查看工具的完整简介与全部标签。会员内容与站内信息一样，全部由开发者人工整理。</text><view class="vip-cover-foot"><text>权益清晰</text><view></view><text>价格如实展示</text><view></view><text>由你决定</text></view></view></view>
 
-  <!-- 刊头 -->
-  <view class="vip-header">
-    <text class="head-label">MEMBERSHIP</text>
-    <text class="head-title">会员</text>
-    <view class="head-rule"></view>
-    <text class="head-desc">开通后可查看工具的完整简介与全部标签。会员内容与站内信息一样，全部由开发者人工整理。</text>
+  <view class="vip-content">
+    <view wx:if="{{isMember}}" class="member-card"><view class="member-card-top"><view class="member-badge"><view class="bm-sm"></view><text class="member-badge-text">会员已开通</text></view><text class="member-plan">{{planName}}</text></view><view class="member-card-rule"></view><text class="member-expire-text">{{expireLabel}}</text><view class="member-card-bottom"><text class="member-thanks">感谢你支持这个小小工具箱。</text><view class="state-btn ghost" hover-class="btn-hover" bindtap="onRefreshState">刷新状态 ↻</view></view><text wx:if="{{expiringSoon}}" class="member-expire-warn">会员权益即将到期</text></view>
+
+    <view wx:if="{{isMember && orders.length}}" class="receipt"><view class="vip-section-heading"><view><text class="vip-section-kicker">YOUR PAYMENT RECORDS</text><text class="sec-title">我的凭证</text></view><text class="receipt-count">{{orders.length}} 笔</text></view><view wx:for="{{orders}}" wx:key="outTradeNo" class="rc-item"><view class="rc-top"><text class="rc-plan">{{item.planName}}</text><text class="rc-price {{item.refunded ? 'rc-muted' : ''}}">¥ {{item.priceText}}</text></view><view class="rc-line" hover-class="btn-hover" data-no="{{item.outTradeNo}}" bindtap="onCopyNo"><text class="rc-label">业务单号</text><text class="rc-no" user-select="{{true}}">{{item.outTradeNo}}</text><text class="rc-copy">复制</text></view><view wx:if="{{item.wxOrderId}}" class="rc-line" hover-class="btn-hover" data-no="{{item.wxOrderId}}" bindtap="onCopyNo"><text class="rc-label">平台单号</text><text class="rc-no" user-select="{{true}}">{{item.wxOrderId}}</text><text class="rc-copy">复制</text></view><view class="rc-line"><text class="rc-label">支付时间</text><text class="rc-time {{item.refunded ? 'rc-muted' : ''}}">{{item.timeText}}{{item.refunded ? ' · 已退款' : ''}}</text></view></view><text class="rc-tip">如遇「已支付未到账」，把业务单号通过「意见反馈」发给我们即可快速核对。</text></view>
+
+    <view wx:if="{{needWechatUpdate}}" class="notice-box"><text class="notice-mark">微信版本</text><text class="notice-text">当前微信版本不支持会员购买，请更新微信至8.0.68 以上版本。</text></view>
+    <view wx:if="{{sandbox}}" class="notice-box sandbox-notice"><text class="notice-mark">沙箱环境</text><text class="notice-text">当前为沙箱环境（env=1），非现网配置。此标记不代表付款免费，请谨慎操作。</text></view>
+
+    <block wx:if="{{!isMember}}">
+      <view class="plan-section-head"><view><text class="vip-section-kicker">A CLEAR, SIMPLE CHOICE</text><text class="vip-section-title">选择你的会员周期</text></view><text class="plan-section-note">以实际展示价格为准</text></view>
+      <view class="plans"><view wx:for="{{plans}}" wx:key="planId" class="plan {{selectedPlanId === item.planId ? 'plan-on' : ''}}" data-id="{{item.planId}}" hover-class="plan-hover" bindtap="onSelectPlan"><view class="plan-topline"><text class="plan-name">{{item.name}}</text><text wx:if="{{item.badge}}" class="plan-badge">{{item.badge}}</text><view wx:if="{{selectedPlanId === item.planId}}" class="plan-selected-mark">✓</view></view><view class="plan-price-row"><text class="plan-currency">¥</text><text class="plan-price">{{item.priceText}}</text></view><text class="plan-period">{{item.period}}</text><view class="plan-rule"></view><text class="plan-benefit">{{item.benefit}}</text></view></view>
+
+      <view wx:if="{{error}}" class="err-row"><view class="err-mark">!</view><text class="err-text">{{error}}</text></view>
+      <view class="consent"><view class="consent-box {{agreed ? 'consent-on' : ''}}" hover-class="btn-hover" bindtap="onToggleAgree"><view wx:if="{{agreed}}" class="consent-tick"></view></view><view class="consent-body"><text class="consent-text" bindtap="onToggleAgree">我已阅读并同意</text><text class="consent-text">《</text><text class="consent-link" catchtap="onOpenAgreement">用户协议</text><text class="consent-text">》与《</text><text class="consent-link" catchtap="onOpenAgreement">隐私政策</text><text class="consent-text">》</text></view></view>
+      <view class="submit {{paying || !agreed ? 'submit-disabled' : ''}}" hover-class="btn-hover" bindtap="onBuy"><view class="submit-copy"><text class="submit-text">{{paying ? '处理中' : '开通会员'}}</text><text class="submit-sub">需主动勾选同意协议后开通</text></view><text class="submit-arrow">↗</text></view>
+    </block>
+
+    <view class="benefits"><view class="vip-section-heading"><view><text class="vip-section-kicker">WHAT MEMBERSHIP INCLUDES</text><text class="sec-title">会员权益</text></view><text class="benefit-symbol">✦</text></view><view class="benefit-item"><text class="benefit-no">01</text><text class="bt-text">解锁全部会员专属工具</text><text class="bt-mark">↗</text></view><view class="benefit-item"><text class="benefit-no">02</text><text class="bt-text">新工具上架时会员优先体验</text><text class="bt-mark">↗</text></view><view class="benefit-item"><text class="benefit-no">03</text><text class="bt-text">通过「意见反馈」提交工具需求建议</text><text class="bt-mark">↗</text></view></view>
+
+    <view class="rules"><view class="vip-section-heading"><view><text class="vip-section-kicker">PLEASE READ BEFORE PURCHASE</text><text class="sec-title">购买说明</text></view><text class="rules-symbol">i</text></view><text class="rule-line">会员为虚拟服务，开通后不支持退款。</text><text class="rule-line">会员按自然月 / 自然年计算，到期后权益自动失效。</text><text class="rule-line">iOS 端由 Apple 处理退款申请，Android 端可在小程序后台发起退款。</text><text class="rule-line">如遇支付成功但权益未到账，请通过「意见反馈」联系我们。</text></view>
+
+    <view class="foot-actions"><text class="foot-link" hover-class="btn-hover" bindtap="onOpenAgreement">用户协议与隐私政策</text><text class="foot-sep">·</text><text class="foot-link" hover-class="btn-hover" bindtap="onOpenFeedback">意见反馈</text></view>
   </view>
-
-  <!-- 已是会员 -->
-  <view wx:if="{{isMember}}" class="member-card">
-    <view class="member-top">
-      <view class="member-badge">
-        <view class="bm-sm"></view>
-        <text class="member-badge-text">会员</text>
-      </view>
-      <text class="member-plan">{{planName}}</text>
-    </view>
-    <view class="member-expire {{expiringSoon ? 'member-expire-warn' : ''}}">
-      <text class="member-expire-text">{{expireLabel}}</text>
-    </view>
-    <view class="member-actions">
-      <view class="state-btn ghost" hover-class="btn-hover" bindtap="onRefreshState">刷新状态</view>
-    </view>
-  </view>
-
-  <!-- 我的凭证：已支付订单的双单号（长按或点「复制」可复制）。
-       业务单号（outTradeNo）= 系统内唯一凭证；
-       平台单号（wxOrderId）= 微信支付侧官方凭证，退款 / 对账以它为准。 -->
-  <view wx:if="{{isMember && orders.length}}" class="receipt">
-    <view class="sec-head">
-      <view class="sec-mark"></view>
-      <text class="sec-title">我的凭证</text>
-    </view>
-    <view wx:for="{{orders}}" wx:key="outTradeNo" class="rc-item">
-      <view class="rc-top">
-        <text class="rc-plan">{{item.planName}}</text>
-        <text class="rc-price {{item.refunded ? 'rc-muted' : ''}}">¥ {{item.priceText}}</text>
-      </view>
-      <view class="rc-line" hover-class="btn-hover" data-no="{{item.outTradeNo}}" bindtap="onCopyNo">
-        <text class="rc-label">业务单号</text>
-        <text class="rc-no" user-select="{{true}}">{{item.outTradeNo}}</text>
-        <text class="rc-copy">复制</text>
-      </view>
-      <view wx:if="{{item.wxOrderId}}" class="rc-line" hover-class="btn-hover" data-no="{{item.wxOrderId}}" bindtap="onCopyNo">
-        <text class="rc-label">平台单号</text>
-        <text class="rc-no" user-select="{{true}}">{{item.wxOrderId}}</text>
-        <text class="rc-copy">复制</text>
-      </view>
-      <view class="rc-line">
-        <text class="rc-label">支付时间</text>
-        <text class="rc-time {{item.refunded ? 'rc-muted' : ''}}">{{item.timeText}}{{item.refunded ? ' · 已退款' : ''}}</text>
-      </view>
-    </view>
-    <text class="rc-tip">如遇「已支付未到账」，把业务单号通过「意见反馈」发给我们即可快速核对。</text>
-  </view>
-
-  <!-- 环境提示：iOS 微信版本过低 -->
-  <view wx:if="{{needWechatUpdate}}" class="notice-box">
-    <text class="notice-mark">提示</text>
-    <text class="notice-text">当前微信版本不支持会员购买，请更新微信至8.0.68 以上版本。</text>
-  </view>
-
-  <!-- 环境提示：跑在沙箱（env=1）时给个标记。
-       ⚠️ 这里刻意**不写「不会扣款」**——2026-10-06 实测证明 env=1 沙箱并不等于免费，
-       之前写了「不扣款可放心测试」，结果用户真被扣了钱。环境标记只做标记，不做承诺。 -->
-  <view wx:if="{{sandbox}}" class="notice-box">
-    <text class="notice-mark">沙箱</text>
-    <text class="notice-text">当前为沙箱环境（env=1），非现网配置。此标记不代表付款免费，请谨慎操作。</text>
-  </view>
-
-  <!-- 未开通：套餐选择
-       ⚠️ 这里用 wx:if 而不是 wx:elif：
-       wx:elif / wx:else 必须与对应的 wx:if 节点「紧邻」，中间不能夹别的兄弟节点。
-       上面的会员卡片与这里之间还插着两条环境提示（微信版本 / 沙箱），
-       用 wx:elif 会匹配不上，导致整个套餐区和「开通会员」按钮都不渲染。
-       写成独立的 wx:if="{{!isMember}}" 与上面的 wx:if="{{isMember}}" 互斥，
-       且不受中间插入多少节点影响。 -->
-  <block wx:if="{{!isMember}}">
-
-    <view class="plans">
-      <view
-        wx:for="{{plans}}"
-        wx:key="planId"
-        class="plan {{selectedPlanId === item.planId ? 'plan-on' : ''}}"
-        data-id="{{item.planId}}"
-        hover-class="plan-hover"
-        bindtap="onSelectPlan"
-      >
-        <view class="plan-head">
-          <text class="plan-name">{{item.name}}</text>
-          <text wx:if="{{item.badge}}" class="plan-badge">{{item.badge}}</text>
-        </view>
-        <view class="plan-price-row">
-          <text class="plan-currency">¥</text>
-          <text class="plan-price">{{item.priceText}}</text>
-          <text class="plan-period">{{item.period}}</text>
-        </view>
-        <text class="plan-benefit">{{item.benefit}}</text>
-        <view wx:if="{{selectedPlanId === item.planId}}" class="plan-check">
-          <view class="check-x"></view>
-          <view class="check-y"></view>
-        </view>
-      </view>
-    </view>
-
-    <!-- 错误提示 -->
-    <view wx:if="{{error}}" class="err-row">
-      <text class="err-text">{{error}}</text>
-    </view>
-
-    <!-- 协议同意：默认不勾选，必须由用户主动勾选后才能开通。
-         不得写成「点击开通即表示同意」，更不能默认帮用户同意。 -->
-    <view class="consent">
-      <view
-        class="consent-box {{agreed ? 'consent-on' : ''}}"
-        hover-class="btn-hover"
-        bindtap="onToggleAgree"
-      >
-        <view wx:if="{{agreed}}" class="consent-tick"></view>
-      </view>
-      <view class="consent-body">
-        <text class="consent-text" bindtap="onToggleAgree">我已阅读并同意</text>
-        <text class="consent-text">《</text>
-        <text class="consent-link" catchtap="onOpenAgreement">用户协议</text>
-        <text class="consent-text">》与《</text>
-        <text class="consent-link" catchtap="onOpenAgreement">隐私政策</text>
-        <text class="consent-text">》</text>
-      </view>
-    </view>
-
-    <!-- 购买按钮 -->
-    <view
-      class="submit {{paying || !agreed ? 'submit-disabled' : ''}}"
-      hover-class="btn-hover"
-      bindtap="onBuy"
-    >
-      <text class="submit-text">{{paying ? '处理中' : '开通会员'}}</text>
-    </view>
-  </block>
-
-  <!-- 权益说明 -->
-  <view class="benefits">
-    <view class="sec-head">
-      <view class="sec-mark"></view>
-      <text class="sec-title">会员权益</text>
-    </view>
-    <view class="benefit-item">
-      <view class="bt-dot"></view>
-      <text class="bt-text">解锁全部会员专属工具</text>
-    </view>
-    <view class="benefit-item">
-      <view class="bt-dot"></view>
-      <text class="bt-text">新工具上架时会员优先体验</text>
-    </view>
-    <view class="benefit-item">
-      <view class="bt-dot"></view>
-      <text class="bt-text">通过「意见反馈」提交工具需求建议</text>
-    </view>
-  </view>
-
-  <!-- 购买说明：如实告知规则，不隐藏不利条款 -->
-  <view class="rules">
-    <view class="sec-head">
-      <view class="sec-mark"></view>
-      <text class="sec-title">购买说明</text>
-    </view>
-    <text class="rule-line">会员为虚拟服务，开通后不支持退款。</text>
-    <text class="rule-line">会员按自然月 / 自然年计算，到期后权益自动失效。</text>
-    <text class="rule-line">iOS 端由 Apple 处理退款申请，Android 端可在小程序后台发起退款。</text>
-    <text class="rule-line">如遇支付成功但权益未到账，请通过「意见反馈」联系我们。</text>
-  </view>
-
-  <view class="foot-actions">
-    <text class="foot-link" hover-class="btn-hover" bindtap="onOpenAgreement">用户协议与隐私政策</text>
-    <text class="foot-sep">·</text>
-    <text class="foot-link" hover-class="btn-hover" bindtap="onOpenFeedback">意见反馈</text>
-  </view>
-
   <view class="safe-bottom"></view>
 </view>
