@@ -5,7 +5,7 @@
  *   前端压缩后上传云存储临时文件 → 传 fileID 到本云函数
  *   → 下载文件转 base64 → 调腾讯云「人脸检测与分析」DetectFace
  *   → 解析 Beauty / Age / Gender / 质量分
- *   → 规则生成综合分（70~95 区间）与预置评语
+ *   → 规则生成综合分（0~100）与预置评语
  *   → 无论成功失败，finally 里删除云存储临时文件
  *
  * 接口：iai.tencentcloudapi.com / DetectFace / Version 2020-03-03（人脸识别）
@@ -242,10 +242,10 @@ const STYLE_MAP = {
   }
 };
 
-// 分数段评语（预置文案，全部带娱乐参考语气；低分段归因于拍摄而非人脸本身）
+// 分数段评语（0~100 原始分制；预置文案，全部带娱乐参考语气；低分段归因于拍摄而非人脸本身）
 const BAND_COMMENTS = [
   {
-    min: 88,
+    min: 90,
     title: '气质出众',
     lines: [
       '整体气质在镜头前很能打，五官比例让人过目难忘。',
@@ -253,7 +253,7 @@ const BAND_COMMENTS = [
     ]
   },
   {
-    min: 80,
+    min: 78,
     title: '越看越顺眼',
     lines: [
       '五官舒展、比例耐看，属于越看越顺眼的长相。',
@@ -261,7 +261,7 @@ const BAND_COMMENTS = [
     ]
   },
   {
-    min: 74,
+    min: 62,
     title: '自然耐看',
     lines: [
       '长相偏自然亲和型，是人群中让人放松下来的那一类。',
@@ -327,9 +327,9 @@ function buildResult(faceInfo) {
     clarity = Math.round(clamp((1 - occAvg) * 60 + completeness, 30, 100));
   }
 
-  // 综合分：颜值 80% + 清晰度 10% + 脸型协调 10%，再映射到 70~95
+  // 综合分（0~100 原始分直出）：颜值 80% + 清晰度 10% + 脸型协调 10%
   const base = beauty * 0.8 + clarity * 0.1 + harmony * 0.1;
-  const score = Math.round(70 + clamp(base, 0, 100) * 0.25);
+  const score = Math.round(clamp(base, 0, 100));
 
   const band = BAND_COMMENTS.find((b) => score >= b.min) || BAND_COMMENTS[BAND_COMMENTS.length - 1];
   const comments = band.lines.slice();
@@ -346,7 +346,7 @@ function buildResult(faceInfo) {
 
   return {
     score,
-    bandTitle: beautyUncertain ? '仅供参考' : band.title,
+    title: pickTitle(score, genderKey),
     age,
     gender,
     shapeText,
@@ -357,6 +357,195 @@ function buildResult(faceInfo) {
     // 置信度不足时前端弱化「精确感」
     uncertain: beautyUncertain
   };
+}
+
+/* ---------------------------------------------------------------- */
+/* 称号系统：九个分数段 + 整活彩蛋区                                   */
+/* g: '' 男女通用 / 'm' 男生专用 / 'f' 女生专用；选定时跳过性别不符项    */
+/* ---------------------------------------------------------------- */
+
+const TITLE_ZONES = [
+  {
+    min: 0, max: 29,
+    titles: [
+      { t: '女娲草稿', g: '' },
+      { t: '上帝手滑作品', g: '' },
+      { t: '女娲毕设废案', g: '' },
+      { t: '吴彦祖未渲染版', g: 'm' },
+      { t: '刘亦菲加载失败', g: 'f' },
+      { t: '五官各自为政', g: '' },
+      { t: '五官离家出走', g: '' },
+      { t: '抽象派掌门人', g: '' },
+      { t: '行走的表情包', g: '' },
+      { t: '人类多样性样本', g: '' }
+    ]
+  },
+  {
+    min: 30, max: 49,
+    titles: [
+      { t: '丑萌天花板', g: '' },
+      { t: '丑帅预备役', g: '' },
+      { t: '丑帅潜力股', g: '' },
+      { t: '抽象帅哥', g: 'm' },
+      { t: '抽象美女', g: 'f' },
+      { t: '喜剧脸担当', g: '' },
+      { t: '安全感战神', g: 'm' },
+      { t: '好人脸天花板', g: '' },
+      { t: '丑得很有礼貌', g: '' },
+      { t: '丑得挺洋气', g: '' }
+    ]
+  },
+  {
+    min: 50, max: 59,
+    titles: [
+      { t: '大众脸本脸', g: '' },
+      { t: '路人甲气质', g: '' },
+      { t: '普通但自信', g: '' },
+      { t: '清秀未遂', g: '' },
+      { t: '帅哥预科班', g: 'm' },
+      { t: '美女预科班', g: 'f' },
+      { t: '颜值潜力股', g: '' },
+      { t: '五官努力型', g: '' },
+      { t: '长相很有想法', g: '' },
+      { t: '越看越顺眼型', g: '' }
+    ]
+  },
+  {
+    min: 60, max: 69,
+    titles: [
+      { t: '邻家普通款', g: '' },
+      { t: '同学录大众脸', g: '' },
+      { t: '耐看型选手', g: '' },
+      { t: '干净顺眼型', g: '' },
+      { t: '亲和力满分', g: '' },
+      { t: '气质在线', g: '' },
+      { t: '普通人天花板', g: '' },
+      { t: '素人帅哥', g: 'm' },
+      { t: '素人美女', g: 'f' },
+      { t: '低调耐看型', g: '' }
+    ]
+  },
+  {
+    min: 70, max: 79,
+    titles: [
+      { t: '顺眼型选手', g: '' },
+      { t: '阳光大男孩', g: 'm' },
+      { t: '邻家甜妹', g: 'f' },
+      { t: '氧气美女', g: 'f' },
+      { t: '清爽男生', g: 'm' },
+      { t: '温柔姐姐', g: 'f' },
+      { t: '初恋脸', g: '' },
+      { t: '盐系少年', g: 'm' },
+      { t: '甜盐皆可', g: '' },
+      { t: '氛围感选手', g: '' }
+    ]
+  },
+  {
+    min: 80, max: 84,
+    titles: [
+      { t: '小帅哥', g: 'm' },
+      { t: '小美女', g: 'f' },
+      { t: '校草', g: 'm' },
+      { t: '校花', g: 'f' },
+      { t: '撕漫男', g: 'm' },
+      { t: '撕漫女', g: 'f' },
+      { t: '侧颜杀手', g: '' },
+      { t: '眉眼杀', g: '' },
+      { t: '微笑唇', g: '' },
+      { t: '下颌线战神', g: '' }
+    ]
+  },
+  {
+    min: 85, max: 89,
+    titles: [
+      { t: '大帅哥', g: 'm' },
+      { t: '大美女', g: 'f' },
+      { t: '行走的画报', g: '' },
+      { t: '氛围感战神', g: '' },
+      { t: '骨相美代表', g: '' },
+      { t: '浓颜天菜', g: '' },
+      { t: '淡颜天菜', g: '' },
+      { t: '清冷美人', g: 'f' },
+      { t: '阳光男神', g: 'm' },
+      { t: '温柔女神', g: 'f' }
+    ]
+  },
+  {
+    min: 90, max: 94,
+    titles: [
+      { t: '吴彦祖分祖', g: 'm' },
+      { t: '彭于晏分晏', g: 'm' },
+      { t: '金城武分武', g: 'm' },
+      { t: '刘德华分华', g: 'm' },
+      { t: '梁朝伟分伟', g: 'm' },
+      { t: '刘亦菲分菲', g: 'f' },
+      { t: '高圆圆分圆', g: 'f' },
+      { t: '王祖贤分贤', g: 'f' },
+      { t: '林青霞分霞', g: 'f' },
+      { t: '迪丽热巴分巴', g: 'f' }
+    ]
+  },
+  {
+    min: 95, max: 100,
+    titles: [
+      { t: '女娲毕设', g: '' },
+      { t: '上帝炫技之作', g: '' },
+      { t: '颜值天花板', g: '' },
+      { t: '神颜降世', g: '' },
+      { t: '吴彦祖本祖', g: 'm' },
+      { t: '刘亦菲本菲', g: 'f' },
+      { t: '建模脸', g: '' },
+      { t: '电影脸', g: '' },
+      { t: '杂志脸', g: '' },
+      { t: '高级脸', g: '' }
+    ]
+  }
+];
+
+// 整活彩蛋区：小概率随机掉落，替换正常称号
+const TITLE_EGG = [
+  { t: '吴彦祖青春版', g: 'm' },
+  { t: '吴彦祖 Pro Max', g: 'm' },
+  { t: '刘亦菲体验版', g: 'f' },
+  { t: '高圆圆试用装', g: 'f' },
+  { t: '女娲开会员作品', g: '' },
+  { t: '小说男主脸', g: 'm' },
+  { t: '小说女主脸', g: 'f' },
+  { t: '白月光', g: 'f' },
+  { t: '朱砂痣', g: 'f' },
+  { t: '防伪标志脸', g: '' }
+];
+
+const TITLE_EGG_CHANCE = 0.06;
+
+/** 按性别过滤称号池：genderKey 是 'male'/'female'，称号标记是缩写 'm'/'f'，先归一再比对 */
+function titlePool(titles, genderKey) {
+  const g = genderKey === 'male' ? 'm' : genderKey === 'female' ? 'f' : '';
+  if (!g) return titles;
+  const filtered = titles.filter((x) => !x.g || x.g === g);
+  return filtered.length ? filtered : titles;
+}
+
+/**
+ * 按分数取称号：分数在段内的位置决定用第几个称号（同分同称号，越高越靠后）。
+ * 6% 概率整活掉落彩蛋称号。
+ */
+function pickTitle(score, genderKey) {
+  const g = genderKey === 'male' || genderKey === 'female' ? genderKey : '';
+
+  if (Math.random() < TITLE_EGG_CHANCE) {
+    const pool = titlePool(TITLE_EGG, g);
+    return pool[Math.floor(Math.random() * pool.length)].t;
+  }
+
+  const zone = TITLE_ZONES.find((z) => score >= z.min && score <= z.max);
+  if (!zone) return '神秘颜值选手';
+  const pool = titlePool(zone.titles, g);
+  const idx = Math.min(
+    pool.length - 1,
+    Math.floor(((score - zone.min) / (zone.max - zone.min + 1)) * pool.length)
+  );
+  return pool[idx].t;
 }
 
 /* ---------------------------------------------------------------- */

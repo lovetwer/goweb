@@ -5,7 +5,7 @@
       <view class="result-overline"><text class="result-overline-mark">✳</text><text>YOUR LITTLE PORTRAIT NOTE</text><text class="result-edition">№ 01</text></view>
       <view class="score-layout">
         <view class="score-ring"><view class="score-ring-inner"><text class="score-num">{{result.score}}</text><text class="score-unit">/ 100</text></view></view>
-        <view class="score-summary"><text class="score-summary-label">今天的参考分</text><text class="score-band">{{result.bandTitle}}</text><text class="score-caption">轻松看看 · 仅供娱乐</text><view class="score-summary-rule"></view><text class="score-summary-note">每个人的美，都不需要被分数定义。</text></view>
+        <view class="score-summary"><text class="score-summary-label">本次称号</text><text class="score-band">{{result.title}}</text><text class="score-caption">轻松看看 · 仅供娱乐</text><view class="score-summary-rule"></view><text class="score-summary-note">每个人的美，都不需要被分数定义。</text></view>
       </view>
       <view class="result-hero-footer"><text>FACE STUDY</text><view></view><text>JUST FOR FUN</text></view>
     </view>

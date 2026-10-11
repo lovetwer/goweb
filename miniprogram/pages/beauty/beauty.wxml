@@ -11,7 +11,7 @@
     <view class="beauty-feature-card">
       <view class="beauty-feature-row"><text class="beauty-feature-no">01</text><view class="beauty-feature-copy"><text class="beauty-feature-title">面部特征</text><text class="beauty-feature-desc">观察照片中的年龄感、性别与脸型特征。</text></view><text class="beauty-feature-mark">↗</text></view>
       <view class="beauty-feature-rule"></view>
-      <view class="beauty-feature-row"><text class="beauty-feature-no">02</text><view class="beauty-feature-copy"><text class="beauty-feature-title">颜值参考分</text><text class="beauty-feature-desc">在 70~95 的温和区间里，提供娱乐向参考。</text></view><text class="beauty-feature-mark">↗</text></view>
+      <view class="beauty-feature-row"><text class="beauty-feature-no">02</text><view class="beauty-feature-copy"><text class="beauty-feature-title">颜值参考分</text><text class="beauty-feature-desc">0~100 分的娱乐向参考，附拍摄小建议。</text></view><text class="beauty-feature-mark">↗</text></view>
       <view class="beauty-feature-rule"></view>
       <view class="beauty-feature-row"><text class="beauty-feature-no">03</text><view class="beauty-feature-copy"><text class="beauty-feature-title">气质小注</text><text class="beauty-feature-desc">按分数段生成风格评语与拍摄建议。</text></view><text class="beauty-feature-mark">↗</text></view>
     </view>
