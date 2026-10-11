@@ -1,6 +1,6 @@
 <view class="analyze-page">
   <view class="analyze-intro">
-    <view class="analyze-step"><view class="step-number">02</view><view class="step-copy"><text class="step-kicker">A PHOTO, PLEASE</text><text class="step-caption">轻轻一步，开始之前</text></view><view class="step-progress"><view class="step-progress-active"></view><view></view><view></view></view></view>
+    <view class="analyze-step"><view class="step-number">01</view><view class="step-copy"><text class="step-kicker">A PHOTO, PLEASE</text><text class="step-caption">照片仅用于本次娱乐分析</text></view></view>
     <text class="analyze-title">选一张自然的照片</text>
     <text class="analyze-subtitle">光线明亮、正脸清晰，会更容易读出温柔的细节。</text>
   </view>
@@ -23,13 +23,13 @@
     <view wx:if="{{errorText}}" class="ph-error"><view class="ph-error-mark">!</view><view class="ph-error-copy"><text class="ph-error-label">没有完成</text><text class="ph-error-text">{{errorText}}</text></view><view class="ph-error-retry" hover-class="btn-hover" bindtap="onAnalyze">再试一次 ↗</view></view>
   </view>
 
-  <view class="photo-advice"><view class="advice-mark">✳</view><view class="advice-copy"><text class="advice-title">一张清楚的正脸照就够了</text><text class="advice-desc">建议不要戴口罩，脸部不要被头发遮住。</text></view></view>
+  <view class="photo-advice"><view class="advice-mark">✳</view><view class="advice-copy"><text class="advice-title">一张清楚的正脸照就够了</text><text class="advice-desc">建议不要戴口罩或遮挡脸部；请仅上传本人照片。</text></view></view>
 
   <view class="actions">
     <block wx:if="{{!imgPath}}"><view class="act-btn act-camera" hover-class="btn-hover" bindtap="onChooseCamera"><view class="camera-icon"><view></view></view><text>现在拍一张</text></view><view class="act-btn act-album" hover-class="btn-hover" bindtap="onChooseAlbum"><text>从相册选择</text><text class="act-arrow">↗</text></view></block>
     <block wx:else><view class="act-btn act-main {{analyzing ? 'act-disabled' : ''}}" hover-class="btn-hover" bindtap="onAnalyze"><view class="act-main-copy"><text class="act-main-kicker">READY WHEN YOU ARE</text><text class="act-main-title">{{analyzing ? '正在分析…' : '开始分析'}}</text></view><view class="act-main-arrow">↗</view></view></block>
   </view>
 
-  <view class="privacy-row"><view class="privacy-lock">✓</view><view class="privacy-copy"><text class="privacy-text">照片不会保存，分析后立即删除。</text><text class="privacy-sub">本次用途结束后即清理</text></view><text class="privacy-link" bindtap="onOpenAgreement">隐私政策 ↗</text></view>
+  <view class="privacy-row"><view class="privacy-lock">✓</view><view class="privacy-copy"><text class="privacy-text">照片仅用于本次分析，完成后立即删除。</text><text class="privacy-sub">经腾讯云处理；不留存照片或人脸特征</text></view><text class="privacy-link" bindtap="onOpenAgreement">隐私政策 ↗</text></view>
   <view class="safe-bottom"></view>
 </view>

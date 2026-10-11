@@ -21,7 +21,7 @@ Page({
   onShareAppMessage() {
     return {
       title: '工具箱 · 颜值分析（仅供娱乐参考）',
-      path: '/pages/beauty/beauty'
+      path: '/pages/beauty-analyze/beauty-analyze'
     };
   },
 

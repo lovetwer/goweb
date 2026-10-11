@@ -112,8 +112,7 @@ goweb/
 
 | 页面 | 路径 | 说明 |
 | --- | --- | --- |
-| 工具首页 | `pages/beauty/beauty` | 功能介绍 + 隐私承诺卡（可展开）+ 开始按钮 |
-| 分析页 | `pages/beauty-analyze/beauty-analyze` | 拍照/相册选图 → OffscreenCanvas 归一化（EXIF 方向校正 + 最长边 720px + JPEG）→ 上传 → 调云函数 |
+| 颜值分析 | `pages/beauty-analyze/beauty-analyze` | 直接拍照/相册选图 → OffscreenCanvas 归一化（EXIF 方向校正 + 最长边 720px + JPEG）→ 上传 → 调云函数 |
 | 结果页 | `pages/beauty-result/beauty-result` | 综合分 + 年龄/性别/脸型 + 清晰度/协调度维度条 + 气质评语 + 免责声明 |
 
 ### 字段映射（腾讯云 DetectFace → 展示结果）

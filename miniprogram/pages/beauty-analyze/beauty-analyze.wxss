@@ -5,9 +5,6 @@
 .step-copy { display: flex; flex-direction: column; margin-left: 14rpx; }
 .step-kicker { color: var(--primary-deep); font-family: var(--mono); font-size: 16rpx; letter-spacing: 1.7rpx; }
 .step-caption { margin-top: 1rpx; color: var(--ink-3); font-family: var(--display); font-size: 17rpx; }
-.step-progress { display: flex; align-items: center; margin-left: auto; }
-.step-progress view { width: 27rpx; height: 5rpx; margin-left: 5rpx; background: #e7dfe1; border-radius: 99rpx; }
-.step-progress .step-progress-active { width: 42rpx; background: var(--primary); }
 .analyze-title { display: block; margin-top: 15rpx; color: var(--ink); font-family: var(--display); font-size: 35rpx; font-weight: 600; letter-spacing: 1rpx; }
 .analyze-subtitle { display: block; max-width: 630rpx; margin-top: 5rpx; color: var(--ink-3); font-size: 22rpx; line-height: 1.65; }
 .photo-card { margin: 10rpx 29rpx 0; padding: 19rpx; background: var(--card); border: 1rpx solid #f4e5de; border-radius: 27rpx; box-shadow: var(--shadow); }

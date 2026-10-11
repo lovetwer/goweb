@@ -1,7 +1,6 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/beauty/beauty",
     "pages/beauty-analyze/beauty-analyze",
     "pages/beauty-result/beauty-result",
     "pages/favorites/favorites",
