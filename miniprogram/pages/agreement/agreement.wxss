@@ -1,0 +1,117 @@
+/* pages/agreement/agreement.wxss  薄荷清新版式：清新浅底 + 发丝线，无冷色无重阴影 */
+
+.container {
+  min-height: 100vh;
+  background-color: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- 顶部双 Tab ---- */
+.seg {
+  display: flex;
+  align-items: stretch;
+  padding: 24rpx 32rpx 0;
+  border-bottom: 2rpx solid var(--line);
+}
+
+.seg-item {
+  flex: 1;
+  height: 78rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: -2rpx;
+}
+
+.seg-text {
+  font-size: 28rpx;
+  letter-spacing: 2rpx;
+  color: var(--ink-3);
+}
+
+.seg-on .seg-text {
+  color: var(--primary-deep);
+  font-weight: 700;
+}
+
+.seg-on::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 56rpx;
+  height: 6rpx;
+  background: var(--primary);
+  border-radius: 3rpx;
+}
+
+/* ---- 文档滚动区 ---- */
+.doc {
+  flex: 1;
+  height: 0;
+  padding: 36rpx 40rpx 0;
+}
+
+.doc-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-bottom: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+.doc-title {
+  font-size: 44rpx;
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: 2rpx;
+}
+
+/* 政策更新日期：合规文档的时间戳，必须清楚，提到 --ink-3 */
+.doc-date {
+  font-size: 22rpx;
+  color: var(--ink-3);
+  letter-spacing: 1rpx;
+}
+
+.doc-sec {
+  padding: 22rpx 0;
+  border-bottom: 2rpx solid var(--line);
+}
+
+.doc-sec:last-of-type {
+  border-bottom: none;
+}
+
+.doc-h {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 12rpx;
+  letter-spacing: 1rpx;
+}
+
+.doc-p {
+  display: block;
+  font-size: 27rpx;
+  line-height: 1.85;
+  color: var(--ink-2);
+}
+
+.doc-foot {
+  margin-top: 40rpx;
+  padding: 30rpx 0;
+  border-top: 2rpx solid var(--line);
+  display: flex;
+  justify-content: center;
+}
+
+.doc-foot-text {
+  font-size: 22rpx;
+  letter-spacing: 2rpx;
+  color: var(--ink-4);
+}

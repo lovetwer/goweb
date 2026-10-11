@@ -1,0 +1,9 @@
+{
+  "name": "vip",
+  "version": "1.0.0",
+  "description": "会员开通（虚拟支付 · 道具直购）：下单签名 + 会员状态 + 兜底查单。AppKey/sessionKey 仅存于云函数",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

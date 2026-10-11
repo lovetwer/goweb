@@ -1,0 +1,278 @@
+/* pages/history/history.wxss —— 使用记录（薄荷清新版式，与收藏页同一套语汇） */
+
+/* ================= 头部 ================= */
+.hist-header {
+  padding: 34rpx 32rpx 28rpx;
+  background: var(--bg);
+  border-bottom: 2rpx solid var(--line);
+}
+
+.hist-head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hist-kicker {
+  font-family: var(--mono);
+  font-size: 20rpx;
+  letter-spacing: 4rpx;
+  color: var(--ink-4);
+}
+
+.hist-clear {
+  padding: 6rpx 4rpx 6rpx 20rpx;
+}
+
+.hist-clear-text {
+  font-size: 24rpx;
+  letter-spacing: 1rpx;
+  color: var(--ink-3);
+}
+
+.hist-title-row {
+  display: flex;
+  align-items: baseline;
+  margin-top: 16rpx;
+}
+
+.hist-title {
+  font-size: 54rpx;
+  font-weight: 800;
+  letter-spacing: -0.5rpx;
+  color: var(--black);
+}
+
+.hist-num {
+  margin-left: 16rpx;
+  font-family: var(--mono);
+  font-size: 26rpx;
+  color: var(--ink-4);
+}
+
+.hist-rule {
+  display: flex;
+  align-items: center;
+  height: 2rpx;
+  margin-top: 22rpx;
+}
+
+.hist-rule-mark {
+  width: 60rpx;
+  height: 2rpx;
+  background: var(--primary);
+}
+
+.hist-rule-grey {
+  flex: 1;
+  height: 2rpx;
+  background: var(--line);
+}
+
+/* 「仅保存在本机，不上传服务器」：数据隐私承诺，提到 --ink-3 */
+.hist-sub {
+  display: block;
+  margin-top: 16rpx;
+  font-size: 23rpx;
+  letter-spacing: 1rpx;
+  color: var(--ink-3);
+}
+
+/* ================= 列表 ================= */
+.hist-list {
+  padding: 24rpx 24rpx 0;
+  background: var(--bg);
+}
+
+.hist-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 22rpx 56rpx 22rpx 22rpx;
+  margin-bottom: 16rpx;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.hist-item-hover {
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2rpx);
+}
+
+/* 工具图标：分类浅底 + 分类色字符 */
+.hist-icon {
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.hist-body {
+  flex: 1;
+  min-width: 0;
+  margin-left: 22rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.hist-name-row {
+  display: flex;
+  align-items: center;
+}
+
+.hist-name {
+  flex: 1;
+  min-width: 0;
+  font-size: 31rpx;
+  font-weight: 700;
+  color: var(--black);
+  line-height: 1.3;
+}
+
+/* 已下架标记 */
+.hist-dead-tag {
+  flex-shrink: 0;
+  margin-left: 12rpx;
+  padding: 2rpx 12rpx;
+  background: var(--fill);
+  border: 2rpx solid var(--line-2);
+  border-radius: 999rpx;
+  font-size: 19rpx;
+  color: var(--ink-3);
+}
+
+.hist-arrow {
+  flex-shrink: 0;
+  margin-left: 12rpx;
+  font-family: var(--mono);
+  font-size: 26rpx;
+  color: var(--ink-4);
+}
+
+.hist-item-hover .hist-arrow {
+  color: var(--black);
+}
+
+.hist-desc {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 23rpx;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+
+.hist-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 12rpx;
+}
+
+.hist-tag {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 4rpx 14rpx 4rpx 12rpx;
+  border: 2rpx solid var(--line);
+  border-radius: 999rpx;
+  background: var(--fill);
+}
+
+.hist-tag-dot {
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: var(--ink-4);
+  margin-right: 8rpx;
+}
+
+.hist-tag-text {
+  font-size: 20rpx;
+  color: var(--ink-2);
+  letter-spacing: 1rpx;
+}
+
+/* 使用时间：用户判断"这条是不是刚用过"要看它，提到 --ink-3 */
+.hist-time {
+  font-family: var(--mono);
+  font-size: 21rpx;
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+
+/* 移除按钮（CSS 叉号）：破坏性操作，图标用 --ink-3 保证可见 */
+.hist-remove {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rm-x,
+.rm-y {
+  position: absolute;
+  width: 20rpx;
+  height: 2rpx;
+  background: var(--ink-3);
+}
+
+.rm-x {
+  transform: rotate(45deg);
+}
+
+.rm-y {
+  transform: rotate(-45deg);
+}
+
+/* 已下架条目整体压淡 */
+.hist-item-dead .hist-name,
+.hist-item-dead .hist-desc {
+  color: var(--ink-3);
+}
+
+.hist-item-dead .hist-icon {
+  opacity: 0.5;
+}
+
+/* ================= 页脚 ================= */
+.hist-count {
+  display: flex;
+  align-items: center;
+  padding: 26rpx 0 10rpx;
+}
+
+.hist-count-line {
+  flex: 1;
+  height: 2rpx;
+  background: var(--line);
+}
+
+.hist-count-text {
+  margin: 0 20rpx;
+  font-family: var(--mono);
+  font-size: 20rpx;
+  letter-spacing: 2rpx;
+  color: var(--ink-4);
+}
+
+/* 工具预览：使用工具对应插画，非字符占位图标 */
+.hist-image {
+  display: block;
+  flex: 0 0 84rpx;
+  width: 84rpx;
+  height: 84rpx;
+  border-radius: 18rpx;
+  background: #eaf3e9;
+}

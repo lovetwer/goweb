@@ -1,0 +1,29 @@
+# 依赖 / 构建产物
+node_modules/
+miniprogram_npm/
+
+# 开发者工具本地私有配置（每个人不同，不入库）
+project.private.config.json
+
+# 云环境密钥（appid + AppSecret，泄露等于交出整个云环境，务必勿入库）
+scripts/secret.local.json
+
+# 虚拟支付密钥（OfferID + 现网/沙箱 AppKey + AppSecret）
+# 泄露 AppKey = 任何人都能伪造支付请求，务必勿入库
+cloudfunctions/vip/secret.json
+
+# 腾讯云人脸识别密钥（SecretId + SecretKey，泄露可盗刷人脸调用额度）
+cloudfunctions/beauty/secret.json
+
+# access_token 本地缓存（db.mjs 自动生成）
+scripts/.token.cache.json
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 日志
+*.log
+
+# AI 工作区数据
+.workbuddy-ai/

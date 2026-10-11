@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "工具箱",
+  "navigationBarBackgroundColor": "#f5f8f4",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f5f8f4",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh": false,
+  "usingComponents": {}
+}

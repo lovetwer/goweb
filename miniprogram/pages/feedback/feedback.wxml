@@ -1,0 +1,52 @@
+<!--pages/feedback/feedback.wxml  意见反馈：写一段话 → 云函数校验 → 入库-->
+<view class="container">
+
+  <view class="sheet">
+
+    <!-- 刊头：标签 / 标题 / 分隔线 / 说明，四段各自留白 -->
+    <view class="head">
+      <text class="head-label">FEEDBACK</text>
+      <text class="head-title">意见反馈</text>
+      <view class="head-rule"></view>
+      <text class="head-desc">用得不顺手、想收录什么工具、发现哪里写错了，都可以告诉我们。</text>
+    </view>
+
+    <!-- 未提交：填写 -->
+    <block wx:if="{{!sent}}">
+      <view class="field">
+        <text class="field-label">反馈内容</text>
+        <textarea
+          class="field-area {{error ? 'field-input-err' : ''}}"
+          value="{{content}}"
+          placeholder="写点什么…"
+          placeholder-class="field-placeholder"
+          cursor-spacing="20"
+          cursor-color="#5b9468"
+          bindinput="onInput"
+        />
+        <view wx:if="{{error}}" class="field-foot">
+          <text class="field-error">{{error}}</text>
+        </view>
+      </view>
+
+      <view
+        class="submit {{submitting ? 'submit-disabled' : ''}}"
+        hover-class="btn-hover"
+        bindtap="onSubmit"
+      >
+        <text class="submit-text">{{submitting ? '提交中' : '提交反馈'}}</text>
+      </view>
+    </block>
+
+    <!-- 已提交 -->
+    <view wx:else class="ok">
+      <view class="ok-mark"></view>
+      <text class="ok-title">已收到，谢谢你的反馈</text>
+      <view class="ok-again" hover-class="btn-hover" bindtap="onAgain">
+        <text class="ok-again-text">再写一条</text>
+      </view>
+    </view>
+
+    <text class="foot-tip">反馈内容保存在云端，仅用于改进本小程序，不会公开或展示给其他用户。</text>  </view>
+
+</view>

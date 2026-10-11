@@ -1,0 +1,77 @@
+/* GoWeb Mini Program · fresh green design system
+   Light botanical tones, soft cards and generous spacing. */
+page {
+  --white: #ffffff;
+  --card: #ffffff;
+  --bg: #f5f8f4;
+  --black: #23382b;
+  --ink: #293d30;
+  --ink-2: #56695b;
+  --ink-3: #718176;
+  --ink-4: #8e9b91;
+  --line: #e5ece4;
+  --line-2: #d7e3d7;
+  --fill: #edf4ed;
+  --primary: #5b9468;
+  --primary-deep: #3f704d;
+  --primary-soft: #eaf3e9;
+  --primary-line: #d4e5d3;
+  --shadow: 0 8rpx 28rpx rgba(47, 82, 52, 0.055);
+  --shadow-hover: 0 12rpx 34rpx rgba(47, 82, 52, 0.11);
+  --radius: 22rpx;
+  --mono: 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
+
+  background-color: var(--bg);
+  color: var(--ink);
+  font-size: 28rpx;
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+view,
+text,
+scroll-view,
+input,
+button,
+image {
+  box-sizing: border-box;
+}
+
+button {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  line-height: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+button::after { border: none; }
+
+.container { min-height: 100vh; background-color: var(--bg); }
+.safe-bottom { height: calc(env(safe-area-inset-bottom) + 24rpx); }
+.card { background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); }
+.mono { font-family: var(--mono); letter-spacing: 1rpx; }
+.ellipsis { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ellipsis-2 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.ellipsis-3 { overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; }
+
+.state-box { padding: 150rpx 70rpx; display: flex; flex-direction: column; align-items: center; }
+.state-icon { width: 108rpx; height: 108rpx; border: 2rpx solid var(--line-2); border-radius: 50%; background: var(--white); display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 44rpx; font-weight: 600; color: var(--ink-4); margin-bottom: 34rpx; }
+.state-icon-warn { border-color: #e7c6aa; color: #be8d5f; }
+.state-index { font-family: var(--mono); font-size: 21rpx; letter-spacing: 5rpx; color: var(--ink-4); margin-bottom: 18rpx; }
+.state-title { font-size: 34rpx; font-weight: 700; color: var(--ink); letter-spacing: 1rpx; }
+.state-desc { font-size: 25rpx; color: var(--ink-3); margin-top: 14rpx; text-align: center; line-height: 1.8; }
+.state-actions { display: flex; align-items: center; margin-top: 46rpx; }
+.state-btn { height: 78rpx; line-height: 78rpx; padding: 0 50rpx; background: var(--primary); color: var(--white); font-size: 26rpx; letter-spacing: 3rpx; border-radius: 999rpx; }
+.state-btn.ghost { background: var(--white); color: var(--ink-2); border: 2rpx solid var(--line-2); margin-right: 20rpx; }
+
+.skeleton { background: linear-gradient(90deg, #e8eee6 25%, #f4f7f2 37%, #e8eee6 63%); background-size: 400% 100%; animation: skeleton-loading 1.5s ease infinite; border-radius: var(--radius); }
+@keyframes skeleton-loading { 0% { background-position: 100% 50%; } 100% { background-position: 0 50%; } }
+.fade-in { animation: fade-in 0.3s cubic-bezier(0.22, 0.61, 0.36, 1) both; }
+@keyframes fade-in { from { opacity: 0; transform: translateY(14rpx); } to { opacity: 1; transform: translateY(0); } }
+.btn-hover { opacity: 0.72; }

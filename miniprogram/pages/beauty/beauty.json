@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "颜值分析",
+  "navigationBarBackgroundColor": "#f5f8f4",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f5f8f4",
+  "backgroundTextStyle": "dark",
+  "usingComponents": {}
+}

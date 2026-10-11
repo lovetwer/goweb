@@ -1,0 +1,9 @@
+{
+  "name": "beauty",
+  "version": "1.0.0",
+  "description": "颜值分析（娱乐向）：下载临时照片 → 腾讯云人脸检测 → 规则生成综合分与评语 → 用完即删临时文件，不落库",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
