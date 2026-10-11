@@ -1,15 +1,21 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/detail/detail",
-    "pages/favorites/favorites"
+    "pages/beauty/beauty",
+    "pages/beauty-analyze/beauty-analyze",
+    "pages/beauty-result/beauty-result",
+    "pages/favorites/favorites",
+    "pages/history/history",
+    "pages/vip/vip",
+    "pages/agreement/agreement",
+    "pages/feedback/feedback"
   ],
   "window": {
     "backgroundTextStyle": "dark",
-    "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "网站收录导航",
+    "navigationBarBackgroundColor": "#faf7f2",
+    "navigationBarTitleText": "工具箱",
     "navigationBarTextStyle": "black",
-    "backgroundColor": "#ffffff",
+    "backgroundColor": "#faf7f2",
     "enablePullDownRefresh": false
   },
   "permission": {},

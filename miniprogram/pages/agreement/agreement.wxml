@@ -1,0 +1,149 @@
+<!--pages/agreement/agreement.wxml  隐私政策 + 用户协议（暖纸版式，纯静态展示）-->
+<view class="container">
+
+  <!-- 顶部双 Tab -->
+  <view class="seg">
+    <view
+      class="seg-item {{tab === 0 ? 'seg-on' : ''}}"
+      data-index="0"
+      hover-class="btn-hover"
+      bindtap="onTabTap"
+    >
+      <text class="seg-text">隐私政策</text>
+    </view>
+    <view
+      class="seg-item {{tab === 1 ? 'seg-on' : ''}}"
+      data-index="1"
+      hover-class="btn-hover"
+      bindtap="onTabTap"
+    >
+      <text class="seg-text">使用协议</text>
+    </view>
+  </view>
+
+  <scroll-view class="doc" scroll-y="true" enhanced="true" show-scrollbar="false">
+
+    <!-- 隐私政策 -->
+    <block wx:if="{{tab === 0}}">
+      <view class="doc-head">
+        <text class="doc-title">隐私政策</text>
+        <text class="doc-date mono">更新于 {{updatedAt}}</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h">一、我们收集的信息</text>
+        <text class="doc-p">本小程序不提供注册与登录功能，不会收集你的昵称、头像、手机号、地理位置、相册、麦克风、通讯录等信息，也不读取剪贴板中的任何内容。</text>
+        <text class="doc-p">当你使用「颜值分析」等需要照片的功能时，只有在你主动拍摄或从相册选择照片后，小程序才会读取该张照片。摄像头与相册仅用于获取你主动提供的分析照片，不会在后台调用，也不会读取你未选择的其他照片。</text>
+        <text class="doc-p" wx:if="{{hasVip}}">唯一的例外是会员与意见反馈两项功能，它们会使用微信为你在本小程序内生成的匿名标识（OpenID）用于识别身份。该标识由微信生成，不包含你的昵称、头像、手机号等任何身份信息，换一个小程序即为不同值，我们无法据此关联到你的真实身份。详见第三条与第四条。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h">二、收藏数据</text>
+        <text class="doc-p">你将工具加入「收藏」时，相关数据仅保存在你本人手机本地（使用微信本地存储），不会上传到任何服务器，开发者也无法读取或获取这些数据。你的工具使用记录同样仅保存在手机本地。</text>
+      </view>
+
+      <view wx:if="{{hasVip}}">
+        <view class="doc-sec">
+          <text class="doc-h">三、会员与支付</text>
+          <text class="doc-p">当你开通会员时，我们会使用上述匿名标识（OpenID）记录你的会员状态与有效期，并保存订单号、套餐类型、金额与开通时间。这些信息仅用于向你提供会员权益、判断权益是否到期，以及处理退款或售后咨询。</text>
+          <text class="doc-p">会员为虚拟服务，支付由微信虚拟支付通道完成。我们不会接触你的银行卡号、真实姓名或支付密码。支付过程中产生的交易凭证由微信支付与 Apple（iOS 端）提供给我们，用于对账与退款。</text>
+          <text class="doc-p">你可以在「会员」页面查看你的当前状态与到期时间。会员到期后权益自动失效，页面会如实标注到期日期。</text>
+        </view>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h" wx:if="{{hasVip}}">四、意见反馈</text>
+        <text class="doc-h" wx:else>三、意见反馈</text>
+        <text class="doc-p">当你在「意见反馈」中提交内容时，我们会将你填写的反馈文字、提交时间，以及前述匿名标识（OpenID）一并存入微信云开发数据库。</text>
+        <text class="doc-p">该匿名标识不包含你的昵称、头像、手机号等任何身份信息，且仅在本小程序内有效，换一个小程序即为不同值，无法据此关联到你的真实身份。我们仅用它区分反馈来源，以便跟进处理与统计，不作其他用途。</text>
+        <text class="doc-p">为履行法律法规要求的网络内容安全义务，反馈文字在保存前会提交至微信官方内容安全接口进行合规校验。</text>
+        <text class="doc-p">反馈内容仅开发者本人可见，不会公开、不会展示给其他用户，不会用于任何广告或商业推广，仅用于改进本小程序。</text>
+        <text class="doc-p" wx:if="{{hasVip}}">如需删除你提交过的反馈，可通过本政策第八款的联系方式告知我们，我们将在合理时间内删除。</text>
+        <text class="doc-p" wx:else>如需删除你提交过的反馈，可通过本政策第七款的联系方式告知我们，我们将在合理时间内删除。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h" wx:if="{{hasVip}}">五、数据存储与托管</text>
+        <text class="doc-h" wx:else>四、数据存储与托管</text>
+        <text class="doc-p">本小程序的会员状态与上述反馈内容，由微信云开发（腾讯云）提供存储与查询服务。各项工具均内置在小程序代码包中本地运行，不包含任何用户个人信息。</text>
+        <text class="doc-p">「颜值分析」功能中，你拍摄或选择的照片仅上传至云开发的临时存储用于当次分析，分析完成（或失败）后立即删除，不写入数据库、不做长期存储、不提取人脸生物特征、不建立用户画像。分析页面会实时提示「照片不会保存，分析后立即删除」。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h" wx:if="{{hasVip}}">六、第三方服务</text>
+        <text class="doc-h" wx:else>五、第三方服务</text>
+        <text class="doc-p">除微信云开发（腾讯）、微信内容安全接口{{hasVip ? '与微信虚拟支付通道' : ''}}外，本小程序不接入任何其他第三方 SDK、广告或统计服务，不进行任何用户行为追踪与分析。</text>
+        <text class="doc-p">「颜值分析」功能会将你主动提供的照片传输至腾讯云的人脸识别接口，仅用于完成当次的年龄、性别、脸型与颜值参考分析。该接口不用于身份认证，我们不会将你的照片用于模型训练，也不会提供给任何其他第三方。</text>
+        <text class="doc-p" wx:if="{{hasVip}}">iOS 端的会员支付由 Apple 的应用内购买（IAP）通道完成，Apple 作为支付通道提供方参与交易。我们不会将你的支付信息提供给其他第三方。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h" wx:if="{{hasVip}}">七、你的权利</text>
+        <text class="doc-h" wx:else>六、你的权利</text>
+        <text class="doc-p">你可以随时在「我的收藏」中取消收藏或清空本地收藏数据，该操作仅影响你手机本地，不影响其他用户，也无法被我们恢复或查看。你也可以要求我们删除你提交过的反馈内容。</text>
+        <text class="doc-p" wx:if="{{hasVip}}">关于会员数据，你可以随时在「会员」页面查看当前的套餐与到期时间。如需删除会员相关记录，请通过第八款的方式联系我们，我们将在合理时间内处理。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h" wx:if="{{hasVip}}">八、联系我们</text>
+        <text class="doc-h" wx:else>七、联系我们</text>
+        <text class="doc-p">如对本政策有任何疑问，或需要删除你提交的反馈{{hasVip ? '、处理会员相关问题' : ''}}，可通过小程序内「意见反馈」入口联系我们，我们将在合理时间内回复与处理。</text>
+      </view>
+    </block>
+
+    <!-- 使用协议 -->
+    <block wx:else>
+      <view class="doc-head">
+        <text class="doc-title">用户协议</text>
+        <text class="doc-date mono">更新于 {{updatedAt}}</text>
+      </view>
+
+      <view class="doc-sec" wx:if="{{hasVip}}">
+        <text class="doc-h">一、服务说明</text>
+        <text class="doc-p">「工具箱」是一个提供实用小工具的效率应用，各项工具均在你的手机本地运行，仅供日常辅助参考，不构成任何商业或专业建议。</text>
+        <text class="doc-p">小程序提供两类服务：一是免费的内置实用工具（本地运行、无需联网），二是付费的会员服务（会员专属工具的使用权限）。两类服务相互独立，付费不改变免费工具的使用方式。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h">二、使用规范</text>
+        <text class="doc-p">你承诺不利用本小程序从事任何违反法律法规的活动，不得对本小程序内容进行批量复制、抓取、转售或用于商业误导。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h">三、知识产权</text>
+        <text class="doc-p">本小程序的界面设计与工具功能实现归开发者所有；相关第三方服务名称与商标归其各自权利人所有。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h">四、免责声明</text>
+        <text class="doc-p">本小程序提供的各项工具仅供日常辅助参考，我们尽力保证工具计算与查询结果的准确，但不作任何明示或暗示担保；你依据工具结果作出的任何决定由你自行承担。「颜值分析」的结果仅供娱乐参考，不构成对任何人外貌的任何评价，不涉及任何专业建议。</text>
+      </view>
+
+      <view class="doc-sec" wx:if="{{hasVip}}">
+        <text class="doc-h">五、会员服务</text>
+        <text class="doc-p">会员是本小程序提供的虚拟服务，包含使用会员专属工具的权限。会员分为月会员与年会员两种，均通过微信虚拟支付通道购买。</text>
+        <text class="doc-p">会员为虚拟服务，一经开通不支持退款。Android 端如需退款可在小程序后台发起；iOS 端由 Apple 处理退款申请，我们无法主动发起退款。</text>
+        <text class="doc-p">会员按自然月或自然年计算，自开通时刻起连续计算，到期后权益自动失效。续费将在当前到期时间之后顺延，不会覆盖已消耗的时长。</text>
+        <text class="doc-p">会员专属内容的具体范围以「会员」页面内的权益说明为准。会员专属工具是本小程序内置工具中的一部分，标注为「会员」仅表示该工具需要会员权限打开使用。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h" wx:if="{{hasVip}}">六、内容反馈</text>
+        <text class="doc-h" wx:else>五、内容反馈</text>
+        <text class="doc-p">如你认为某项工具内容不当、侵权或需要更新，可通过小程序内「意见反馈」提交给我们，我们将在合理时间内核实并处理。请勿在反馈中填写你的密码、身份证号等敏感信息。</text>
+      </view>
+
+      <view class="doc-sec">
+        <text class="doc-h" wx:if="{{hasVip}}">七、协议变更</text>
+        <text class="doc-h" wx:else>六、协议变更</text>
+        <text class="doc-p">我们可能不时更新本协议，更新后以本小程序内展示的版本为准；你继续使用本小程序即视为接受更新后的内容。</text>
+      </view>
+    </block>
+
+    <view class="doc-foot">
+      <text class="doc-foot-text">工具箱 · 实用工具集合</text>
+    </view>
+
+    <view class="safe-bottom"></view>
+  </scroll-view>
+</view>

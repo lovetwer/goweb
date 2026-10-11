@@ -1,0 +1,262 @@
+/* pages/beauty-result/beauty-result.wxss —— 分析结果页（暖纸版式） */
+
+/* ================= 综合分 ================= */
+.score-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 0 20rpx;
+}
+
+/* 分数圆环：双层圆实现（无 canvas、无 conic-gradient） */
+.score-ring {
+  width: 300rpx;
+  height: 300rpx;
+  border-radius: 50%;
+  background: var(--card);
+  border: 6rpx solid var(--red-soft);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-ring-inner {
+  width: 244rpx;
+  height: 244rpx;
+  border-radius: 50%;
+  background: var(--red-soft);
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+}
+
+.score-num {
+  font-family: var(--mono);
+  font-size: 108rpx;
+  font-weight: 700;
+  line-height: 244rpx;
+  color: var(--red-deep);
+  letter-spacing: -2rpx;
+}
+
+.score-unit {
+  font-size: 28rpx;
+  color: var(--red-deep);
+  opacity: 0.8;
+  margin-left: 6rpx;
+}
+
+.score-band {
+  margin-top: 30rpx;
+  padding: 8rpx 30rpx;
+  background: var(--card);
+  border: 2rpx solid var(--red-line);
+  border-radius: 999rpx;
+  font-size: 27rpx;
+  font-weight: 700;
+  color: var(--red-deep);
+  letter-spacing: 2rpx;
+}
+
+.score-caption {
+  margin-top: 16rpx;
+  font-family: var(--mono);
+  font-size: 20rpx;
+  letter-spacing: 2rpx;
+  color: var(--ink-4);
+}
+
+/* ================= 属性三格 ================= */
+.attrs {
+  display: flex;
+  align-items: center;
+  margin: 30rpx 24rpx 0;
+  padding: 30rpx 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.attr {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+}
+
+.attr-value {
+  font-size: 34rpx;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.attr-label {
+  margin-top: 8rpx;
+  font-size: 21rpx;
+  color: var(--ink-4);
+  letter-spacing: 2rpx;
+}
+
+.attr-div {
+  width: 2rpx;
+  height: 52rpx;
+  background: var(--line);
+  flex-shrink: 0;
+}
+
+/* ================= 维度条 ================= */
+.dims {
+  margin: 20rpx 24rpx 0;
+  padding: 26rpx 26rpx 20rpx;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.dim {
+  margin-bottom: 22rpx;
+}
+
+.dim:last-child {
+  margin-bottom: 6rpx;
+}
+
+.dim-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+
+.dim-name {
+  font-size: 25rpx;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.dim-value {
+  font-size: 24rpx;
+  color: var(--red-deep);
+}
+
+.dim-track {
+  margin-top: 12rpx;
+  height: 14rpx;
+  background: var(--fill);
+  border-radius: 999rpx;
+  overflow: hidden;
+}
+
+.dim-fill {
+  height: 100%;
+  background: var(--red);
+  border-radius: 999rpx;
+  transition: width 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ================= 气质评语 ================= */
+.verdict {
+  margin: 20rpx 24rpx 0;
+  padding: 26rpx 26rpx 22rpx;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.verdict-head {
+  display: flex;
+  align-items: center;
+}
+
+/* 陶土红竖条标题标记（8×28rpx，与工具箱首页同一套语汇） */
+.verdict-mark {
+  width: 8rpx;
+  height: 28rpx;
+  background: var(--red);
+  border-radius: 2rpx;
+  margin-right: 14rpx;
+}
+
+.verdict-title {
+  font-size: 28rpx;
+  font-weight: 700;
+  color: var(--black);
+}
+
+.verdict-style {
+  display: block;
+  margin-top: 18rpx;
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--red-deep);
+  line-height: 1.6;
+}
+
+.verdict-lines {
+  margin-top: 14rpx;
+  padding-top: 18rpx;
+  border-top: 2rpx solid var(--line);
+}
+
+.verdict-line {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 12rpx;
+}
+
+.verdict-dot {
+  width: 10rpx;
+  height: 10rpx;
+  border-radius: 50%;
+  background: var(--ink-4);
+  margin: 14rpx 14rpx 0 2rpx;
+  flex-shrink: 0;
+}
+
+.verdict-text {
+  flex: 1;
+  font-size: 25rpx;
+  color: var(--ink-2);
+  line-height: 1.75;
+}
+
+.verdict-uncertain {
+  display: block;
+  margin-top: 16rpx;
+  font-size: 21rpx;
+  color: var(--ink-3);
+  line-height: 1.7;
+}
+
+/* ================= 再测一张 ================= */
+.retake-btn {
+  margin: 36rpx 24rpx 0;
+  height: 92rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--red);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.retake-text {
+  font-size: 30rpx;
+  font-weight: 700;
+  letter-spacing: 4rpx;
+  color: var(--white);
+}
+
+/* ================= 免责声明 ================= */
+.disclaimer {
+  padding: 30rpx 40rpx 10rpx;
+}
+
+.disclaimer-text {
+  display: block;
+  text-align: center;
+  font-size: 21rpx;
+  color: var(--ink-3);
+  line-height: 1.8;
+}

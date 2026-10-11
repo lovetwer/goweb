@@ -1,0 +1,520 @@
+/* pages/vip/vip.wxss —— 会员中心
+   沿用全站暖纸版式：暖白底 + 白卡片 + 陶土红强调。
+   强调色只用在三处：提交按钮、选中套餐的边框与勾、会员标识。
+   刻意不用大色块，避免会员页变成「付费页」的视觉调性。 */
+
+.vip-header {
+  padding: 40rpx 32rpx 30rpx;
+  background: var(--bg);
+}
+
+/* ---- 刊头 ---- */
+.head-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 20rpx;
+  letter-spacing: 5rpx;
+  color: var(--ink-4);
+  margin-bottom: 24rpx;
+}
+
+.head-title {
+  display: block;
+  font-size: 54rpx;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.5rpx;
+  color: var(--black);
+}
+
+.head-rule {
+  width: 44rpx;
+  height: 4rpx;
+  background: var(--red);
+  margin: 26rpx 0;
+}
+
+.head-desc {
+  display: block;
+  font-size: 25rpx;
+  line-height: 1.85;
+  color: var(--ink-2);
+}
+
+/* ---- 已是会员 ---- */
+.member-card {
+  margin: 0 24rpx;
+  padding: 32rpx 28rpx;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  border-left: 8rpx solid var(--red);
+}
+
+.member-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* 会员标识：浅陶土底 + 同色描边 + 深陶土字（与首页「反馈」入口同一套画法） */
+.member-badge {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 20rpx 8rpx 16rpx;
+  background: var(--red-soft);
+  border: 2rpx solid var(--red);
+  border-radius: 999rpx;
+}
+
+.member-badge-text {
+  font-size: 23rpx;
+  font-weight: 600;
+  letter-spacing: 2rpx;
+  color: var(--red-deep);
+}
+
+.member-plan {
+  font-family: var(--mono);
+  font-size: 22rpx;
+  color: var(--ink-3);
+}
+
+.member-expire {
+  margin-top: 20rpx;
+  padding-top: 18rpx;
+  border-top: 2rpx solid var(--line);
+}
+
+.member-expire-text {
+  font-size: 26rpx;
+  color: var(--ink-2);
+  letter-spacing: 1rpx;
+}
+
+/* 即将到期：用陶土红提示（不催促，只陈述事实） */
+.member-expire-warn .member-expire-text {
+  color: var(--red-deep);
+  font-weight: 600;
+}
+
+.member-actions {
+  display: flex;
+  margin-top: 28rpx;
+}
+
+/* ---- 环境提示 ---- */
+.notice-box {
+  display: flex;
+  align-items: center;
+  margin: 0 24rpx 24rpx;
+  padding: 18rpx 20rpx;
+  background: var(--red-soft);
+  border: 2rpx solid var(--red-line);
+  border-radius: var(--radius);
+}
+
+.notice-mark {
+  flex-shrink: 0;
+  margin-right: 14rpx;
+  padding: 2rpx 10rpx;
+  border: 2rpx solid var(--red);
+  border-radius: var(--radius);
+  font-family: var(--mono);
+  font-size: 19rpx;
+  color: var(--red-deep);
+}
+
+.notice-text {
+  flex: 1;
+  font-size: 23rpx;
+  line-height: 1.65;
+  color: var(--ink-2);
+}
+
+/* ---- 套餐卡片 ---- */
+.plans {
+  padding: 4rpx 24rpx 0;
+  background: var(--bg);
+}
+
+.plan {
+  position: relative;
+  margin-bottom: 18rpx;
+  padding: 28rpx 26rpx;
+  background: var(--card);
+  border: 2rpx solid var(--line-2);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: border-color 0.18s ease;
+}
+
+.plan-hover {
+  border-color: var(--ink-4);
+}
+
+/* 选中态：3rpx 正陶土描边（与首页分类 Tab 同一规格） */
+.plan-on {
+  border-color: var(--red);
+  border-width: 3rpx;
+  padding: 27rpx 25rpx; /* 负 1rpx 抵消加粗的描边，内容不位移 */
+}
+
+.plan-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.plan-name {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: var(--black);
+  letter-spacing: 1rpx;
+}
+
+.plan-badge {
+  padding: 3rpx 12rpx;
+  background: var(--fill);
+  border: 2rpx solid var(--line);
+  border-radius: 999rpx;
+  font-size: 19rpx;
+  color: var(--ink-3);
+}
+
+.plan-price-row {
+  display: flex;
+  align-items: baseline;
+  margin-top: 18rpx;
+}
+
+.plan-currency {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--red);
+  margin-right: 4rpx;
+}
+
+.plan-price {
+  font-family: var(--mono);
+  font-size: 52rpx;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--black);
+  letter-spacing: -1rpx;
+}
+
+.plan-period {
+  margin-left: 10rpx;
+  font-size: 23rpx;
+  color: var(--ink-3);
+}
+
+.plan-benefit {
+  display: block;
+  margin-top: 14rpx;
+  font-size: 23rpx;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+/* 选中勾（CSS 画的对勾：短边 + 长边两条线） */
+.plan-check {
+  position: absolute;
+  right: 24rpx;
+  bottom: 26rpx;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.check-x,
+.check-y {
+  position: absolute;
+  left: 12rpx;
+  top: 19rpx;
+  width: 16rpx;
+  height: 3rpx;
+  background: var(--white);
+  border-radius: 2rpx;
+}
+
+.check-x {
+  transform: rotate(45deg);
+}
+
+.check-y {
+  width: 9rpx;
+  left: 21rpx;
+  transform: rotate(-45deg);
+}
+
+/* ---- 错误提示 ---- */
+.err-row {
+  padding: 18rpx 32rpx 0;
+  background: var(--bg);
+}
+
+.err-text {
+  font-size: 23rpx;
+  color: var(--red-deep);
+}
+
+/* ---- 购买按钮（唯一的大块陶土红，与全站主操作一致） ---- */
+.submit {
+  margin: 32rpx 24rpx 0;
+  height: 96rpx;
+  border-radius: var(--radius);
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-disabled {
+  opacity: 0.45;
+}
+
+.submit-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 6rpx;
+  margin-right: -6rpx;
+}
+
+/* ---- 协议同意（勾选框 + 可点开的协议链接） ----
+   默认不勾选；勾选后小方块填充陶土红并画出对勾。 */
+.consent {
+  display: flex;
+  align-items: flex-start;
+  margin: 28rpx 24rpx 0;
+}
+
+.consent-box {
+  width: 34rpx;
+  height: 34rpx;
+  border: 2rpx solid var(--line-2);
+  border-radius: 6rpx;
+  background: var(--white);
+  flex-shrink: 0;
+  margin-top: 3rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.consent-on {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+/* 对勾：用旋转的两条边拼出，不依赖字体图标 */
+.consent-tick {
+  width: 16rpx;
+  height: 9rpx;
+  border-left: 3rpx solid var(--white);
+  border-bottom: 3rpx solid var(--white);
+  transform: rotate(-45deg);
+  margin-top: -4rpx;
+}
+
+.consent-body {
+  flex: 1;
+  margin-left: 14rpx;
+}
+
+.consent-text {
+  font-size: 23rpx;
+  line-height: 1.6;
+  color: var(--ink-3);
+}
+
+.consent-link {
+  font-size: 23rpx;
+  line-height: 1.6;
+  color: var(--red);
+}
+
+/* ---- 权益 / 规则区块 ---- */
+.benefits,
+.rules {
+  margin: 48rpx 24rpx 0;
+  padding: 30rpx 28rpx;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.sec-head {
+  display: flex;
+  align-items: center;
+  margin-bottom: 22rpx;
+}
+
+/* 区块标记：8×28 竖条（与全站小节标记统一规格） */
+.sec-mark {
+  width: 8rpx;
+  height: 28rpx;
+  background: var(--red);
+  margin-right: 14rpx;
+  flex-shrink: 0;
+}
+
+.sec-title {
+  font-size: 27rpx;
+  font-weight: 700;
+  letter-spacing: 2rpx;
+  color: var(--black);
+}
+
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 16rpx;
+}
+
+.benefit-item:last-child {
+  margin-bottom: 0;
+}
+
+.bt-dot {
+  width: 8rpx;
+  height: 8rpx;
+  border-radius: 50%;
+  background: var(--ink-4);
+  margin: 16rpx 14rpx 0 0;
+  flex-shrink: 0;
+}
+
+.bt-text {
+  flex: 1;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: var(--ink-2);
+}
+
+.rule-line {
+  display: block;
+  font-size: 22rpx;
+  line-height: 1.75;
+  color: var(--ink-3);
+  margin-bottom: 10rpx;
+}
+
+.rule-line:last-child {
+  margin-bottom: 0;
+}
+
+/* ---- 页脚 ---- */
+.foot-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 36rpx 0 6rpx;
+}
+
+.foot-link {
+  font-size: 23rpx;
+  color: var(--ink-3);
+}
+
+.foot-sep {
+  font-size: 23rpx;
+  color: var(--ink-4);
+  margin: 0 18rpx;
+}
+
+/* ---- CSS 书签图标（会员标识内，16rpx 小尺寸） ---- */
+.bm-sm {
+  width: 18rpx;
+  height: 24rpx;
+  border: 3rpx solid var(--red);
+  border-bottom: none;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
+  margin-right: 10rpx;
+}
+
+/* ================= 我的凭证 ================= */
+.receipt {
+  margin: 24rpx 24rpx 0;
+  padding: 30rpx 28rpx;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.rc-item {
+  padding: 20rpx 0;
+  border-top: 2rpx solid var(--line);
+}
+
+.rc-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 12rpx;
+}
+
+.rc-plan {
+  font-size: 26rpx;
+  font-weight: 600;
+  color: var(--black);
+}
+
+.rc-price {
+  font-family: var(--mono);
+  font-size: 24rpx;
+  color: var(--red);
+}
+
+/* 已退款的单子：金额与时间置灰，不再用红色强调 */
+.rc-muted {
+  color: var(--ink-4);
+}
+
+.rc-line {
+  display: flex;
+  align-items: center;
+  padding: 6rpx 0;
+}
+
+.rc-label {
+  width: 110rpx;
+  font-size: 22rpx;
+  color: var(--ink-3);
+  flex-shrink: 0;
+}
+
+.rc-no {
+  flex: 1;
+  font-family: var(--mono);
+  font-size: 22rpx;
+  color: var(--ink);
+  word-break: break-all;
+  margin-right: 12rpx;
+}
+
+.rc-copy {
+  font-size: 20rpx;
+  color: var(--red);
+  border: 2rpx solid var(--red-line);
+  border-radius: 6rpx;
+  padding: 2rpx 12rpx;
+  flex-shrink: 0;
+}
+
+.rc-time {
+  font-family: var(--mono);
+  font-size: 22rpx;
+  color: var(--ink-2);
+}
+
+.rc-tip {
+  display: block;
+  margin-top: 18rpx;
+  font-size: 21rpx;
+  color: var(--ink-4);
+  line-height: 1.6;
+}

@@ -1,0 +1,82 @@
+<!--pages/beauty-analyze/beauty-analyze.wxml  选图 → 预览 → 分析（暖纸版式）-->
+<view class="container">
+
+  <!-- 刊头 -->
+  <view class="a-header">
+    <view class="issue-row">
+      <text class="issue-dot"></text>
+      <text class="issue-no">STEP 01 / 选择一张清晰的正脸照</text>
+    </view>
+  </view>
+
+  <!-- 照片区 -->
+  <view class="photo-card">
+    <view class="photo-frame" bindtap="onRechoose">
+      <!-- 未选图：虚线框 + 相机图形 -->
+      <block wx:if="{{!imgPath}}">
+        <view class="ph-empty">
+          <view class="ph-camera">
+            <view class="ph-camera-body">
+              <view class="ph-camera-top"></view>
+              <view class="ph-camera-lens"></view>
+            </view>
+          </view>
+          <text class="ph-empty-text">点击选择照片</text>
+          <text class="ph-empty-sub">支持拍照或从相册选择</text>
+        </view>
+      </block>
+
+      <!-- 已选图：预览 -->
+      <block wx:else>
+        <image class="ph-preview" src="{{imgPath}}" mode="aspectFit" />
+        <view wx:if="{{!analyzing}}" class="ph-change" hover-class="btn-hover" catchtap="onRechoose">
+          <text class="ph-change-text">重新选择</text>
+        </view>
+      </block>
+
+      <!-- 分析中遮罩 -->
+      <view wx:if="{{analyzing}}" class="ph-mask">
+        <view class="spinner"></view>
+        <text class="ph-mask-text">{{statusText || '分析中…'}}</text>
+      </view>
+    </view>
+
+    <!-- 错误提示 -->
+    <view wx:if="{{errorText}}" class="ph-error">
+      <view class="state-icon state-icon-warn ph-error-icon">!</view>
+      <text class="ph-error-text">{{errorText}}</text>
+      <view class="ph-error-retry" hover-class="btn-hover" bindtap="onAnalyze">
+        <text class="ph-error-retry-text">再试一次</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 操作按钮 -->
+  <view class="actions">
+    <block wx:if="{{!imgPath}}">
+      <view class="act-btn act-ghost" hover-class="btn-hover" bindtap="onChooseCamera">
+        <text class="act-ghost-text">拍照</text>
+      </view>
+      <view class="act-btn act-main" hover-class="btn-hover" bindtap="onChooseAlbum">
+        <text class="act-main-text">从相册选择</text>
+      </view>
+    </block>
+    <block wx:else>
+      <view
+        class="act-btn act-full {{analyzing ? 'act-disabled' : ''}}"
+        hover-class="btn-hover"
+        bindtap="onAnalyze"
+      >
+        <text class="act-main-text">{{analyzing ? '分析中…' : '开始分析'}}</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 隐私提示 -->
+  <view class="privacy-row">
+    <text class="privacy-text">照片不会保存，分析后立即删除。</text>
+    <text class="privacy-link" bindtap="onOpenAgreement">隐私政策</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

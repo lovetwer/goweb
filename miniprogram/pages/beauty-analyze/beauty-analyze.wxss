@@ -1,0 +1,263 @@
+/* pages/beauty-analyze/beauty-analyze.wxss —— 选图分析页（暖纸版式） */
+
+/* ================= 刊头 ================= */
+.a-header {
+  padding: 24rpx 32rpx 6rpx;
+  background: var(--bg);
+}
+
+.issue-row {
+  display: flex;
+  align-items: center;
+}
+
+.issue-dot {
+  width: 14rpx;
+  height: 14rpx;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 0 6rpx var(--red-soft);
+  margin-right: 14rpx;
+  flex-shrink: 0;
+}
+
+.issue-no {
+  font-family: var(--mono);
+  font-size: 21rpx;
+  letter-spacing: 3rpx;
+  color: var(--ink-4);
+}
+
+/* ================= 照片区 ================= */
+.photo-card {
+  margin: 24rpx 24rpx 0;
+  background: var(--card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20rpx;
+}
+
+.photo-frame {
+  position: relative;
+  height: 640rpx;
+  border: 3rpx dashed var(--line-2);
+  border-radius: var(--radius);
+  background: var(--fill);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 空状态：CSS 相机图形（无 emoji、无图片资源） */
+.ph-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ph-camera-body {
+  position: relative;
+  width: 96rpx;
+  height: 70rpx;
+  border: 4rpx solid var(--ink-4);
+  border-radius: 12rpx;
+}
+
+.ph-camera-top {
+  position: absolute;
+  top: -16rpx;
+  left: 50%;
+  width: 34rpx;
+  height: 12rpx;
+  margin-left: -17rpx;
+  border: 4rpx solid var(--ink-4);
+  border-bottom: none;
+  border-radius: 8rpx 8rpx 0 0;
+}
+
+.ph-camera-lens {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34rpx;
+  height: 34rpx;
+  margin: -17rpx 0 0 -17rpx;
+  border: 4rpx solid var(--ink-4);
+  border-radius: 50%;
+}
+
+.ph-empty-text {
+  margin-top: 30rpx;
+  font-size: 27rpx;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.ph-empty-sub {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  color: var(--ink-4);
+}
+
+/* 预览图 */
+.ph-preview {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 重新选择角标 */
+.ph-change {
+  position: absolute;
+  right: 16rpx;
+  bottom: 16rpx;
+  padding: 8rpx 20rpx;
+  background: rgba(43, 37, 33, 0.72);
+  border-radius: 999rpx;
+}
+
+.ph-change-text {
+  font-size: 21rpx;
+  color: #ffffff;
+}
+
+/* 分析中遮罩 */
+.ph-mask {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(250, 247, 242, 0.88);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ph-mask-text {
+  margin-top: 22rpx;
+  font-size: 24rpx;
+  color: var(--ink-2);
+  letter-spacing: 1rpx;
+}
+
+.spinner {
+  width: 52rpx;
+  height: 52rpx;
+  border: 5rpx solid var(--line-2);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 错误提示块 */
+.ph-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30rpx 20rpx 6rpx;
+}
+
+.ph-error-icon {
+  width: 76rpx;
+  height: 76rpx;
+  font-size: 34rpx;
+  margin-bottom: 16rpx;
+}
+
+.ph-error-text {
+  font-size: 24rpx;
+  color: var(--ink-2);
+  text-align: center;
+  line-height: 1.7;
+}
+
+.ph-error-retry {
+  margin-top: 18rpx;
+  padding: 10rpx 34rpx;
+  background: var(--red-soft);
+  border: 2rpx solid var(--red-line);
+  border-radius: 999rpx;
+}
+
+.ph-error-retry-text {
+  font-size: 23rpx;
+  font-weight: 600;
+  color: var(--red-deep);
+}
+
+/* ================= 操作按钮 ================= */
+.actions {
+  display: flex;
+  margin: 30rpx 24rpx 0;
+}
+
+.act-btn {
+  flex: 1;
+  height: 92rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius);
+}
+
+.act-ghost {
+  margin-right: 20rpx;
+  background: var(--card);
+  border: 2rpx solid var(--line-2);
+}
+
+.act-ghost-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: var(--ink-2);
+  letter-spacing: 2rpx;
+}
+
+.act-main {
+  background: var(--red);
+}
+
+.act-full {
+  flex: 1;
+  background: var(--red);
+}
+
+.act-disabled {
+  opacity: 0.6;
+}
+
+.act-main-text {
+  font-size: 29rpx;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 3rpx;
+}
+
+/* ================= 隐私提示 ================= */
+.privacy-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 34rpx 24rpx 10rpx;
+}
+
+.privacy-text {
+  font-size: 22rpx;
+  color: var(--ink-3);
+}
+
+.privacy-link {
+  margin-left: 14rpx;
+  font-size: 22rpx;
+  color: var(--red);
+  text-decoration: underline;
+}

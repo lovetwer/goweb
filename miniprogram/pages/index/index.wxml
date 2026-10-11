@@ -1,41 +1,48 @@
-<!--pages/index/index.wxml  首页：搜索框 + 分类横向 Tab + 网站卡片列表（黑白灰 + 红）-->
+<!--pages/index/index.wxml  工具箱首页：最近使用 + 分类分区 + 工具卡片网格（暖纸色系）-->
 <view class="container">
 
   <!-- 顶部 -->
   <view class="header">
+    <!-- 刊头 -->
     <view class="issue-row">
       <text class="issue-dot"></text>
-      <text class="issue-no">SITE INDEX / 只读收录 · 无需登录</text>
+      <text class="issue-no">TOOLKIT / 实用工具 · 无需登录</text>
+    </view>
+
+    <!-- 入口栏：历史 / 收藏 / 会员 / 反馈，四等分均分 -->
+    <view class="entry-row">
+      <view class="issue-entry" hover-class="btn-hover" bindtap="onHistoryTap">
+        <text class="issue-entry-text">历史</text>
+        <text wx:if="{{histCount > 0}}" class="entry-badge">{{histCount}}</text>
+      </view>
+      <view class="entry-div"></view>
       <view class="issue-entry" hover-class="btn-hover" bindtap="onFavEntryTap">
-        <view class="bm-icon {{favCount > 0 ? 'bm-icon-on' : ''}}"></view>
-        <text class="issue-entry-text">收藏 {{favCount > 0 ? favCount : ''}}</text>
-        <text class="issue-arrow">→</text>
+        <text class="issue-entry-text">收藏</text>
+        <text wx:if="{{favCount > 0}}" class="entry-badge">{{favCount}}</text>
+      </view>
+      <view class="entry-div"></view>
+      <!-- 会员入口：已是会员时与「反馈」同款浅陶土底标签（不催促、不诱导） -->
+      <view wx:if="{{vipEnabled}}" class="issue-entry" hover-class="btn-hover" bindtap="onVipTap">
+        <text class="issue-entry-text {{isMember ? 'entry-text-hl' : ''}}">会员</text>
+      </view>
+      <view wx:if="{{vipEnabled}}" class="entry-div"></view>
+      <view class="issue-entry" hover-class="btn-hover" bindtap="onFeedbackTap">
+        <text class="issue-entry-text entry-text-hl">反馈</text>
       </view>
     </view>
 
-    <view class="title-block">
-      <text class="masthead">网站收录</text>
-      <text class="masthead masthead-outline">导航</text>
-      <view class="masthead-dot"></view>
-    </view>
-    <view class="rule-row">
-      <text class="rule-label">SITE INDEX</text>
-      <view class="rule-line"></view>
-      <text class="rule-count">{{tabCount}} CATEGORIES</text>
-    </view>
-
-    <!-- 搜索框 -->
+    <!-- 搜索框（本地过滤注册表） -->
     <view class="search-bar {{searchFocus ? 'search-bar-focus' : ''}}">
       <view class="search-icon"></view>
       <input
         class="search-input"
         type="text"
         value="{{keyword}}"
-        placeholder="搜索网站名称或简介关键词"
+        placeholder="搜索工具名称或用途"
         placeholder-class="search-placeholder"
         confirm-type="search"
         cursor-spacing="20"
-        cursor-color="#e8231a"
+        cursor-color="#b84827"
         bindinput="onSearchInput"
         bindconfirm="onSearchConfirm"
         bindfocus="onSearchFocus"
@@ -48,140 +55,124 @@
     </view>
   </view>
 
-  <!-- 分类横向 Tab -->
-  <scroll-view class="tabs" scroll-x="true" enhanced="true" show-scrollbar="false" enable-flex="true">
-    <view class="tabs-inner">
-      <view
-        class="tab {{activeIndex === 0 ? 'tab-active' : ''}}"
-        data-index="0"
-        hover-class="tab-hover"
-        bindtap="onTabTap"
-      >
-        <text class="tab-index">00</text>
-        <text class="tab-text">全部</text>
+  <!-- ============ 搜索结果（有关键词时替换整个分区视图） ============ -->
+  <view wx:if="{{keyword}}" class="results">
+    <view class="result-bar">
+      <view class="result-left">
+        <text class="result-bar-mark"></text>
+        <text class="result-text">找到 {{results.length}} 个相关工具</text>
       </view>
-      <view
-        wx:for="{{tabs}}"
-        wx:key="name"
-        class="tab {{activeIndex === index + 1 ? 'tab-active' : ''}}"
-        data-index="{{index + 1}}"
-        hover-class="tab-hover"
-        bindtap="onTabTap"
-      >
-        <text class="tab-index">{{item.no}}</text>
-        <text class="tab-text">{{item.name}}</text>
-      </view>
-    </view>
-  </scroll-view>
-
-  <!-- 结果统计 -->
-  <view wx:if="{{!loading && !errorText && firstLoaded}}" class="result-bar">
-    <view class="result-left">
-      <text class="result-bar-mark"></text>
-      <text class="result-text">{{totalText}}</text>
-    </view>
-    <text wx:if="{{keyword || activeCategory}}" class="result-reset" bindtap="onReset">清除条件</text>
-  </view>
-
-  <!-- 列表 -->
-  <view class="list">
-
-    <!-- 骨架屏 -->
-    <block wx:if="{{loading}}">
-      <view class="site-card" wx:for="{{[1,2,3,4]}}" wx:key="*this">
-        <view class="sk-cover skeleton"></view>
-        <view class="site-body">
-          <view class="sk-line sk-line-title skeleton"></view>
-          <view class="sk-line skeleton"></view>
-          <view class="sk-line sk-line-short skeleton"></view>
-        </view>
-      </view>
-    </block>
-
-    <!-- 错误 -->
-    <view wx:elif="{{errorText}}" class="state-box">
-      <view class="state-icon state-icon-warn">!</view>
-      <text class="state-index">ERROR</text>
-      <text class="state-title">数据没能加载出来</text>
-      <text class="state-desc">{{errorText}}</text>
-      <view class="state-actions">
-        <view class="state-btn" hover-class="btn-hover" bindtap="onRetry">重新加载</view>
-      </view>
+      <text class="result-reset" bindtap="onReset">清除</text>
     </view>
 
-    <!-- 空结果 -->
-    <view wx:elif="{{sites.length === 0}}" class="state-box">
+    <!-- 无结果 -->
+    <view wx:if="{{results.length === 0}}" class="state-box">
       <view class="state-icon">?</view>
       <text class="state-index">NO RESULT</text>
-      <text class="state-title">没有找到相关网站</text>
-      <text class="state-desc">换个关键词，或者切回「全部」分类看看</text>
+      <text class="state-title">没有找到相关工具</text>
+      <text class="state-desc">换个关键词试试，或点击下方「清除」看全部工具</text>
       <view class="state-actions">
         <view class="state-btn" hover-class="btn-hover" bindtap="onReset">查看全部</view>
       </view>
     </view>
 
-    <!-- 卡片 -->
-    <block wx:else>
+    <!-- 结果网格：与分区里的工具卡同一套样式 -->
+    <view wx:else class="tool-grid">
       <view
-        class="site-card fade-in"
-        wx:for="{{sites}}"
-        wx:key="_id"
-        data-id="{{item._id}}"
-        hover-class="site-card-hover"
+        class="tool-card fade-in"
+        wx:for="{{results}}"
+        wx:key="id"
+        data-id="{{item.id}}"
+        hover-class="tool-card-hover"
         hover-stay-time="80"
-        bindtap="onCardTap"
+        bindtap="onToolTap"
       >
-        <text class="site-no">{{item.no}}</text>
-
-        <view class="cover-wrap" style="background:{{item.bgColor}}">
-          <image
-            wx:if="{{item.hasCover}}"
-            class="cover"
-            src="{{item.coverUrl}}"
-            mode="aspectFill"
-            lazy-load="true"
-            data-id="{{item._id}}"
-            binderror="onCoverError"
-          />
-          <view wx:else class="cover-fallback">
-            <text class="cover-initial" style="color:{{item.inkColor}}">{{item.initial}}</text>
-          </view>
+        <view class="tool-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.initial}}</view>
+        <view class="tool-body">
+          <text class="tool-name ellipsis">{{item.name}}</text>
+          <text class="tool-desc ellipsis-2">{{item.desc}}</text>
         </view>
+      </view>
+    </view>
+  </view>
 
-        <view class="site-body">
-          <view class="site-title-row">
-            <text class="site-name ellipsis">{{item.name}}</text>
-            <text class="site-arrow">→</text>
+  <!-- ============ 常规视图：最近使用 + 分类分区 ============ -->
+  <block wx:else>
+
+    <!-- 注册表为空：工具上架中的占位状态 -->
+    <view wx:if="{{toolTotal === 0}}" class="state-box">
+      <view class="state-icon">…</view>
+      <text class="state-index">COMING SOON</text>
+      <text class="state-title">工具上架中</text>
+      <text class="state-desc">实用小工具正在陆续上线，敬请期待</text>
+    </view>
+
+    <block wx:else>
+
+      <!-- 最近使用（有本地历史才显示） -->
+      <view wx:if="{{recent.length > 0}}" class="recent">
+        <view class="recent-head">
+          <text class="recent-mark"></text>
+          <text class="recent-title">最近使用</text>
+          <text class="recent-en">RECENT</text>
+        </view>
+        <scroll-view class="recent-row" scroll-x="true" enhanced="true" show-scrollbar="false">
+          <view
+            wx:for="{{recent}}"
+            wx:key="id"
+            class="recent-chip"
+            hover-class="btn-hover"
+            data-id="{{item.id}}"
+            bindtap="onRecentTap"
+          >
+            <view class="recent-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.icon}}</view>
+            <text class="recent-name ellipsis">{{item.name}}</text>
           </view>
+        </scroll-view>
+      </view>
 
-          <text class="site-desc ellipsis-2">{{item.description}}</text>
-
-          <view class="site-meta">
-            <view class="site-tag">
-              <text class="tag-dot"></text>
-              <text class="tag-text">{{item.category}}</text>
+      <!-- 分类分区 -->
+      <view class="sections">
+        <view wx:for="{{sections}}" wx:for-item="sec" wx:key="key" class="section">
+          <view class="sec-head">
+            <text class="sec-mark" style="background:{{sec.color}}"></text>
+            <text class="sec-name">{{sec.name}}</text>
+            <text class="sec-en">{{sec.en}}</text>
+          </view>
+          <view class="tool-grid">
+            <view
+              class="tool-card fade-in"
+              wx:for="{{sec.tools}}"
+              wx:key="id"
+              data-id="{{item.id}}"
+              hover-class="tool-card-hover"
+              hover-stay-time="80"
+              bindtap="onToolTap"
+            >
+              <view class="tool-icon" style="background:{{item.soft}};color:{{item.color}}">{{item.initial}}</view>
+              <view class="tool-body">
+                <text class="tool-name ellipsis">{{item.name}}</text>
+                <text class="tool-desc ellipsis-2">{{item.desc}}</text>
+              </view>
             </view>
-            <text class="site-url ellipsis">{{item.hostText}}</text>
           </view>
+        </view>
+
+        <view class="load-end">
+          <view class="load-end-line"></view>
+          <text class="load-end-text">END</text>
+          <view class="load-end-line"></view>
         </view>
       </view>
 
-      <!-- 加载更多 -->
-      <view wx:if="{{loadingMore}}" class="load-more">
-        <view class="spinner"></view>
-        <text class="load-more-text">LOADING</text>
-      </view>
-      <view wx:elif="{{hasMore}}" class="load-more" hover-class="btn-hover" bindtap="onLoadMore">
-        <text class="load-more-text">加载更多</text>
-        <text class="load-more-plus">+</text>
-      </view>
-      <view wx:elif="{{sites.length > 0}}" class="load-end">
-        <view class="load-end-line"></view>
-        <text class="load-end-text">END</text>
-        <view class="load-end-line"></view>
-      </view>
     </block>
+  </block>
 
+  <!-- 底部：隐私政策与使用协议入口 -->
+  <view class="legal-bar">
+    <text class="legal-text" hover-class="btn-hover" bindtap="onLegalTap">隐私政策</text>
+    <text class="legal-sep">·</text>
+    <text class="legal-text" hover-class="btn-hover" bindtap="onLegalTap">使用协议</text>
   </view>
 
   <view class="safe-bottom"></view>

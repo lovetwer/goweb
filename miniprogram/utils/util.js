@@ -20,15 +20,6 @@ function debounce(fn, wait = 300) {
 }
 
 /**
- * HTML/正则特殊字符转义，避免用户输入破坏 db.RegExp
- * @param {string} str
- * @returns {string}
- */
-function escapeRegExp(str) {
-  return String(str || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-/**
  * 去掉首尾空白
  * @param {string} str
  * @returns {string}
@@ -38,23 +29,23 @@ function trim(str) {
 }
 
 /**
- * 取名称首字符，用于封面加载失败时的占位块
+ * 取名称首字符，用于图标缺省时的占位字符
  * @param {string} name
  * @returns {string}
  */
 function firstChar(name) {
   const s = trim(name);
-  return s ? s.slice(0, 1).toUpperCase() : 'W';
+  return s ? s.slice(0, 1).toUpperCase() : '工';
 }
 
 /**
- * 根据名称生成一个稳定的中性底色（封面占位块用）
- * 主题：黑白灰红 —— 这里只输出灰阶，红色留给强调元素
+ * 根据名称生成一个稳定的中性底色（图标兜底块用）
+ * 主题：暖纸底 —— 这里只输出暖灰阶，陶土红留给强调元素
  * @param {string} name
- * @returns {string} 形如 #efeeec
+ * @returns {string} 形如 #f2ece3
  */
 function colorOf(name) {
-  const palette = ['#efeeec', '#e9e8e5', '#f3f2f0', '#e4e3e0', '#eceae7', '#e7e6e3'];
+  const palette = ['#f2ece3', '#ece4d8', '#f5f1ea', '#e8dfd1', '#efe9df', '#eae2d6'];
   const s = String(name || '');
   let hash = 0;
   for (let i = 0; i < s.length; i += 1) {
@@ -64,12 +55,15 @@ function colorOf(name) {
 }
 
 /**
- * 占位块上的首字母颜色（深灰，压在浅灰底上）
+ * 占位块上的首字母颜色（暖深灰，压在暖浅底上）
+ *
+ * 6 个值按 WCAG 校准过：在 colorOf 的 6 种暖浅底上，最差一档也有 3.07:1
+ * （首字母 52–60rpx 属大字，阈值 3:1）。
  * @param {string} name
- * @returns {string}
+ * @returns {string} 形如 #7c7469
  */
 function inkOf(name) {
-  const palette = ['#8e8d8a', '#7c7b78', '#9a9996', '#74736f', '#86857f', '#6e6d69'];
+  const palette = ['#7c7469', '#867d71', '#6f675e', '#776f64', '#5f584f', '#6a6258'];
   const s = String(name || '');
   let hash = 0;
   for (let i = 0; i < s.length; i += 1) {
@@ -138,7 +132,6 @@ function fromNow(value) {
 
 module.exports = {
   debounce,
-  escapeRegExp,
   trim,
   firstChar,
   colorOf,

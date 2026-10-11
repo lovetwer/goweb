@@ -1,0 +1,166 @@
+/* pages/feedback/feedback.wxss  意见反馈：暖纸底 + 暖黑标题 + 陶土红点缀，与详情页同一套版式 */
+
+.sheet {
+  background: var(--bg);
+  padding: 64rpx 40rpx 56rpx;
+}
+
+/* ---------- 刊头：标签 / 标题 / 分隔线 / 说明，段间留白充足 ---------- */
+.head-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 19rpx;
+  letter-spacing: 5rpx;
+  color: var(--ink-4);
+  margin-bottom: 26rpx;
+}
+
+.head-title {
+  display: block;
+  font-size: 52rpx;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.5rpx;
+  color: var(--black);
+}
+
+/* 标题与说明之间的短分隔线：30rpx 上下留白，把两段话彻底隔开 */
+.head-rule {
+  width: 44rpx;
+  height: 4rpx;
+  background: var(--red);
+  margin: 30rpx 0;
+}
+
+.head-desc {
+  display: block;
+  font-size: 25rpx;
+  line-height: 1.9;
+  color: var(--ink-2);
+}
+
+/* ---------- 输入区 ---------- */
+.field {
+  margin-top: 76rpx;
+}
+
+/* 「反馈内容」：表单标签，用户靠它知道该往哪写，提到 --ink-3。
+   原来的 19rpx + --ink-4 等于没有标签。 */
+.field-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 21rpx;
+  letter-spacing: 3rpx;
+  color: var(--ink-3);
+  margin-bottom: 20rpx;
+}
+
+.field-area {
+  width: 100%;
+  min-height: 340rpx;
+  padding: 28rpx 26rpx;
+  background: var(--card);
+  border: 2rpx solid var(--line-2);
+  border-radius: var(--radius);
+  font-size: 29rpx;
+  line-height: 1.8;
+  color: var(--ink);
+}
+
+.field-input-err {
+  border-color: var(--red);
+}
+
+/* 占位符「写点什么…」：页面上的第一句引导语，
+   原色在白卡上只有 2.01:1，几乎看不到，提到 --ink-3。 */
+.field-placeholder {
+  font-size: 27rpx;
+  color: var(--ink-3);
+}
+
+.field-foot {
+  display: flex;
+  align-items: center;
+  min-height: 34rpx;
+  margin-top: 16rpx;
+}
+
+.field-error {
+  font-size: 23rpx;
+  line-height: 1.6;
+  color: var(--red-deep);
+}
+
+/* ---------- 提交按钮 ---------- */
+.submit {
+  margin-top: 48rpx;
+  height: 96rpx;
+  border-radius: var(--radius);
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.submit-disabled {
+  opacity: 0.45;
+}
+
+.submit-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: var(--white);
+  letter-spacing: 6rpx;
+  margin-right: -6rpx;
+}
+
+/* ---------- 已提交 ---------- */
+.ok {
+  margin-top: 76rpx;
+}
+
+.ok-mark {
+  width: 12rpx;
+  height: 12rpx;
+  background: var(--red);
+  margin-bottom: 30rpx;
+}
+
+.ok-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 800;
+  line-height: 1.4;
+  color: var(--black);
+}
+
+.ok-again {
+  margin-top: 48rpx;
+  height: 88rpx;
+  border: 2rpx solid var(--line-2);
+  border-radius: var(--radius);
+  background: var(--card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ok-again-text {
+  font-size: 27rpx;
+  font-weight: 600;
+  letter-spacing: 3rpx;
+  color: var(--ink-2);
+}
+
+/* ---------- 页脚提示 ---------- */
+/* 页脚隐私声明：「反馈内容保存在云端，仅用于改进本小程序，不会公开或展示给其他用户。」
+   这句话直接对应审核关注的 UGC 问题，必须让用户看清，提到 --ink-3。 */
+.foot-tip {
+  display: block;
+  margin-top: 56rpx;
+  padding-top: 32rpx;
+  border-top: 2rpx solid var(--line);
+  font-size: 22rpx;
+  line-height: 1.8;
+  color: var(--ink-3);
+}

@@ -1,44 +1,60 @@
 /**
  * config.js —— 全局唯一配置入口
  *
- * 导入项目后只需要改两个地方：
- * 1. ENV_ID：换成你自己的云开发环境 ID（云开发控制台首页可查，形如 cloud1-3gxxxxxxxxxxxxxx）
- * 2. CATEGORIES：分类写死在这里，首页横向 Tab 直接读取，改这里即可增删分类
+ * 工具箱版本：工具全部内置在小程序包里（utils/tools.js 注册表），
+ * 首页、收藏、历史、搜索都不再依赖云数据库。
+ * 云能力只保留两条链路：
+ *   1. 意见反馈（用户提交 → 云函数校验 → 入库）
+ *   2. 会员体系（虚拟支付 / 查会员 / 查订单，全走云函数）
  */
 
 module.exports = {
-  // ⚠️ 必填：你的云开发环境 ID
-  ENV_ID: 'your-env-id',
+  // ⚠️ 必填：你的云开发环境 ID（反馈与会员两条云函数链路共用）
+  ENV_ID: 'cloud1-d9g8pk8fs1d3149d7',
 
-  // 云存储 bucket 说明（仅示例数据 data/sites.sample.json 里的 coverUrl 会用到）
-  // 真实 fileID 形如：cloud://<环境ID>.<数字>-<环境ID>-<APPID>/covers/xxx.png
-  // 请在「云开发控制台 → 存储 → 点开文件 → 复制 File ID」获取，再回填到数据库记录里
-  STORAGE_BUCKET: '6763-your-env-id-1300000000',
+  // 意见反馈（用户提交 → 云函数校验 → 入库）
+  //   FEEDBACK_FUNCTION   云函数名，非空校验 + 内容安全全在云函数里做
+  //   FEEDBACK_COLLECTION 反馈记录集合（⚠️ 权限必须设为「仅管理端可读写」）
+  //   记录里会写入 _openid 用于区分反馈来源（匿名标识，换小程序即不同，无法联系用户本人）
+  FEEDBACK_FUNCTION: 'feedback',
+  FEEDBACK_COLLECTION: 'feedback',
 
-  // 数据库集合名
-  COLLECTION: 'sites',
+  // 本地收藏存储 key（存的是工具快照，仅保存在用户手机上）
+  FAVORITES_KEY: 'toolbox_favorites',
 
-  // 分类：写死的数组，首页 Tab 与详情页标签共用
-  CATEGORIES: [
-    '效率工具',
-    '设计资源',
-    '开发技术',
-    '学习教育',
-    '资讯阅读',
-    '影音娱乐',
-    '生活服务',
-    '数据查询'
-  ],
+  // 本地使用记录存储 key（最近用过哪些工具，仅保存在用户手机上）
+  HISTORY_KEY: 'toolbox_history',
 
-  // 首页每页条数
-  PAGE_SIZE: 20,
+  /* ============================================================
+   * 会员（虚拟支付 · 道具直购）
+   * ============================================================
+   * ⚠️ 安全边界：这个文件会打进小程序包，**绝对不能**放 OfferID / AppKey /
+   * AppSecret / sessionKey。这些只在 cloudfunctions/vip/secret.json 里。
+   * 前端只拿得到针对单次订单的签名（signData / paySig / signature），用完即弃。
+   *
+   * 会员状态只有一种来源：云函数 queryMember（按真实 openid 判定）。
+   * 未开通就是非会员，界面显示锁定态——这是正确行为，不是 bug。
+   */
+  VIP_ENABLED: true,
 
-  // 搜索输入防抖（毫秒）
-  SEARCH_DEBOUNCE: 300,
+  // 虚拟支付云函数名（下单 / 查会员 / 兜底查单都走它）
+  VIP_FUNCTION: 'vip',
 
-  // 本地收藏存储 key
-  FAVORITES_KEY: 'goweb_favorites',
+  // 会员数据本地缓存 key（只存「是不是会员 + 到期时间」，不含任何身份信息）
+  VIP_STATE_KEY: 'toolbox_vip_state',
 
-  // 详情页标题格式：网站名 - 领域关键词
-  DETAIL_TITLE_SEP: ' - '
+  /**
+   * 会员权益
+   * 这里是「展示用」的文案；**真实权益判定在云函数**。
+   * 工具箱语境下，会员权益指向「会员专属工具」——具体哪些工具标记为
+   * 会员专属，等工具上架后在 utils/tools.js 的 vipOnly 字段里定义。
+   */
+  VIP_BENEFITS: {
+    month: '解锁全部会员专属工具',
+    year: '解锁全部会员专属工具',
+    footer: '会员专属工具持续上新，会员可优先体验新工具'
+  },
+
+  // 会员到期前多少天开始提醒（天）
+  VIP_RENEW_REMIND_DAYS: 7
 };

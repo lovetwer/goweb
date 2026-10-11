@@ -1,0 +1,9 @@
+{
+  "navigationBarTitleText": "隐私政策与使用协议",
+  "navigationBarBackgroundColor": "#faf7f2",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#faf7f2",
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh": false,
+  "usingComponents": {}
+}

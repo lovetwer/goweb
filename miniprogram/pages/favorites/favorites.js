@@ -1,9 +1,10 @@
 // pages/favorites/favorites.js
 // 收藏完全存在本地（wx.setStorageSync），不上传、不联网、不涉及任何用户信息。
-const app = getApp();
-const config = require('../../config.js');
+// 收藏对象是工具（utils/tools.js 注册表），存的是工具快照。
 const util = require('../../utils/util.js');
+const tools = require('../../utils/tools.js');
 const favorites = require('../../utils/favorites.js');
+const history = require('../../utils/history.js');
 
 Page({
   data: {
@@ -22,12 +23,27 @@ Page({
   },
 
   onPullDownRefresh() {
-    this.refresh().then(() => wx.stopPullDownRefresh());
+    this.refresh();
+    wx.stopPullDownRefresh();
+  },
+
+  onShareAppMessage() {
+    return {
+      title: '工具箱 · 实用小工具都在这儿',
+      path: '/pages/index/index'
+    };
+  },
+
+  onShareTimeline() {
+    return {
+      title: '工具箱 · 实用小工具都在这儿',
+      query: ''
+    };
   },
 
   /**
-   * 读取本地收藏，并尽量从数据库补齐最新的封面 / 简介
-   * （补齐失败不影响展示：本地快照本身就是完整可用的数据）
+   * 读取本地收藏快照，并从注册表补全分类色等渲染字段。
+   * 工具已下架时保留快照展示（点开时提示），不静默删除用户的收藏。
    */
   refresh() {
     const local = favorites.getAll();
@@ -37,59 +53,44 @@ Page({
       countText: local.length < 10 ? `0${local.length}` : `${local.length}`,
       loading: false
     });
-
-    if (!local.length) return Promise.resolve();
-
-    const db = app.getDB();
-    if (!db) return Promise.resolve();
-
-    const ids = local.map((item) => item.id).filter(Boolean);
-    if (!ids.length) return Promise.resolve();
-
-    return db
-      .collection(config.COLLECTION)
-      .where({ _id: db.command.in(ids) })
-      .field({ name: true, url: true, category: true, description: true, coverUrl: true })
-      .limit(100)
-      .get()
-      .then((res) => {
-        const fresh = {};
-        ((res && res.data) || []).forEach((item) => {
-          fresh[item._id] = item;
-        });
-        const merged = local.map((item) => {
-          const latest = fresh[item.id];
-          return this.decorate(latest ? Object.assign({}, item, latest, { _id: item.id }) : item);
-        });
-        this.setData({ list: merged });
-      })
-      .catch((err) => {
-        // 静默失败：离线或权限问题时依然展示本地快照
-        console.warn('[favorites] 补齐最新信息失败，使用本地快照', err);
-      });
   },
 
-  decorate(item) {
-    const raw = item || {};
+  decorate(raw) {
+    const item = raw || {};
+    const t = tools.getTool(item.id);
+    const cat = tools.getCategory(item.category);
     return {
-      _id: raw._id || raw.id,
-      name: raw.name || '未命名网站',
-      url: raw.url || '',
-      category: raw.category || '未分类',
-      description: raw.description || '暂无简介',
-      coverUrl: raw.coverUrl || '',
-      hasCover: !!raw.coverUrl,
-      initial: util.firstChar(raw.name),
-      bgColor: util.colorOf(raw.name),
-      inkColor: util.inkOf(raw.name),
-      addedText: raw.addedAt ? util.fromNow(raw.addedAt) : ''
+      id: item.id,
+      name: (t && t.name) || item.name || '未命名工具',
+      desc: (t && t.desc) || item.desc || '',
+      icon: (t && t.icon) || item.icon || util.firstChar(item.name),
+      path: (t && t.path) || item.path || '',
+      categoryName: (cat && cat.name) || '',
+      soft: (cat && cat.soft) || '#f5f0e8',
+      color: (cat && cat.color) || '#8b8279',
+      alive: !!t,
+      addedText: item.addedAt ? util.fromNow(item.addedAt) : ''
     };
   },
 
   onItemTap(e) {
     const id = e.currentTarget.dataset.id;
     if (!id) return;
-    wx.navigateTo({ url: `/pages/detail/detail?id=${encodeURIComponent(id)}` });
+    const tool = tools.getTool(id);
+    if (!tool) {
+      wx.showToast({ title: '该工具已下架', icon: 'none', duration: 1500 });
+      return;
+    }
+    // 从收藏进入也算一次使用：记录历史后再跳转
+    history.push({
+      id: tool.id,
+      name: tool.name,
+      desc: tool.desc,
+      icon: tool.icon,
+      path: tool.path,
+      category: tool.category
+    });
+    wx.navigateTo({ url: tool.path });
   },
 
   onRemove(e) {
@@ -100,20 +101,13 @@ Page({
     wx.showToast({ title: '已取消收藏', icon: 'none', duration: 1200 });
   },
 
-  onCoverError(e) {
-    const id = e.currentTarget.dataset.id;
-    const index = this.data.list.findIndex((item) => item._id === id);
-    if (index < 0) return;
-    this.setData({ [`list[${index}].hasCover`]: false });
-  },
-
   onClearAll() {
     if (!this.data.count) return;
     wx.showModal({
       title: '清空收藏',
       content: `确定要清空全部 ${this.data.count} 条本地收藏吗？收藏只存在这台设备上，清空后无法恢复。`,
       confirmText: '清空',
-      confirmColor: '#e5484d',
+      confirmColor: '#b84827',
       cancelText: '再想想',
       success: (res) => {
         if (!res.confirm) return;

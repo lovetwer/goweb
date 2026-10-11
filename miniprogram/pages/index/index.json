@@ -1,10 +1,9 @@
 {
-  "navigationBarTitleText": "网站收录导航",
-  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTitleText": "工具箱",
+  "navigationBarBackgroundColor": "#faf7f2",
   "navigationBarTextStyle": "black",
-  "backgroundColor": "#ffffff",
+  "backgroundColor": "#faf7f2",
   "backgroundTextStyle": "dark",
-  "enablePullDownRefresh": true,
-  "onReachBottomDistance": 120,
+  "enablePullDownRefresh": false,
   "usingComponents": {}
 }

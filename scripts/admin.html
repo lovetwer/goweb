@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>goweb 数据库管理</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --black:#0c0c0c; --ink:#111; --ink2:#55554f; --ink3:#8b8a85; --ink4:#b3b2ad;
+  --line:#eceae6; --line2:#dedbd5; --fill:#f7f6f4; --red:#e8231a; --redsoft:#fdeceb;
+  --mono: ui-monospace, Consolas, "Courier New", monospace;
+}
+body { font-family: -apple-system,"PingFang SC","Microsoft YaHei",sans-serif; background:var(--fill); color:var(--ink); font-size:14px; }
+.topbar { background:#fff; border-bottom:2px solid var(--line); padding:14px 24px; display:flex; align-items:center; gap:16px; position:sticky; top:0; z-index:10; }
+.topbar h1 { font-size:18px; font-weight:800; }
+.topbar .env { font-family:var(--mono); font-size:12px; color:var(--ink3); }
+.cred { display:none; gap:8px; align-items:center; }
+.cred input { padding:6px 10px; border:1px solid var(--line2); border-radius:4px; font-family:var(--mono); font-size:12px; width:200px; }
+.tabs { display:flex; gap:0; margin-left:auto; }
+.tab { padding:8px 20px; border:1px solid var(--line2); background:#fff; cursor:pointer; font-size:13px; }
+.tab:first-child { border-radius:4px 0 0 4px; }
+.tab:last-child { border-radius:0 4px 4px 0; border-left:none; }
+.tab.on { background:var(--black); color:#fff; border-color:var(--black); }
+.main { max-width:1100px; margin:24px auto; padding:0 24px 60px; }
+.toolbar { display:flex; gap:10px; margin-bottom:16px; align-items:center; }
+.toolbar input[type=text] { flex:1; max-width:320px; padding:8px 12px; border:1px solid var(--line2); border-radius:4px; font-size:13px; }
+.toolbar select { padding:8px 10px; border:1px solid var(--line2); border-radius:4px; font-size:13px; background:#fff; color:var(--ink); cursor:pointer; max-width:190px; }
+.toolbar select:hover { border-color:var(--ink3); }
+.btn { padding:8px 18px; border:1px solid var(--black); background:var(--black); color:#fff; border-radius:4px; cursor:pointer; font-size:13px; }
+.btn.ghost { background:#fff; color:var(--ink2); border-color:var(--line2); }
+.btn.danger { background:var(--red); border-color:var(--red); }
+.btn.sm { padding:4px 12px; font-size:12px; }
+.msg { padding:10px 14px; border-radius:4px; margin-bottom:14px; font-size:13px; display:none; }
+.msg.ok { display:block; background:#e9f7ee; color:#137333; border:1px solid #b6e2c4; }
+.msg.err { display:block; background:var(--redsoft); color:var(--red); border:1px solid #f5c6c3; }
+table { width:100%; border-collapse:collapse; background:#fff; border:1px solid var(--line); }
+th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); font-size:13px; vertical-align:top; }
+th { background:var(--fill); font-family:var(--mono); font-size:11px; letter-spacing:1px; color:var(--ink3); font-weight:600; }
+td .mono { font-family:var(--mono); font-size:12px; color:var(--ink3); }
+tr:hover td { background:#fafafa; }
+.ops { white-space:nowrap; }
+.ops button { margin-right:6px; }
+th input[type=checkbox], td input[type=checkbox] { cursor:pointer; margin:0; vertical-align:middle; }
+tr.sel td { background:var(--redsoft); }
+tr.sel:hover td { background:var(--redsoft); }
+.btn:disabled { background:var(--line); border-color:var(--line); color:var(--ink4); cursor:not-allowed; }
+.empty { text-align:center; padding:50px; color:var(--ink3); background:#fff; border:1px solid var(--line); }
+/* vip 面板的小节标题与统计块 */
+.sub { margin:24px 0 10px; font-size:14px; color:var(--ink2); }
+.stat-grid { display:flex; gap:14px; flex-wrap:wrap; }
+.stat-card { background:#fff; border:1px solid var(--line); border-radius:6px; padding:14px 20px; min-width:130px; }
+.stat-card .n { font-size:22px; font-weight:700; color:var(--ink); }
+.stat-card .l { font-size:12px; color:var(--ink3); margin-top:3px; }
+/* 会员专属标记：列表里一眼认出哪些条目锁着 */
+.vipflag { display:inline-block; padding:1px 7px; margin-left:6px; background:var(--red); color:#fff;
+  border-radius:3px; font-size:11px; font-weight:600; letter-spacing:1px; vertical-align:middle; cursor:help; }
+/* 弹窗 */
+.mask { position:fixed; inset:0; background:rgba(0,0,0,.35); display:none; align-items:center; justify-content:center; z-index:100; }
+.mask.show { display:flex; }
+.dialog { background:#fff; border-radius:6px; width:560px; max-width:92vw; max-height:88vh; overflow:auto; padding:24px; }
+.dialog h3 { font-size:16px; margin-bottom:16px; }
+.field { margin-bottom:14px; }
+.field label { display:block; font-size:12px; color:var(--ink3); margin-bottom:6px; font-family:var(--mono); }
+.field input, .field textarea, .field select { width:100%; padding:8px 10px; border:1px solid var(--line2); border-radius:4px; font-size:13px; font-family:inherit; }
+.field textarea { min-height:90px; resize:vertical; }
+.dialog .row { display:flex; gap:12px; }
+.dialog .row .field { flex:1; }
+.dialog-foot { display:flex; justify-content:flex-end; gap:10px; margin-top:20px; }
+/* configs 编辑 */
+.cfg-block { background:#fff; border:1px solid var(--line); border-radius:6px; padding:20px; margin-bottom:20px; }
+.cfg-block h3 { font-size:15px; margin-bottom:4px; }
+.cfg-block .key { font-family:var(--mono); font-size:11px; color:var(--ink3); margin-bottom:14px; }
+.tag-edit { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+.tag {
+  display:inline-flex; align-items:center; gap:6px;
+  background:var(--fill); border:1px solid var(--line2); border-radius:4px;
+  padding:5px 10px; font-size:13px;
+  cursor:grab; transition:border-color .15s, opacity .15s;
+}
+.tag:active { cursor:grabbing; }
+.tag.dragging { opacity:.35; }
+.tag.drop-target { border-color:var(--black); box-shadow:-3px 0 0 0 var(--black); }
+.tag .grip { color:var(--ink4); font-size:11px; letter-spacing:-2px; user-select:none; line-height:1; }
+.tag .x { cursor:pointer; color:var(--ink3); font-family:var(--mono); }
+.tag .x:hover { color:var(--red); }
+.tag .tag-text { user-select:none; }
+.add-row { display:flex; gap:8px; }
+.add-row input { flex:1; max-width:240px; padding:6px 10px; border:1px solid var(--line2); border-radius:4px; font-size:13px; }
+.add-row select { padding:6px 10px; border:1px solid var(--line2); border-radius:4px; font-size:13px; font-family:inherit; min-width:260px; }
+/* 表格行拖拽排序（picks / notices）：与 configs 的标签拖动同一套交互 */
+.drag-row { cursor:grab; }
+.drag-row:active { cursor:grabbing; }
+.drag-row.dragging td { opacity:.35; }
+tr.drop-target td { box-shadow: inset 0 2px 0 0 var(--black); }
+.grip, td .grip { color:var(--ink4); font-size:11px; letter-spacing:-2px; user-select:none; line-height:1; }
+.hint { font-size:13px; color:var(--ink3); margin-bottom:14px; line-height:1.7; }
+button[disabled] { opacity:.35; cursor:not-allowed; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>goweb · 数据库管理</h1>
+  <span class="env" id="envText"></span>
+  <div class="cred" id="credBox">
+    <input id="inAppid" placeholder="appid">
+    <input id="inSecret" placeholder="AppSecret" type="password">
+    <button class="btn sm" onclick="saveCred()">保存</button>
+  </div>
+  <div class="tabs">
+    <div class="tab on" data-t="sites" onclick="switchTab('sites')">收录 sites</div>
+    <div class="tab" data-t="picks" onclick="switchTab('picks')">精选 picks</div>
+    <div class="tab" data-t="notices" onclick="switchTab('notices')">公告 notices</div>
+    <div class="tab" data-t="feedback" onclick="switchTab('feedback')">反馈 feedback</div>
+    <div class="tab" data-t="vip" onclick="switchTab('vip')">会员 vip</div>
+    <div class="tab" data-t="configs" onclick="switchTab('configs')">配置 configs</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="msg" id="msg"></div>
+
+  <!-- sites 面板 -->
+  <div id="panel-sites">
+    <div class="toolbar">
+      <input type="text" id="kw" placeholder="搜索名称 / 简介 / 网址，回车查询" onkeydown="if(event.key==='Enter')loadSites()">
+      <select id="catFilter" onchange="loadSites()"><option value="">全部分类</option></select>
+      <button class="btn ghost" onclick="loadSites()">查询</button>
+      <button class="btn" onclick="openEdit(null)">+ 新增收录</button>
+      <button class="btn danger" id="btnDelSel" onclick="delSelected()" style="margin-left:auto" disabled>删除选中</button>
+    </div>
+    <div id="sitesBox"></div>
+  </div>
+
+  <!-- picks 面板：首页「今日精选」显示哪几条 -->
+  <div id="panel-picks" style="display:none">
+    <p class="hint">首页「今日精选」按下面的顺序显示。<b>按住任意一行拖动</b>即可调整顺序，松手即保存；从下拉里挑一条收录加进来，不需要了点「移除」。</p>
+    <div id="picksBox"></div>
+  </div>
+
+  <!-- notices 面板：首页公告条 -->
+  <div id="panel-notices" style="display:none">
+    <p class="hint">首页搜索框上方那条公告。<b>按住任意一行拖动</b>可调整顺序（生效的是排最靠前且「显示中」的一条）；只有「显示中」的才会出现在小程序里。</p>
+    <div class="toolbar">
+      <input type="text" id="noticeText" placeholder="公告文字，如「本周新增 5 个工具」">
+      <button class="btn" onclick="addNotice()">+ 新增公告</button>
+    </div>
+    <div id="noticesBox"></div>
+  </div>
+
+  <!-- feedback 面板：用户提交的意见反馈（只读 + 删除） -->
+  <div id="panel-feedback" style="display:none">
+    <p class="hint">用户在「意见反馈」里提交的内容，仅开发者可见。<b>「用户」列是脱敏后的 openid</b>：
+      同一个人多次反馈会显示同一个值，据此可以区分是谁发的、发了几条。
+      注意 openid 是匿名标识，<b>无法据此联系到用户本人</b>（换不成微信号/手机号）。</p>
+    <div class="toolbar">
+      <button class="btn ghost" onclick="loadFeedback()">刷新</button>
+      <button class="btn danger" onclick="clearFeedback()" style="margin-left:auto">清空全部</button>
+    </div>
+    <div id="feedbackBox"></div>
+  </div>
+
+  <!-- configs 面板 -->
+  <div id="panel-configs" style="display:none">
+    <div id="configsBox"></div>
+  </div>
+
+  <!-- vip 面板：会员套餐 / 订单 / 会员状态
+       可在页面上做的：改到期时间、撤销会员（都是纯数据库操作，权限等同于命令行）；
+       必须走命令行的：补发货 vip:deliver —— 因为要先拿 AppKey 向平台验签，
+       而密钥绝不能出现在浏览器里。 -->
+  <div id="panel-vip" style="display:none">
+    <p class="hint">虚拟支付三张表：<b>套餐</b> vip_plans、<b>订单</b> vip_orders、<b>会员</b> vip_members。
+    订单状态：pending=待支付 · delivered=已发货（已到账）· refunded=已退款。<br>
+    <b>页面上能做</b>：改会员到期时间、撤销会员（操作列，纯数据库写入）。<br>
+    <b>必须走命令行</b>：补发货 <span style="font-family:var(--mono)">node scripts/db.mjs vip:deliver &lt;业务单号&gt;</span>
+    —— 要先拿 AppKey 向平台验签，密钥不能出现在浏览器里。<br>
+    「用户」列是脱敏 openid，悬停可看全量。</p>
+    <div class="toolbar">
+      <input type="text" id="vipNoInput" placeholder="输入业务单号或平台单号，查 openid 与会员到期时间" onkeydown="if(event.key==='Enter')queryVipByNo()">
+      <button class="btn" onclick="queryVipByNo()">查单号</button>
+      <button class="btn ghost" onclick="loadVip()">刷新</button>
+    </div>
+    <div id="vipLookup"></div>
+    <div id="vipStats"></div>
+    <h3 class="sub">套餐 vip_plans</h3>
+    <div id="vipPlansBox"></div>
+    <h3 class="sub">订单 vip_orders（最近 100 笔）</h3>
+    <div id="vipOrdersBox"></div>
+    <h3 class="sub">会员 vip_members</h3>
+    <div id="vipMembersBox"></div>
+  </div>
+</div>
+
+<!-- 编辑弹窗 -->
+<div class="mask" id="mask">
+  <div class="dialog">
+    <h3 id="dlgTitle">新增收录</h3>
+    <input type="hidden" id="f_id">
+    <div class="row">
+      <div class="field"><label>名称 name *</label><input id="f_name"></div>
+      <div class="field"><label>分类 category *</label><select id="f_category"></select></div>
+    </div>
+    <div class="field"><label>网址 url *</label><input id="f_url" placeholder="https://..."></div>
+    <div class="field"><label>标签 tags（用逗号分隔，如：免费,中文,需注册）</label><input id="f_tags" placeholder="免费,中文,需注册"></div>
+    <div class="field"><label>简介 description（列表页显示前两行，公开可见）</label><textarea id="f_description"></textarea></div>
+    <div class="field" style="border-left:3px solid var(--red);padding-left:12px">
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <input type="checkbox" id="f_vipOnly" style="width:auto;margin:0">
+        <span>设为会员专属条目</span>
+      </label>
+      <div style="margin-top:5px;font-size:12px;line-height:1.6;color:var(--ink3)">
+        勾选后，<b>非会员只能看到名称、简介前 40 字</b>，看不到网址、标签、封面与下方详细介绍。<br>
+        拦截在云函数 <span style="font-family:var(--mono)">readSite</span> 里按身份判定，前端绕不过。
+      </div>
+    </div>
+    <div class="field">
+      <label>会员详细介绍 detailDesc（<span id="f_detailDesc_hint">仅会员可见</span>）</label>
+      <textarea id="f_detailDesc" style="min-height:120px" placeholder="写给会员看的详细介绍：它解决什么问题、适合谁、有哪些使用限制…&#10;&#10;支持换行，非会员看不到这部分。"></textarea>
+      <div style="margin-top:5px;font-size:12px;line-height:1.6;color:var(--ink3)">
+        这是会员才能看到的<b>真正增量内容</b>。现有收录的 description 都比较短（约 15–30 字），
+        单独锁它没有意义——真正的价值在于这里写更详细的介绍。
+      </div>
+    </div>
+    <div class="field"><label>封面 coverUrl（云存储 File ID 或 https，可空）</label><input id="f_coverUrl">
+      <div style="margin-top:5px;font-size:12px;line-height:1.6;color:var(--ink3)">
+        ⚠️ 云存储文件<b>只能用英文/数字/连字符命名</b>，不要有中文或空格 ——
+        文件名带中文或空格时，小程序 <span style="font-family:var(--mono)">image</span> 会把它当成相对路径，
+        报「渲染层网络层错误」而加载失败。<br>
+        正确示例：<span style="font-family:var(--mono)">cloud://…/sitespic/cpcx-cover.png</span>
+      </div>
+    </div>
+    <div class="dialog-foot">
+      <button class="btn ghost" onclick="closeDlg()">取消</button>
+      <button class="btn" onclick="saveSite()">保存</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------------- 基础 ---------------- */
+var ENV_ID = '';
+var CRED = { appid: '', secret: '' };   // secret.local.json 存在时服务端自取，这里可留空
+var COL = 'sites';
+var CATS = [];                          // 分类下拉选项（从 configs 拉）
+var CAT_COUNTS = {};                    // 每个分类下的收录条数（列表筛选用）
+var CAT_TOTAL = 0;                      // 收录总数
+
+function api(path, body, cb) {
+  fetch('/api/wx', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ path: path, body: body, appid: CRED.appid, secret: CRED.secret })
+  }).then(function (r) { return r.json(); }).then(function (r) {
+    if (r.errcode) { showMsg('err', 'API 错误 ' + r.errcode + '：' + r.errmsg); cb(null); }
+    else cb(r);
+  }).catch(function (e) { showMsg('err', '请求失败：' + e.message); cb(null); });
+}
+
+function showMsg(type, text) {
+  var m = document.getElementById('msg');
+  m.className = 'msg ' + type;
+  m.textContent = text;
+  clearTimeout(showMsg._t);
+  showMsg._t = setTimeout(function () { m.className = 'msg'; }, 4000);
+}
+
+function esc(s) {
+  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+function saveCred() {
+  CRED.appid = document.getElementById('inAppid').value.trim();
+  CRED.secret = document.getElementById('inSecret').value.trim();
+  try { localStorage.setItem('goweb_admin_cred', JSON.stringify(CRED)); } catch (e) {}
+  showMsg('ok', '凭据已保存到本浏览器');
+  loadAll();
+}
+
+function switchTab(t) {
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) tabs[i].className = 'tab' + (tabs[i].getAttribute('data-t') === t ? ' on' : '');
+  document.getElementById('panel-sites').style.display = t === 'sites' ? '' : 'none';
+  document.getElementById('panel-picks').style.display = t === 'picks' ? '' : 'none';
+  document.getElementById('panel-notices').style.display = t === 'notices' ? '' : 'none';
+  document.getElementById('panel-feedback').style.display = t === 'feedback' ? '' : 'none';
+  document.getElementById('panel-vip').style.display = t === 'vip' ? '' : 'none';
+  document.getElementById('panel-configs').style.display = t === 'configs' ? '' : 'none';
+  if (t === 'picks') loadPicks();
+  if (t === 'notices') loadNotices();
+  if (t === 'feedback') loadFeedback();
+  if (t === 'vip') loadVip();
+  if (t === 'configs') loadConfigs();
+}
+
+/* ---------------- sites ---------------- */
+var SITES = [];
+var SEL = {};   // 多选删除：已勾选的 _id（{ id: true }）
+
+function loadSites() {
+  var kw = document.getElementById('kw').value.trim();
+  var catEl = document.getElementById('catFilter');
+  var cat = catEl ? catEl.value : '';
+  var LIMIT = 500;
+
+  var q = "db.collection('sites')";
+  // 分类筛选
+  if (cat) q += ".where({category:'" + cat.replace(/'/g, "\\'") + "'})";
+  // 关键词筛选（与分类是「且」的关系）
+  // 注意：_ 与 $ 是查询语句里预定义的，不能再写 const _ = db.command
+  if (kw) {
+    // 两层转义，顺序不能反：
+    //   1) 正则转义：把 ( . [ 等变成 \( \. \[
+    //   2) 再按 JS 字符串字面量转义：反斜杠翻倍、单引号加反斜杠
+    // 因为这条查询语句会被服务端当 JS 源码执行，只转一次是不够的
+    var k = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+             .replace(/\\/g, '\\\\')
+             .replace(/'/g, "\\'");
+    q = q +
+      ".where(_.or([{name:db.RegExp({regexp:'" + k + "',options:'i'})},{description:db.RegExp({regexp:'" + k + "',options:'i'})},{url:db.RegExp({regexp:'" + k + "',options:'i'})}]))";
+  }
+  q += ".orderBy('createTime','desc').limit(" + LIMIT + ").get()";
+
+  api('tcb/databasequery', { query: q }, function (r) {
+    if (!r) return;
+    SITES = (r.data || []).map(function (s) { return typeof s === 'string' ? JSON.parse(s) : s; });
+    SEL = {};   // 列表重新加载后清空勾选，避免误删看不见的条目
+    renderSites();
+    updateSelUI();
+    var scope = cat ? '「' + cat + '」' : '全部分类';
+    if (kw) scope += ' · 关键词「' + kw + '」';
+    showMsg('ok', scope + ' 共 ' + SITES.length + ' 条' + (SITES.length >= LIMIT ? '（已达上限 ' + LIMIT + '）' : ''));
+  });
+}
+
+// 服务端返回的日期有两种形态：{ $date: 1788659213000 }（毫秒时间戳）或字符串
+function fmtDate(v) {
+  if (!v) return '';
+  var raw = (typeof v === 'object' && v.$date !== undefined) ? v.$date : v;
+  var d = (typeof raw === 'number' || /^\d{10,}$/.test(String(raw)))
+    ? new Date(Number(raw))
+    : new Date(String(raw));
+  if (isNaN(d.getTime())) return String(raw).slice(0, 10);
+  var p = function (x) { return (x < 10 ? '0' : '') + x; };
+  return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+}
+
+function renderSites() {
+  var box = document.getElementById('sitesBox');
+  if (!SITES.length) { box.innerHTML = '<div class="empty">没有数据</div>'; return; }
+  var h = '<table><tr>'
+    + '<th style="width:40px"><input type="checkbox" id="ckAll" title="全选 / 取消全选" onclick="toggleAllSites(this.checked)"></th>'
+    + '<th style="width:36px">#</th><th>名称</th><th style="width:100px">分类</th><th>网址</th><th style="width:100px">收录时间</th><th style="width:130px">操作</th></tr>';
+  for (var i = 0; i < SITES.length; i++) {
+    var s = SITES[i];
+    var t = fmtDate(s.createTime);
+    var on = SEL[s._id] ? ' checked' : '';
+    h += '<tr' + (SEL[s._id] ? ' class="sel"' : '') + '>'
+      + '<td><input type="checkbox" class="ck" value="' + esc(s._id) + '"' + on + ' onclick="onCkToggle(this)"></td>'
+      + '<td class="mono">' + (i + 1) + '</td>'
+      + '<td><b>' + esc(s.name) + '</b>'
+      + (s.vipOnly === true ? ' <span class="vipflag" title="会员专属：非会员只能看到名称和简介前 40 字">会员</span>' : '')
+      + '<div class="mono">' + esc((s.description || '').slice(0, 40)) + '</div></td>'
+      + '<td>' + esc(s.category) + '</td>'
+      + '<td class="mono">' + esc(s.url) + '</td>'
+      + '<td class="mono">' + esc(t) + '</td>'
+      + '<td class="ops"><button class="btn ghost sm" onclick="openEdit(' + i + ')">编辑</button>'
+      + '<button class="btn danger sm" onclick="delSite(' + i + ')">删除</button></td></tr>';
+  }
+  box.innerHTML = h + '</table>';
+  syncCkAll();
+}
+
+/* ---- 多选删除 ---- */
+
+// 勾选 / 取消单条
+function onCkToggle(el) {
+  if (el.checked) SEL[el.value] = true; else delete SEL[el.value];
+  var tr = el.parentNode.parentNode;
+  if (tr) tr.className = el.checked ? 'sel' : '';
+  updateSelUI();
+  syncCkAll();
+}
+
+// 全选 / 取消全选（只作用于当前列表）
+function toggleAllSites(checked) {
+  var cks = document.getElementById('sitesBox').querySelectorAll('.ck');
+  for (var i = 0; i < cks.length; i++) {
+    cks[i].checked = checked;
+    if (checked) SEL[cks[i].value] = true; else delete SEL[cks[i].value];
+    var tr = cks[i].parentNode.parentNode;
+    if (tr) tr.className = checked ? 'sel' : '';
+  }
+  updateSelUI();
+}
+
+// 表头全选框：全部选中时打勾，部分选中时显示半选
+function syncCkAll() {
+  var all = document.getElementById('ckAll');
+  if (!all) return;
+  var cks = document.getElementById('sitesBox').querySelectorAll('.ck');
+  var n = 0;
+  for (var i = 0; i < cks.length; i++) if (cks[i].checked) n++;
+  all.checked = cks.length > 0 && n === cks.length;
+  all.indeterminate = n > 0 && n < cks.length;
+}
+
+function selCount() {
+  var n = 0;
+  for (var k in SEL) if (SEL[k]) n++;
+  return n;
+}
+
+// 「删除选中」按钮的文字与可用状态
+function updateSelUI() {
+  var btn = document.getElementById('btnDelSel');
+  if (!btn) return;
+  var n = selCount();
+  btn.disabled = n === 0;
+  btn.textContent = n ? '删除选中（' + n + '）' : '删除选中';
+}
+
+// 批量删除勾选的收录
+function delSelected() {
+  var ids = Object.keys(SEL).filter(function (k) { return SEL[k]; });
+  if (!ids.length) return;
+  if (!confirm('确定删除选中的 ' + ids.length + ' 条收录？\n删了不可恢复。')) return;
+  var list = ids.map(function (id) { return "'" + id + "'"; }).join(',');
+  var q = "db.collection('sites').where({_id:_.in([" + list + "])}).remove()";
+  api('tcb/databasedelete', { query: q }, function (r) {
+    if (!r) return;
+    showMsg('ok', '已删除 ' + (r.deleted != null ? r.deleted : ids.length) + ' 条');
+    SEL = {};
+    loadSites();
+    loadCatCounts();
+  });
+}
+
+function openEdit(i) {
+  // 分类还没加载过就先拉一次，拉完再开弹窗（避免下拉里只有「现有值」）
+  if (!CATS.length) {
+    loadConfigs(function () { showEditDialog(i); });
+    return;
+  }
+  showEditDialog(i);
+}
+
+function showEditDialog(i) {
+  var s = i == null ? null : SITES[i];
+  document.getElementById('dlgTitle').textContent = s ? '编辑收录' : '新增收录';
+  document.getElementById('f_id').value = s ? s._id : '';
+  document.getElementById('f_name').value = s ? s.name || '' : '';
+  document.getElementById('f_url').value = s ? s.url || '' : '';
+  document.getElementById('f_description').value = s ? s.description || '' : '';
+  document.getElementById('f_coverUrl').value = s ? s.coverUrl || '' : '';
+  // 标签：数组 → 逗号分隔字符串，便于编辑
+  document.getElementById('f_tags').value = s && Array.isArray(s.tags) ? s.tags.join(', ') : '';
+  // 会员相关
+  document.getElementById('f_vipOnly').checked = !!(s && s.vipOnly === true);
+  document.getElementById('f_detailDesc').value = s ? s.detailDesc || '' : '';
+  // 提示文案跟着vipOnly 变：非会员条目时说明 detailDesc 不会显示
+  document.getElementById('f_detailDesc_hint').textContent =
+    s && s.vipOnly === true ? '仅会员可见' : '当前条目公开，此字段不会显示给用户';
+  var sel = document.getElementById('f_category');
+  sel.innerHTML = '';
+  var cur = s ? s.category : '';
+  var opts = CATS.length ? CATS : [cur || '未分类'];
+  for (var j = 0; j < opts.length; j++) {
+    var o = document.createElement('option');
+    o.value = opts[j]; o.textContent = opts[j];
+    if (opts[j] === cur) o.selected = true;
+    sel.appendChild(o);
+  }
+  if (cur && CATS.indexOf(cur) < 0) {
+    var o2 = document.createElement('option');
+    o2.value = cur; o2.textContent = cur + '（现有值）'; o2.selected = true;
+    sel.appendChild(o2);
+  }
+  document.getElementById('mask').className = 'mask show';
+}
+
+function closeDlg() { document.getElementById('mask').className = 'mask'; }
+
+function saveSite() {
+  var id = document.getElementById('f_id').value;
+  var tagsRaw = document.getElementById('f_tags').value;
+  var rec = {
+    name: document.getElementById('f_name').value.trim(),
+    category: document.getElementById('f_category').value,
+    url: document.getElementById('f_url').value.trim(),
+    description: document.getElementById('f_description').value.trim(),
+    coverUrl: document.getElementById('f_coverUrl').value.trim(),
+    // 标签：支持中英文逗号，统一存成数组；空值存 [] 而不是留着不写
+    tags: tagsRaw
+      ? tagsRaw.split(/[,，]/).map(function (t) { return t.trim(); }).filter(Boolean)
+      : [],
+    vipOnly: document.getElementById('f_vipOnly').checked === true,
+    detailDesc: document.getElementById('f_detailDesc').value.trim()
+  };
+  if (!rec.name || !rec.url) { showMsg('err', '名称和网址必填'); return; }
+  // 勾了会员专属却没写详细介绍 → 会员与非会员看到的几乎一样，等于没锁
+  if (rec.vipOnly && !rec.detailDesc) {
+    if (!confirm('这条标记为「会员专属」，但没有填写「会员详细介绍」。\n\n' +
+      '非会员只能看到名称和简介前 40 字，会员能看到上面的详细介绍。\n' +
+      '如果详细介绍是空的，两种身份看到的内容几乎一样。\n\n仍要保存吗？')) return;
+  }
+  // 中文/空格会让小程序 image 把 File ID 当成相对路径 → 图片加载失败
+  if (rec.coverUrl && /[\u4e00-\u9fa5\s]/.test(rec.coverUrl)) {
+    if (!confirm('⚠️ 封面地址里含有中文或空格。\n\n小程序加载这种地址会失败，报「渲染层网络层错误」。\n建议先在云存储里把文件改成纯英文名（如 sitespic/cpcx-cover.png）再填。\n\n仍要保存吗？')) return;
+  }
+  if (id) {
+    var q = "db.collection('sites').doc('" + id + "').update({ data: " + JSON.stringify(rec) + " })";
+    api('tcb/databaseupdate', { query: q }, function (r) {
+      if (!r) return;
+      showMsg('ok', '已更新（' + (r.modified || 0) + ' 条）');
+      closeDlg(); loadSites(); loadCatCounts();
+    });
+  } else {
+    rec.createTime = '__NOW__';
+    var q2 = "db.collection('sites').add({ data: " + JSON.stringify(rec).replace(/"__NOW__"/, 'new Date()') + " })";
+    api('tcb/databaseadd', { query: q2 }, function (r) {
+      if (!r) return;
+      showMsg('ok', '已添加');
+      closeDlg(); loadSites(); loadCatCounts();
+    });
+  }
+}
+
+function delSite(i) {
+  var s = SITES[i];
+  if (!confirm('确定删除「' + s.name + '」？删了不可恢复。')) return;
+  api('tcb/databasedelete', { query: "db.collection('sites').doc('" + s._id + "').remove()" }, function (r) {
+    if (!r) return;
+    showMsg('ok', '已删除');
+    loadSites(); loadCatCounts();
+  });
+}
+
+/* ---------------- picks（首页今日精选） ---------------- */
+
+var PICKS = [];   // [{_id, siteId, order}]
+
+function loadPicks() {
+  api('tcb/databasequery', { query: "db.collection('picks').orderBy('order','asc').limit(20).get()" }, function (r) {
+    if (!r) return;
+    PICKS = (r.data || []).map(function (s) { return typeof s === 'string' ? JSON.parse(s) : s; });
+    // 顺便把 sites 列表拉来给下拉用（若还没拉过）
+    if (!SITES.length) {
+      api('tcb/databasequery', { query: "db.collection('sites').limit(1000).get()" }, function (r2) {
+        if (r2) SITES = (r2.data || []).map(function (s) { return typeof s === 'string' ? JSON.parse(s) : s; });
+        renderPicks();
+      });
+    } else {
+      renderPicks();
+    }
+  });
+}
+
+function siteName(id) {
+  for (var i = 0; i < SITES.length; i++) if (SITES[i]._id === id) return SITES[i].name;
+  return '（已删除的收录 ' + id.slice(0, 8) + '…）';
+}
+
+function renderPicks() {
+  var box = document.getElementById('picksBox');
+  var h = '';
+  if (PICKS.length) {
+    h += '<table><tr><th style="width:110px">拖动排序</th><th>收录名称</th><th style="width:100px">操作</th></tr>';
+    for (var i = 0; i < PICKS.length; i++) {
+      h += '<tr class="drag-row" draggable="true"'
+        + ' ondragstart="onRowDragStart(\'picks\',' + i + ',event)"'
+        + ' ondragover="onRowDragOver(\'picks\',' + i + ',event)"'
+        + ' ondrop="onRowDrop(\'picks\',' + i + ',event)"'
+        + ' ondragend="onRowDragEnd(event)"'
+        + '>'
+        + '<td class="mono"><span class="grip">⋮⋮</span> ' + (i + 1) + '</td>'
+        + '<td>' + esc(siteName(PICKS[i].siteId)) + '<div class="mono">' + esc(PICKS[i].siteId) + '</div></td>'
+        + '<td class="ops"><button class="btn danger sm" onclick="delPick(' + i + ')">移除</button></td></tr>';
+    }
+    h += '</table>';
+  } else {
+    h += '<div class="empty">精选是空的，首页不显示这一栏</div>';
+  }
+
+  // 添加行
+  var opts = '<option value="">— 选择一条收录 —</option>';
+  for (var j = 0; j < SITES.length; j++) {
+    opts += '<option value="' + SITES[j]._id + '">' + esc(SITES[j].name) + '</option>';
+  }
+  h += '<div class="add-row"><select id="pickSel">' + opts + '</select>'
+    + '<button class="btn" onclick="addPick()">加入精选</button></div>';
+
+  box.innerHTML = h;
+}
+
+function addPick() {
+  var sel = document.getElementById('pickSel');
+  var id = sel ? sel.value : '';
+  if (!id) { showMsg('err', '先选一条收录'); return; }
+  for (var i = 0; i < PICKS.length; i++) {
+    if (PICKS[i].siteId === id) { showMsg('err', '已经在精选里了'); return; }
+  }
+  var order = PICKS.length + 1;
+  var q = "db.collection('picks').add({ data: " + JSON.stringify({ siteId: id, order: order }) + " })";
+  api('tcb/databaseadd', { query: q }, function (r) {
+    if (!r) return;
+    showMsg('ok', '已加入精选');
+    loadPicks();
+  });
+}
+
+function delPick(i) {
+  var p = PICKS[i];
+  if (!confirm('把「' + siteName(p.siteId) + '」从精选里移除？')) return;
+  api('tcb/databasedelete', { query: "db.collection('picks').doc('" + p._id + "').remove()" }, function (r) {
+    if (!r) return;
+    PICKS.splice(i, 1);
+    savePickOrder('已移除');
+  });
+}
+
+// 顺序变了：把 order 重写一遍（msg 可传自定义提示）
+function savePickOrder(msg) {
+  for (var i = 0; i < PICKS.length; i++) {
+    var p = PICKS[i];
+    var q = "db.collection('picks').doc('" + p._id + "').update({ data: { order: " + (i + 1) + " } })";
+    api('tcb/databaseupdate', { query: q }, function () {});
+  }
+  renderPicks();
+  showMsg('ok', msg || '顺序已更新');
+}
+
+/* ---------------- notices（首页公告） ---------------- */
+
+var NOTICES = [];
+
+function loadNotices() {
+  api('tcb/databasequery', { query: "db.collection('notices').orderBy('order','asc').limit(30).get()" }, function (r) {
+    if (!r) return;
+    NOTICES = (r.data || []).map(function (s) { return typeof s === 'string' ? JSON.parse(s) : s; });
+    renderNotices();
+  });
+}
+
+function renderNotices() {
+  var box = document.getElementById('noticesBox');
+  if (!NOTICES.length) { box.innerHTML = '<div class="empty">还没有公告</div>'; return; }
+  var h = '<table><tr><th style="width:110px">拖动排序</th><th>公告文字</th><th style="width:90px">显示</th><th style="width:100px">操作</th></tr>';
+  for (var i = 0; i < NOTICES.length; i++) {
+    var n = NOTICES[i];
+    h += '<tr class="drag-row" draggable="true"'
+      + ' ondragstart="onRowDragStart(\'notices\',' + i + ',event)"'
+      + ' ondragover="onRowDragOver(\'notices\',' + i + ',event)"'
+      + ' ondrop="onRowDrop(\'notices\',' + i + ',event)"'
+      + ' ondragend="onRowDragEnd(event)"'
+      + '>'
+      + '<td class="mono"><span class="grip">⋮⋮</span> ' + (i + 1) + '</td>'
+      + '<td>' + esc(n.text) + '</td>'
+      + '<td><button class="btn ghost sm" onclick="toggleNotice(' + i + ')">' + (n.active ? '显示中' : '已隐藏') + '</button></td>'
+      + '<td class="ops"><button class="btn danger sm" onclick="delNotice(' + i + ')">删除</button></td></tr>';
+  }
+  box.innerHTML = h + '</table>';
+}
+
+// 顺序变了：把 order 重写一遍（首页取排最靠前且 active 的一条）
+function saveNoticeOrder() {
+  for (var i = 0; i < NOTICES.length; i++) {
+    var n = NOTICES[i];
+    var q = "db.collection('notices').doc('" + n._id + "').update({ data: { order: " + (i + 1) + " } })";
+    api('tcb/databaseupdate', { query: q }, function () {});
+  }
+  renderNotices();
+  showMsg('ok', '顺序已更新');
+}
+
+function addNotice() {
+  var inp = document.getElementById('noticeText');
+  var text = inp.value.trim();
+  if (!text) { showMsg('err', '先写公告内容'); return; }
+  var q = "db.collection('notices').add({ data: " + JSON.stringify({ text: text, active: true, order: NOTICES.length + 1 }) + " })";
+  api('tcb/databaseadd', { query: q }, function (r) {
+    if (!r) return;
+    inp.value = '';
+    showMsg('ok', '已新增公告');
+    loadNotices();
+  });
+}
+
+function toggleNotice(i) {
+  var n = NOTICES[i];
+  var q = "db.collection('notices').doc('" + n._id + "').update({ data: { active: " + (!n.active) + " } })";
+  api('tcb/databaseupdate', { query: q }, function (r) {
+    if (!r) return;
+    showMsg('ok', n.active ? '已隐藏' : '已显示');
+    loadNotices();
+  });
+}
+
+function delNotice(i) {
+  if (!confirm('删除这条公告？')) return;
+  api('tcb/databasedelete', { query: "db.collection('notices').doc('" + NOTICES[i]._id + "').remove()" }, function (r) {
+    if (!r) return;
+    showMsg('ok', '已删除');
+    loadNotices();
+  });
+}
+
+/* ---------------- feedback（意见反馈） ---------------- */
+
+var FEEDBACK = [];
+
+function loadFeedback() {
+  api('tcb/databasequery', { query: "db.collection('feedback').orderBy('createTime','desc').limit(500).get()" }, function (r) {
+    if (!r) return;
+    FEEDBACK = (r.data || []).map(function (s) { return typeof s === 'string' ? JSON.parse(s) : s; });
+    renderFeedback();
+    showMsg('ok', '共 ' + FEEDBACK.length + ' 条反馈');
+  });
+}
+
+// openid 是匿名用户标识，列表里只显示脱敏片段（前 6 + 后 4），够区分不同人即可
+function maskOpenid(id) {
+  if (!id) return '—';
+  if (id.length <= 10) return id.slice(0, 4) + '…';
+  return id.slice(0, 6) + '…' + id.slice(-4);
+}
+
+function renderFeedback() {
+  var box = document.getElementById('feedbackBox');
+  if (!FEEDBACK.length) { box.innerHTML = '<div class="empty">还没有人反馈</div>'; return; }
+  var h = '<table><tr><th style="width:52px">#</th><th>反馈内容</th>'
+    + '<th style="width:170px">用户</th>'
+    + '<th style="width:150px">提交时间</th><th style="width:80px">操作</th></tr>';
+  for (var i = 0; i < FEEDBACK.length; i++) {
+    var f = FEEDBACK[i];
+    h += '<tr>'
+      + '<td class="mono">' + (i + 1) + '</td>'
+      + '<td>' + esc(f.content) + '</td>'
+      + '<td class="mono">' + esc(maskOpenid(f._openid)) + '</td>'
+      + '<td class="mono">' + esc(fmtDate(f.createTime)) + '</td>'
+      + '<td class="ops"><button class="btn danger sm" onclick="delFeedback(' + i + ')">删除</button></td></tr>';
+  }
+  box.innerHTML = h + '</table>';
+}
+
+function delFeedback(i) {
+  var f = FEEDBACK[i];
+  if (!confirm('删除这条反馈？\n\n' + f.content)) return;
+  api('tcb/databasedelete', { query: "db.collection('feedback').doc('" + f._id + "').remove()" }, function (r) {
+    if (!r) return;
+    showMsg('ok', '已删除');
+    loadFeedback();
+  });
+}
+
+function clearFeedback() {
+  if (!FEEDBACK.length) { showMsg('err', '没有可清空的反馈'); return; }
+  if (!confirm('清空全部 ' + FEEDBACK.length + ' 条反馈？此操作不可恢复。')) return;
+  var ids = FEEDBACK.map(function (f) { return "'" + f._id + "'"; }).join(',');
+  api('tcb/databasedelete', { query: "db.collection('feedback').where({ _id: _.in([" + ids + "]) }).remove()" }, function (r) {
+    if (!r) return;
+    showMsg('ok', '已清空 ' + FEEDBACK.length + ' 条反馈');
+    loadFeedback();
+  });
+}
+
+/* ---------------- vip：套餐 / 订单 / 会员（只读） ---------------- */
+/* 只读看板：补发、重置、撤销这些会改数据的操作仍走命令行
+  （node scripts/db.mjs vip:deliver 等），网页上不做写操作，防误点。 */
+var VIP_ORDERS = [];
+var VIP_MEMBERS = [];
+var VIP_PLANS = [];
+
+// 订单状态 → [文案, 颜色]
+var ORDER_STATE = {
+  pending: ['待支付', '#8b8a85'],
+  paid: ['已支付未发货', '#b36b00'],
+  delivered: ['已发货', '#137333'],
+  refunded: ['已退款', 'var(--red)']
+};
+
+function fen(v) {
+  var n = Number(v) || 0;
+  return (n / 100).toFixed(2);
+}
+
+// tcb/databasequery 返回的 data 是「字符串化的 JSON」数组，先统一解开
+function unwrap(r) {
+  return (r && r.data ? r.data : []).map(function (s) {
+    return typeof s === 'string' ? JSON.parse(s) : s;
+  });
+}
+
+function loadVip() {
+  loadVipOrders();
+  loadVipMembers();
+  loadVipPlans();
+}
+
+/* 按单号一站式查询：业务单号 or 平台单号 → 订单全量 + 该 openid 的会员到期时间。
+   客服场景：用户报单号，这里直接看到「谁买的、买的什么、会员到什么时候」。
+   单号 / openid 只允许字母数字（openid 还允许 - _），防查询注入。 */
+function safeToken(s) {
+  return String(s || '').replace(/[^a-zA-Z0-9\-_]/g, '');
+}
+
+function queryVipByNo() {
+  var raw = document.getElementById('vipNoInput').value.trim();
+  var no = safeToken(raw);
+  var box = document.getElementById('vipLookup');
+  if (!raw) { showMsg('err', '请输入单号'); return; }
+  if (no !== raw) { showMsg('err', '单号只能包含字母、数字'); return; }
+
+  box.innerHTML = '<div class="empty">查询中…</div>';
+  // 先按业务单号查，查不到再按平台单号兜底
+  api('tcb/databasequery', { query: "db.collection('vip_orders').where({ outTradeNo: '" + no + "' }).limit(1).get()" }, function (r) {
+    var rows = unwrap(r);
+    if (!rows.length) {
+      api('tcb/databasequery', { query: "db.collection('vip_orders').where({ wxOrderId: '" + no + "' }).limit(1).get()" }, function (r2) {
+        var rows2 = unwrap(r2);
+        if (!rows2.length) {
+          box.innerHTML = '<div class="empty">没有这个单号的订单（注意 pending 未支付单也可能刚创建，先点「刷新」看订单表）</div>';
+          return;
+        }
+        renderVipLookup(rows2[0], box);
+      });
+      return;
+    }
+    renderVipLookup(rows[0], box);
+  });
+}
+
+function renderVipLookup(order, box) {
+  var st = ORDER_STATE[order.status] || [String(order.status || '未知'), '#8b8a85'];
+  var oid = order._openid || '';
+  var h = '<table><tr><th style="width:110px">业务单号</th><td class="mono">' + esc(order.outTradeNo || '') + '</td></tr>'
+    + '<tr><th>平台单号</th><td class="mono">' + esc(order.wxOrderId || '—') + '</td></tr>'
+    + '<tr><th>用户 openid</th><td class="mono">' + esc(oid) + '</td></tr>'
+    + '<tr><th>套餐</th><td>' + esc(order.planName || order.planId || '') + ' · &yen; ' + fen(order.amount) + '</td></tr>'
+    + '<tr><th>订单状态</th><td style="color:' + st[1] + ';font-weight:600">' + esc(st[0]) + '</td></tr>'
+    + '<tr><th>下单时间</th><td class="mono">' + esc(fmtDate(order.createTime)) + '</td></tr>'
+    + '<tr><th>会员状态</th><td id="vipLookupMember">查询中…</td></tr></table>';
+  box.innerHTML = h;
+
+  if (!oid) return;
+  var mQuery = "db.collection('vip_members').where({ _openid: '" + safeToken(oid) + "' }).limit(1).get()";
+  api('tcb/databasequery', { query: mQuery }, function (rm) {
+    var cell = document.getElementById('vipLookupMember');
+    var m = unwrap(rm)[0];
+    if (!m) {
+      if (cell) cell.innerHTML = '<span style="color:#8b8a85">无会员记录（订单未发货）</span>';
+      return;
+    }
+    var diff = Number(m.expireAt) - Date.now();
+    var left = diff <= 0
+      ? '<span style="color:#8b8a85">已过期 ' + Math.ceil(-diff / 86400000) + ' 天</span>'
+      : '<b style="color:#137333">' + Math.ceil(diff / 86400000) + ' 天</b>';
+    if (cell) {
+      cell.innerHTML = esc(m.planName || m.planId || '') + ' · 到期 ' + esc(fmtDate(m.expireAt)) + ' · 剩 ' + left;
+    }
+  });
+}
+
+function loadVipOrders() {
+  api('tcb/databasequery', { query: "db.collection('vip_orders').orderBy('createTime','desc').limit(100).get()" }, function (r) {
+    if (!r) return;
+    VIP_ORDERS = unwrap(r);
+    renderVipOrders();
+    renderVipStats();
+  });
+}
+
+function loadVipMembers() {
+  api('tcb/databasequery', { query: "db.collection('vip_members').orderBy('createTime','desc').limit(200).get()" }, function (r) {
+    if (!r) return;
+    VIP_MEMBERS = unwrap(r);
+    renderVipMembers();
+    renderVipStats();
+  });
+}
+
+function loadVipPlans() {
+  api('tcb/databasequery', { query: "db.collection('vip_plans').orderBy('sort','asc').limit(20).get()" }, function (r) {
+    if (!r) return;
+    VIP_PLANS = unwrap(r);
+    renderVipPlans();
+  });
+}
+
+function renderVipStats() {
+  var box = document.getElementById('vipStats');
+  if (!box) return;
+  var now = Date.now();
+  var active = 0;
+  for (var i = 0; i < VIP_MEMBERS.length; i++) {
+    if (Number(VIP_MEMBERS[i].expireAt) > now) active++;
+  }
+  var revenue = 0;
+  var deliveredCnt = 0;
+  var pendingCnt = 0;
+  for (var j = 0; j < VIP_ORDERS.length; j++) {
+    var o = VIP_ORDERS[j];
+    if (o.status === 'delivered') { deliveredCnt++; revenue += Number(o.amount) || 0; }
+    if (o.status === 'pending') pendingCnt++;
+  }
+  box.innerHTML = '<div class="stat-grid">'
+    + '<div class="stat-card"><div class="n">' + active + '</div><div class="l">有效会员（当前）</div></div>'
+    + '<div class="stat-card"><div class="n">' + VIP_MEMBERS.length + '</div><div class="l">会员记录总数</div></div>'
+    + '<div class="stat-card"><div class="n">&yen; ' + fen(revenue) + '</div><div class="l">已发货收入（最近 100 单）</div></div>'
+    + '<div class="stat-card"><div class="n">' + deliveredCnt + '</div><div class="l">已发货订单</div></div>'
+    + '<div class="stat-card"><div class="n">' + pendingCnt + '</div><div class="l">待支付订单</div></div>'
+    + '</div>';
+}
+
+function renderVipPlans() {
+  var box = document.getElementById('vipPlansBox');
+  if (!VIP_PLANS.length) {
+    box.innerHTML = '<div class="empty">没有套餐数据，先跑：node scripts/db.mjs vip:seed</div>';
+    return;
+  }
+  var h = '<table><tr><th style="width:52px">#</th><th>套餐</th><th>名称</th>'
+    + '<th style="width:110px">价格</th><th style="width:120px">道具 productId</th><th style="width:80px">在售</th></tr>';
+  for (var i = 0; i < VIP_PLANS.length; i++) {
+    var p = VIP_PLANS[i];
+    h += '<tr>'
+      + '<td class="mono">' + (i + 1) + '</td>'
+      + '<td class="mono">' + esc(p.planId) + '</td>'
+      + '<td><b>' + esc(p.name) + '</b></td>'
+      + '<td class="mono">&yen; ' + fen(p.price) + '</td>'
+      + '<td class="mono">' + esc(p.productId) + '</td>'
+      + '<td>' + (p.active === true ? '在售' : '下架') + '</td></tr>';
+  }
+  box.innerHTML = h + '</table>';
+}
+
+function renderVipOrders() {
+  var box = document.getElementById('vipOrdersBox');
+  if (!VIP_ORDERS.length) {
+    box.innerHTML = '<div class="empty">还没有订单</div>';
+    return;
+  }
+  var h = '<table><tr><th style="width:52px">#</th><th style="width:100px">下单时间</th>'
+    + '<th>业务单号</th><th>平台单号</th><th style="width:90px">套餐</th>'
+    + '<th style="width:90px">金额</th><th style="width:110px">状态</th><th style="width:150px">用户</th></tr>';
+  for (var i = 0; i < VIP_ORDERS.length; i++) {
+    var o = VIP_ORDERS[i];
+    var st = ORDER_STATE[o.status] || [String(o.status || '未知'), '#8b8a85'];
+    h += '<tr>'
+      + '<td class="mono">' + (i + 1) + '</td>'
+      + '<td class="mono">' + esc(fmtDate(o.createTime)) + '</td>'
+      + '<td class="mono" title="补发/撤销命令用这个单号">' + esc(o.outTradeNo || '') + '</td>'
+      + '<td class="mono">' + esc(o.wxOrderId || '—') + '</td>'
+      + '<td>' + esc(o.planName || o.planId || '') + '</td>'
+      + '<td class="mono">&yen; ' + fen(o.amount) + '</td>'
+      + '<td style="color:' + st[1] + ';font-weight:600">' + esc(st[0]) + '</td>'
+      + '<td class="mono" title="' + esc(o._openid || '') + '">' + esc(maskOpenid(o._openid)) + '</td></tr>';
+  }
+  box.innerHTML = h + '</table>';
+}
+
+function renderVipMembers() {
+  var box = document.getElementById('vipMembersBox');
+  if (!VIP_MEMBERS.length) {
+    box.innerHTML = '<div class="empty">还没有会员</div>';
+    return;
+  }
+  var h = '<table><tr><th style="width:52px">#</th><th>用户</th><th style="width:110px">套餐</th>'
+    + '<th style="width:110px">到期时间</th><th style="width:110px">剩余</th><th style="width:100px">首次开通</th>'
+    + '<th style="width:160px">操作</th></tr>';
+  var now = Date.now();
+  for (var i = 0; i < VIP_MEMBERS.length; i++) {
+    var m = VIP_MEMBERS[i];
+    var diff = Number(m.expireAt) - now;
+    var left;
+    if (diff <= 0) {
+      left = '<span style="color:#8b8a85">已过期 ' + Math.ceil(-diff / 86400000) + ' 天</span>';
+    } else {
+      left = Math.ceil(diff / 86400000) + ' 天';
+    }
+    h += '<tr>'
+      + '<td class="mono">' + (i + 1) + '</td>'
+      + '<td class="mono" title="' + esc(m._openid || '') + '">' + esc(maskOpenid(m._openid)) + '</td>'
+      + '<td>' + esc(m.planName || m.planId || '') + '</td>'
+      + '<td class="mono">' + esc(fmtDate(m.expireAt)) + '</td>'
+      + '<td>' + left + '</td>'
+      + '<td class="mono">' + esc(fmtDate(m.createTime)) + '</td>'
+      + '<td><button class="btn sm" onclick="editMemberExpire(' + i + ')">改到期</button> '
+      + '<button class="btn sm danger" onclick="revokeMember(' + i + ')">撤销</button></td></tr>';
+  }
+  box.innerHTML = h + '</table>';
+}
+
+/* 数据库 _id 都是字母数字与 - _，写库前过滤一遍，与 safeToken 同一思路 */
+function safeId(s) {
+  return String(s || '').replace(/[^a-zA-Z0-9\-_]/g, '');
+}
+
+/**
+ * 修改会员到期时间。
+ * 场景：客服补偿、手工延长 / 缩短。日期到当天 23:59:59 为止，符合「当天仍有效」的直觉。
+ * 注意：改短不会连带把订单标成退款 —— 订单是交易记录，不该被运营操作覆盖。
+ */
+function editMemberExpire(i) {
+  var m = VIP_MEMBERS[i];
+  if (!m || !m._id) return;
+  var cur = new Date(Number(m.expireAt) || Date.now());
+  var pad = function (n) { return n < 10 ? '0' + n : '' + n; };
+  var def = cur.getFullYear() + '-' + pad(cur.getMonth() + 1) + '-' + pad(cur.getDate());
+  var v = prompt('修改会员到期时间（YYYY-MM-DD）：\n用户 ' + maskOpenid(m._openid), def);
+  if (v === null) return;
+  v = String(v).trim();
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) { showMsg('err', '日期格式应为 YYYY-MM-DD'); return; }
+  var ts = new Date(v + 'T23:59:59').getTime();
+  if (isNaN(ts)) { showMsg('err', '日期无效'); return; }
+  if (!confirm('确认把 ' + maskOpenid(m._openid) + ' 的会员到期时间改为 ' + v + '？')) return;
+
+  api('tcb/databaseupdate', {
+    query: "db.collection('vip_members').doc('" + safeId(m._id) + "').update({ data: { expireAt: " + ts + " } })"
+  }, function (r) {
+    if (!r || r.errcode) { showMsg('err', '保存失败 ' + (r && r.errmsg || '')); return; }
+    showMsg('ok', '已改为 ' + v + '，用户重新进入会员页即生效');
+    loadVipMembers();
+  });
+}
+
+/**
+ * 撤销会员：删 vip_members 记录，并把该用户名下「已发货」订单改成「已退款」。
+ * 与命令行 vip:revoke 行为一致。
+ *
+ * ⚠️ 为什么必须配着订单状态一起改：
+ *   发货去重靠订单状态。只删会员不改订单，下一轮自动查单若又判定已支付，
+ *   会把这单重新发出去 —— 撤了等于没撤。改成 refunded 之后，deliver 会跳过它。
+ *
+ * ⚠️ 这里只改我们自己的库。真正把钱退给用户的动作在 MP 后台「虚拟支付 → 交易订单」，
+ *   两边都要做，缺一边就会出现「钱退了还留着会员」或「会员收了钱却退不掉」。
+ */
+function revokeMember(i) {
+  var m = VIP_MEMBERS[i];
+  if (!m || !m._id) return;
+  var oid = safeId(m._openid);
+  if (!confirm('确认撤销 ' + maskOpenid(oid) + ' 的会员？\n\n'
+    + '会删除会员记录，并把该用户名下已发货订单标记为已退款。\n'
+    + '提醒：真正退款要去 MP 后台操作，这里只改小程序自己的数据。')) return;
+
+  api('tcb/databasedelete', {
+    query: "db.collection('vip_members').doc('" + safeId(m._id) + "').remove()"
+  }, function (r) {
+    if (!r || r.errcode) { showMsg('err', '删除失败 ' + (r && r.errmsg || '')); return; }
+    var affected = 0;
+    var done = 0;
+    var list = [];
+    for (var k = 0; k < VIP_ORDERS.length; k++) {
+      if (safeId(VIP_ORDERS[k]._openid) === oid && VIP_ORDERS[k].status === 'delivered') list.push(VIP_ORDERS[k]);
+    }
+    affected = list.length;
+    if (!affected) {
+      showMsg('ok', '已撤销（该用户名下没有已发货订单需要同步）');
+      loadVipMembers();
+      return;
+    }
+    for (var j = 0; j < list.length; j++) {
+      (function (order) {
+        api('tcb/databaseupdate', {
+          query: "db.collection('vip_orders').doc('" + safeId(order._id) + "').update({ data: { status: 'refunded' } })"
+        }, function () {
+          done++;
+          if (done === affected) {
+            showMsg('ok', '已撤销会员，并同步 ' + affected + ' 笔订单为已退款');
+            loadVipMembers();
+            loadVipOrders();
+          }
+        });
+      })(list[j]);
+    }
+  });
+}
+
+/* ---------------- 通用：表格行拖拽排序（picks / notices） ---------------- */
+/* 与「配置 configs」的标签拖动同一套手感，只是作用对象换成表格行：
+   按住整行拖到目标位置，落下即重排并写库。变量名与 configs 的 dragKey/dragFrom 区分开。 */
+
+var rowDragName = null;   // 'picks' | 'notices'
+var rowDragFrom = -1;
+
+function rowList(name) {
+  return name === 'picks' ? PICKS : NOTICES;
+}
+
+function onRowDragStart(name, i, ev) {
+  rowDragName = name;
+  rowDragFrom = i;
+  ev.dataTransfer.effectAllowed = 'move';
+  try { ev.dataTransfer.setData('text/plain', String(i)); } catch (e) {}
+  ev.currentTarget.classList.add('dragging');
+}
+
+function onRowDragOver(name, i, ev) {
+  if (rowDragName !== name) return;
+  ev.preventDefault();   // 不拦截就不会触发 drop
+  ev.dataTransfer.dropEffect = 'move';
+  // 只更新插入提示，不重建 DOM（重建会打断拖动）
+  var rows = ev.currentTarget.parentNode.children;
+  for (var n = 0; n < rows.length; n++) rows[n].classList.remove('drop-target');
+  if (i !== rowDragFrom) ev.currentTarget.classList.add('drop-target');
+}
+
+function onRowDrop(name, i, ev) {
+  ev.preventDefault();
+  ev.currentTarget.classList.remove('drop-target');
+  if (rowDragName !== name || rowDragFrom < 0 || rowDragFrom === i) return;
+  var arr = rowList(name);
+  var moved = arr.splice(rowDragFrom, 1)[0];
+  arr.splice(i, 0, moved);
+  rowDragFrom = i;
+  if (name === 'picks') savePickOrder(); else saveNoticeOrder();
+}
+
+function onRowDragEnd(ev) {
+  ev.currentTarget.classList.remove('dragging');
+  rowDragName = null;
+  rowDragFrom = -1;
+}
+
+/* ---------------- configs ---------------- */
+var CFG_DOCS = {};
+
+function loadConfigs(cb) {
+  api('tcb/databasequery', { query: "db.collection('configs').limit(20).get()" }, function (r) {
+    if (!r) { if (cb) cb(); return; }
+    var rows = (r.data || []).map(function (s) { return typeof s === 'string' ? JSON.parse(s) : s; });
+    CFG_DOCS = {};
+    for (var i = 0; i < rows.length; i++) CFG_DOCS[rows[i].key] = rows[i];
+    // 分类下拉选项同步更新（编辑收录、列表筛选都要用）
+    if (CFG_DOCS.categories && CFG_DOCS.categories.values) {
+      CATS = CFG_DOCS.categories.values;
+      renderCatOptions();
+    }
+    renderConfigs();
+    if (cb) cb();
+  });
+}
+
+// 刷新列表上方的分类筛选下拉（保留当前选中项，顺带显示每类条数）
+function renderCatOptions() {
+  var sel = document.getElementById('catFilter');
+  if (!sel) return;
+  var cur = sel.value;
+  var h = '<option value="">全部分类' + (CAT_TOTAL ? '（' + CAT_TOTAL + '）' : '') + '</option>';
+  for (var i = 0; i < CATS.length; i++) {
+    var c = CATS[i];
+    var n = CAT_COUNTS[c];
+    h += '<option value="' + esc(c) + '">' + esc(c) + (n == null ? '' : '（' + n + '）') + '</option>';
+  }
+  sel.innerHTML = h;
+  sel.value = cur;   // 原选项若已不存在，浏览器会自动回落到「全部分类」
+}
+
+// 统计每个分类的收录条数（只取 category 字段，一次查询拿全）
+function loadCatCounts() {
+  api('tcb/databasequery', { query: "db.collection('sites').field({category:true}).limit(1000).get()" }, function (r) {
+    if (!r || !r.data) return;
+    CAT_COUNTS = {};
+    CAT_TOTAL = 0;
+    for (var i = 0; i < r.data.length; i++) {
+      var s = typeof r.data[i] === 'string' ? JSON.parse(r.data[i]) : r.data[i];
+      CAT_COUNTS[s.category] = (CAT_COUNTS[s.category] || 0) + 1;
+      CAT_TOTAL++;
+    }
+    renderCatOptions();
+  });
+}
+
+var CFG_META = {
+  categories: { title: '分类（首页 Tab）', desc: '改动后小程序下次打开生效；注意与 sites 记录的 category 字段保持一致' },
+  hot_keywords: { title: '搜索热词', desc: '显示在首页搜索框下方，点击直接搜索' }
+};
+
+function renderConfigs() {
+  var box = document.getElementById('configsBox');
+  var keys = ['categories', 'hot_keywords'];
+  var h = '';
+  for (var k = 0; k < keys.length; k++) {
+    var key = keys[k];
+    var doc = CFG_DOCS[key];
+    var vals = doc ? doc.values || [] : [];
+    var meta = CFG_META[key] || { title: key, desc: '' };
+    h += '<div class="cfg-block"><h3>' + esc(meta.title) + '</h3><div class="key">' + key + ' · ' + meta.desc + '</div>'
+      + '<div class="tag-edit" id="tags_' + key + '">';
+    for (var i = 0; i < vals.length; i++) {
+      h += '<span class="tag" draggable="true"'
+        + ' ondragstart="onTagDragStart(\'' + key + '\',' + i + ',event)"'
+        + ' ondragover="onTagDragOver(\'' + key + '\',' + i + ',event)"'
+        + ' ondrop="onTagDrop(\'' + key + '\',' + i + ',event)"'
+        + ' ondragend="onTagDragEnd(event)"'
+        + '>'
+        + '<span class="grip">⋮⋮</span>'
+        + '<span class="tag-text">' + esc(vals[i]) + '</span>'
+        + '<span class="x" onclick="rmTag(\'' + key + '\',' + i + ')">×</span>'
+        + '</span>';
+    }
+    h += '</div><div class="add-row"><input id="add_' + key + '" placeholder="新增一项，回车即保存" onkeydown="if(event.key===\'Enter\')addTag(\'' + key + '\')">'
+      + '<button class="btn ghost sm" onclick="addTag(\'' + key + '\')">添加</button></div></div>';
+  }
+  box.innerHTML = h || '<div class="empty">configs 集合为空</div>';
+}
+
+function rmTag(key, i) {
+  CFG_DOCS[key].values.splice(i, 1);
+  renderConfigs();
+  saveCfg(key); // 删除即保存
+}
+
+// 拖动排序：拖到目标位置放下，顺序立即存库（分类的顺序 = 首页 Tab 的顺序）
+var dragKey = null;
+var dragFrom = -1;
+
+function onTagDragStart(key, i, ev) {
+  dragKey = key;
+  dragFrom = i;
+  ev.dataTransfer.effectAllowed = 'move';
+  try { ev.dataTransfer.setData('text/plain', String(i)); } catch (e) {}
+  ev.target.classList.add('dragging');
+}
+
+function onTagDragOver(key, i, ev) {
+  if (dragKey !== key) return;
+  ev.preventDefault();
+  ev.dataTransfer.dropEffect = 'move';
+  // 给目标位置一个插入提示（不重建 DOM，避免打断拖动）
+  var tags = ev.currentTarget.parentNode.children;
+  for (var n = 0; n < tags.length; n++) tags[n].classList.remove('drop-target');
+  if (i !== dragFrom) ev.currentTarget.classList.add('drop-target');
+}
+
+function onTagDrop(key, i, ev) {
+  ev.preventDefault();
+  ev.currentTarget.classList.remove('drop-target');
+  if (dragKey !== key || dragFrom < 0 || dragFrom === i) return;
+  var vals = CFG_DOCS[key].values;
+  var moved = vals.splice(dragFrom, 1)[0];
+  vals.splice(i, 0, moved);
+  dragFrom = i;
+  renderConfigs();
+  saveCfg(key);
+}
+
+function onTagDragEnd(ev) {
+  ev.target.classList.remove('dragging');
+  dragKey = null;
+  dragFrom = -1;
+}
+
+function addTag(key) {
+  var inp = document.getElementById('add_' + key);
+  var v = inp.value.trim();
+  if (!v) return;
+  if (!CFG_DOCS[key]) CFG_DOCS[key] = { key: key, values: [] };
+  if (CFG_DOCS[key].values.indexOf(v) >= 0) { showMsg('err', '已存在：' + v); return; }
+  CFG_DOCS[key].values.push(v);
+  inp.value = '';
+  renderConfigs();
+  saveCfg(key); // 添加即保存
+}
+
+function saveCfg(key) {
+  var doc = CFG_DOCS[key];
+  if (!doc) return;
+  var vals = doc.values;
+  if (doc._id) {
+    var q = "db.collection('configs').doc('" + doc._id + "').update({ data: { values: " + JSON.stringify(vals) + " } })";
+    api('tcb/databaseupdate', { query: q }, function (r) {
+      if (!r) return;
+      showMsg('ok', '已保存 ' + key + '（小程序下次打开生效）');
+    });
+  } else {
+    var q2 = "db.collection('configs').add({ data: " + JSON.stringify({ key: key, values: vals }) + " })";
+    api('tcb/databaseadd', { query: q2 }, function (r) {
+      if (!r) return;
+      showMsg('ok', '已创建 ' + key);
+      loadConfigs();
+    });
+  }
+}
+
+/* ---------------- 启动 ---------------- */
+function loadAll() { loadSites(); loadConfigs(); loadCatCounts(); }
+
+(function init() {
+  try {
+    var c = JSON.parse(localStorage.getItem('goweb_admin_cred') || '{}');
+    CRED.appid = c.appid || ''; CRED.secret = c.secret || '';
+    document.getElementById('inAppid').value = CRED.appid;
+    document.getElementById('inSecret').value = CRED.secret;
+  } catch (e) {}
+  fetch('/api/info').then(function (r) { return r.json(); }).then(function (info) {
+    ENV_ID = info.envId;
+    document.getElementById('envText').textContent = 'env: ' + info.envId;
+    if (!info.hasCredential && !CRED.appid) {
+      document.getElementById('credBox').style.display = 'flex';
+    }
+    loadAll();
+  });
+})();
+</script>
+</body>
+</html>

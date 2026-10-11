@@ -1,0 +1,70 @@
+<!--pages/beauty/beauty.wxml  颜值分析 · 工具首页（暖纸版式）-->
+<view class="container">
+
+  <!-- 刊头 -->
+  <view class="b-header">
+    <view class="issue-row">
+      <text class="issue-dot"></text>
+      <text class="issue-no">BEAUTY SCAN / 娱乐向颜值参考</text>
+    </view>
+    <view class="b-title-row">
+      <text class="b-title">颜值分析</text>
+    </view>
+    <view class="b-rule">
+      <view class="b-rule-mark"></view>
+      <view class="b-rule-grey"></view>
+    </view>
+    <text class="b-sub">上传一张照片，AI 给出颜值参考分与特征分析</text>
+  </view>
+
+  <!-- 功能说明 -->
+  <view class="b-card fade-in">
+    <view class="b-card-head">
+      <text class="b-card-title">它能做什么</text>
+    </view>
+    <view class="b-feat">
+      <view class="b-feat-dot"></view>
+      <text class="b-feat-text">分析照片中的年龄感、性别、脸型特征</text>
+    </view>
+    <view class="b-feat">
+      <view class="b-feat-dot"></view>
+      <text class="b-feat-text">给出 70~95 区间的颜值参考分（避免扎心）</text>
+    </view>
+    <view class="b-feat">
+      <view class="b-feat-dot"></view>
+      <text class="b-feat-text">按分数段生成气质评语与拍摄建议</text>
+    </view>
+  </view>
+
+  <!-- 隐私提示（重点卡片，浅陶土底） -->
+  <view class="b-card b-privacy fade-in" bindtap="onTogglePrivacy">
+    <view class="b-card-head">
+      <text class="b-card-title b-privacy-title">隐私承诺</text>
+      <text class="b-privacy-toggle">{{privacyExpanded ? '收起' : '展开'}}</text>
+    </view>
+    <view class="b-privacy-main">
+      <text class="b-privacy-strong">照片不会保存，分析后立即删除。</text>
+    </view>
+    <block wx:if="{{privacyExpanded}}">
+      <text class="b-privacy-line">· 照片仅用于本次分析，分析完成或失败后立即从云端删除，不写入数据库，不做长期存储。</text>
+      <text class="b-privacy-line">· 不提取、不保存任何人脸生物特征，不建立用户画像。</text>
+      <text class="b-privacy-line">· 照片将传输至腾讯云人脸识别接口完成当次分析，仅此用途。</text>
+      <text class="b-privacy-line">· 不调用微信人脸核身等身份认证接口。</text>
+    </block>
+    <view class="b-privacy-link-row">
+      <text class="b-privacy-link" catchtap="onOpenAgreement">查看《隐私政策》全文</text>
+    </view>
+  </view>
+
+  <!-- 开始按钮 -->
+  <view class="b-start-btn" hover-class="btn-hover" bindtap="onStart">
+    <text class="b-start-text">开始分析</text>
+  </view>
+
+  <!-- 免责声明 -->
+  <view class="b-disclaimer">
+    <text class="b-disclaimer-text">本工具结果由算法估算，仅供娱乐参考，不构成对任何人外貌的任何评价。请勿上传他人照片。</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

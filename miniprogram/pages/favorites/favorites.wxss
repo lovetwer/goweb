@@ -1,9 +1,9 @@
-/* pages/favorites/favorites.wxss —— 与首页同一套浅色版式（白为主，黑标题，灰文字，红仅「清空」二字） */
+/* pages/favorites/favorites.wxss —— 与首页同一套暖纸版式（暖白底，白卡片，陶土红仅「清空」等少数处） */
 
 /* ================= 头部 ================= */
 .fav-header {
   padding: 24rpx 32rpx 28rpx;
-  background: var(--white);
+  background: var(--bg);
   border-bottom: 2rpx solid var(--line);
 }
 
@@ -24,10 +24,10 @@
   padding: 8rpx 22rpx;
   border: 2rpx solid var(--line-2);
   border-radius: 999rpx;
-  background: var(--white);
+  background: var(--card);
 }
 
-/* 红 7/7：破坏性操作（清空）的文字提示 */
+/* 破坏性操作（清空）：陶土红文字提示 */
 .fav-clear-text {
   font-size: 22rpx;
   letter-spacing: 1rpx;
@@ -62,10 +62,10 @@
   margin-top: 24rpx;
 }
 
-.fav-head-rule-black {
+.fav-head-rule-mark {
   width: 88rpx;
   height: 6rpx;
-  background: var(--black);
+  background: var(--red);
 }
 
 .fav-head-rule-grey {
@@ -74,6 +74,7 @@
   background: var(--line);
 }
 
+/* 「仅保存在本机，不上传服务器」：隐私承诺提到 --ink-3 */
 .fav-sub {
   display: block;
   margin-top: 16rpx;
@@ -85,54 +86,37 @@
 /* ================= 列表 ================= */
 .fav-list {
   padding: 20rpx 24rpx 0;
-  background: var(--white);
+  background: var(--bg);
 }
 
 .fav-item {
   position: relative;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   padding: 22rpx 84rpx 22rpx 24rpx;
   margin-bottom: 18rpx;
-  background: var(--white);
-  border: 2rpx solid var(--line);
+  background: var(--card);
   border-radius: var(--radius);
-  transition: border-color 0.18s ease;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
 }
 
 .fav-item-hover {
-  border-color: var(--black);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2rpx);
 }
 
-.fav-cover {
-  position: relative;
-  width: 168rpx;
-  height: 126rpx;
-  border: 2rpx solid var(--line);
+/* 工具图标：分类浅底 + 分类色字符 */
+.fav-icon {
+  width: 84rpx;
+  height: 84rpx;
   border-radius: var(--radius);
-  overflow: hidden;
-  flex-shrink: 0;
-  background: var(--fill);
-}
-
-.fav-cover-img {
-  width: 100%;
-  height: 100%;
-  display: block;
-}
-
-.fav-cover-fallback {
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.fav-cover-initial {
-  font-size: 52rpx;
+  font-size: 36rpx;
   font-weight: 700;
-  line-height: 1;
+  flex-shrink: 0;
 }
 
 .fav-body {
@@ -146,7 +130,6 @@
 .fav-name-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
 .fav-name {
@@ -156,6 +139,18 @@
   font-weight: 700;
   color: var(--black);
   letter-spacing: 0.5rpx;
+}
+
+/* 已下架标记 */
+.fav-dead-tag {
+  flex-shrink: 0;
+  margin-left: 12rpx;
+  padding: 2rpx 12rpx;
+  background: var(--fill);
+  border: 2rpx solid var(--line-2);
+  border-radius: 999rpx;
+  font-size: 19rpx;
+  color: var(--ink-3);
 }
 
 .fav-arrow {
@@ -210,17 +205,16 @@
   letter-spacing: 1rpx;
 }
 
-.fav-url {
-  flex: 1;
-  min-width: 0;
-  margin-left: 14rpx;
-  text-align: right;
+/* 收藏时间：用户判断「这条是什么时候收的」要看它，提到 --ink-3 */
+.fav-time {
   font-family: var(--mono);
-  font-size: 19rpx;
-  color: var(--ink-4);
+  font-size: 21rpx;
+  color: var(--ink-3);
 }
 
-/* 删除按钮：CSS 画的叉 */
+/* 删除按钮：CSS 画的叉。
+   破坏性操作的图标必须看得见 —— 用 --ink-3，
+   hover 时再变陶土红，形成「平时清楚 / 悬停警示」两级。 */
 .fav-remove {
   position: absolute;
   right: 20rpx;
@@ -236,7 +230,7 @@
   top: 22rpx;
   width: 28rpx;
   height: 3rpx;
-  background: var(--ink-4);
+  background: var(--ink-3);
   border-radius: 2rpx;
 }
 
@@ -250,7 +244,17 @@
 
 .fav-item-hover .rm-x,
 .fav-item-hover .rm-y {
-  background: var(--black);
+  background: var(--red);
+}
+
+/* 已下架条目整体压淡 */
+.fav-item-dead .fav-name,
+.fav-item-dead .fav-desc {
+  color: var(--ink-3);
+}
+
+.fav-item-dead .fav-icon {
+  opacity: 0.5;
 }
 
 /* ================= 统计 ================= */
@@ -279,7 +283,7 @@
 .state-icon.star-state {
   border-color: var(--line-2);
   position: relative;
-  background: var(--white);
+  background: var(--card);
 }
 
 .state-icon.star-state::before {

@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "分析结果",
+  "navigationBarBackgroundColor": "#faf7f2",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#faf7f2",
+  "backgroundTextStyle": "dark",
+  "usingComponents": {}
+}

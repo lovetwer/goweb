@@ -1,24 +1,20 @@
 {
-  "appid": "wx0000000000000000",
+  "appid": "wx64d5cdd50ddd1e90",
   "projectname": "goweb-nav",
   "description": "网站收录导航（纯只读展示，无用户系统）",
   "compileType": "miniprogram",
-  "libVersion": "3.5.5",
+  "libVersion": "3.17.3",
   "miniprogramRoot": "miniprogram/",
-  "cloudfunctionRoot": "",
+  "cloudfunctionRoot": "cloudfunctions/",
   "packOptions": {
     "ignore": [
       {
-        "type": "folder",
-        "value": "data"
+        "value": "README.md",
+        "type": "file"
       },
       {
-        "type": "file",
-        "value": "README.md"
-      },
-      {
-        "type": "file",
-        "value": "package.json"
+        "value": "package.json",
+        "type": "file"
       }
     ],
     "include": []
@@ -53,7 +49,16 @@
     "disableUseStrict": false,
     "showES6CompileOption": false,
     "useCompilerPlugins": false,
-    "ignoreUploadUnusedFiles": true
+    "ignoreUploadUnusedFiles": true,
+    "minifyWXML": true,
+    "compileWorklet": false,
+    "localPlugins": false,
+    "condition": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
   },
   "condition": {
     "miniprogram": {
@@ -72,5 +77,7 @@
         }
       ]
     }
-  }
+  },
+  "simulatorPluginLibVersion": {},
+  "editorSetting": {}
 }

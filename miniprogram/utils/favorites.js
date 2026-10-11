@@ -1,19 +1,23 @@
 /**
  * utils/favorites.js —— 本地收藏（wx.setStorageSync，无任何后端、无任何用户信息）
  *
+ * 收藏对象是「工具」（utils/tools.js 注册表里的条目），存的是工具快照：
+ * 即使将来某个工具下架，收藏里仍能看到名字（点开时按 id 反查注册表，
+ * 查不到就提示已下架）。
+ *
  * 存储结构（Storage key = config.FAVORITES_KEY）：
  * [
  *   {
- *     id: '站点 _id',
- *     name: '站点名',
- *     url: 'https://...',
- *     category: '效率工具',
- *     description: '一句话简介',
- *     coverUrl: 'cloud://...',
+ *     id: '工具 id',
+ *     name: '工具名',
+ *     desc: '一句话简介',
+ *     icon: '图标字符',
+ *     path: '/pages/xxx/xxx',
+ *     category: '分类 key',
  *     addedAt: 1717200000000
  *   }
  * ]
- * 新的排在前面，最多保留 200 条。
+ * 新收藏的排前面，最多保留 200 条。
  */
 
 const config = require('../config.js');
@@ -30,7 +34,6 @@ function getAll() {
     const list = wx.getStorageSync(KEY);
     return Array.isArray(list) ? list : [];
   } catch (e) {
-    console.warn('[favorites] 读取失败', e);
     return [];
   }
 }
@@ -45,7 +48,6 @@ function saveAll(list) {
     wx.setStorageSync(KEY, Array.isArray(list) ? list.slice(0, MAX) : []);
     return true;
   } catch (e) {
-    console.warn('[favorites] 写入失败', e);
     return false;
   }
 }
@@ -61,34 +63,15 @@ function has(id) {
 }
 
 /**
- * 批量判断是否已收藏
- * @param {Array<string>} ids
- * @returns {Object} { id: true/false }
- */
-function hasMany(ids) {
-  const set = {};
-  getAll().forEach((item) => {
-    if (item && item.id) set[item.id] = true;
-  });
-  const result = {};
-  (ids || []).forEach((id) => {
-    result[id] = !!set[id];
-  });
-  return result;
-}
-
-/**
  * 切换收藏状态
- * @param {Object} site 站点对象（需含 _id/id、name、url、category、description、coverUrl）
+ * @param {Object} tool 工具对象（需含 id、name、desc、icon、path、category）
  * @returns {boolean} 切换后是否为「已收藏」
  */
-function toggle(site) {
-  if (!site) return false;
-  const id = site._id || site.id;
-  if (!id) return false;
+function toggle(tool) {
+  if (!tool || !tool.id) return false;
 
   const list = getAll();
-  const index = list.findIndex((item) => item && item.id === id);
+  const index = list.findIndex((item) => item && item.id === tool.id);
 
   if (index > -1) {
     list.splice(index, 1);
@@ -97,12 +80,12 @@ function toggle(site) {
   }
 
   list.unshift({
-    id,
-    name: site.name || '',
-    url: site.url || '',
-    category: site.category || '',
-    description: site.description || '',
-    coverUrl: site.coverUrl || '',
+    id: tool.id,
+    name: tool.name || '',
+    desc: tool.desc || '',
+    icon: tool.icon || '',
+    path: tool.path || '',
+    category: tool.category || '',
     addedAt: Date.now()
   });
   saveAll(list);
@@ -130,7 +113,6 @@ function clear() {
     wx.removeStorageSync(KEY);
     return true;
   } catch (e) {
-    console.warn('[favorites] 清空失败', e);
     return false;
   }
 }
@@ -149,7 +131,6 @@ module.exports = {
   getAll,
   saveAll,
   has,
-  hasMany,
   toggle,
   remove,
   clear,

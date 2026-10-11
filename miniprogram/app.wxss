@@ -1,43 +1,56 @@
 /**
  * app.wxss —— 全局样式
  *
- * 主题配比（按视觉面积）：
- *   白 80%  —— 页面底色、卡片、导航栏、大量留白、反白文字
- *   黑  5%  —— 主标题、选中态、主按钮、发丝边按下态
- *   灰  5%  —— 正文与辅助文字、发丝分隔线、极浅填充块
- *   红  5%  —— 仅 6 处小面积强调（见 README「设计语言」）
- *   其他 5% —— 封面占位色块、骨架屏、图片本身
+ * 设计语言：暖纸底 + 白卡片 + 陶土红点缀
+ *   暖白 60%  —— 页面底色 (#faf7f2)，取代原来的纯白
+ *   纯白 25%  —— 卡片、输入框、底部工具条
+ *   暖灰 10%  —— 正文与辅助文字、发丝分隔线
+ *   陶土红 5% —— 唯一强调色：选中态、主按钮、重点标记
+ *
+ * 全站颜色只在这组变量里定义，换肤改这里一处即可（各页 WXSS 都用 var() 引用）。
+ * 变量名沿用早期的 --black / --red，语义已变为「暖黑 / 陶土红」，不改名是为了
+ * 避免遗漏引用导致样式失效。
  *
  * 全部原生组件 + 手写 WXSS，无第三方组件库，无 emoji 图标（图标均为 CSS 绘制）
  */
 
 page {
-  /* ---- 白（主色，80%） ---- */
+  /* ---- 纯白（卡片与反白文字） ---- */
   --white: #ffffff;
-  --bg: #ffffff;
   --card: #ffffff;
 
-  /* ---- 黑（5%） ---- */
-  --black: #0c0c0c;
-  --black-2: #1a1a1a;
-  --black-3: #333333;
-  --ink: #111111;
+  /* ---- 页面底色：暖白 ---- */
+  --bg: #faf7f2;
 
-  /* ---- 灰（5%） ---- */
-  --ink-2: #55554f;
-  --ink-3: #8b8a85;
-  --ink-4: #b3b2ad;
-  --line: #eceae6;
-  --line-2: #dedbd5;
-  --fill: #f7f6f4;
-  --fill-2: #f1efec;
+  /* ---- 暖黑（标题、图标，取代原来的 #0c0c0c） ---- */
+  --black: #2b2521;
+  --ink: #2b2521;
 
-  /* ---- 红（5%，唯一强调色） ---- */
-  --red: #e8231a;
-  --red-deep: #c81b13;
-  --red-soft: #fdeceb;
+  /* ---- 暖灰（正文与发丝线，统一暖调，不混冷灰） ----
+     ink-3 / ink-4 的值经过 WCAG 对比度核算后下调（原 #8b8279 / #b5aa9c 在暖白底上
+     只有 3.53:1 和 2.14:1，后者连"域名""浏览时间"这类真信息都读不清）。
+     现在：ink-3 = 5.29:1（正文级达标），ink-4 = 3.53:1（大字/次要信息达标）。
+     两者的 R>G>B 关系保持不变，暖调没有被改冷。 */
+  --ink-2: #5f5850;
+  --ink-3: #6e665c;
+  --ink-4: #8b8279;
+  --line: #ece5da;
+  --line-2: #ded4c5;
+  --fill: #f5f0e8;
 
-  --radius: 4rpx;
+  /* ---- 陶土红（唯一强调色，降饱和、不刺眼） ----
+     --red 由 #c1502e 微调至 #b84827：暖白底对比度 4.41 → 4.92（跨过AA 正文线），
+     主按钮上的反白字 4.71 → 5.26。色相不变，肉眼仍认得出是同一个陶土红。 */
+  --red: #b84827;
+  --red-deep: #9c3d20;
+  --red-soft: #f8e3d9;
+  --red-line: #ecc9b6;
+
+  /* ---- 卡片投影：带背景色相，不用纯黑阴影 ---- */
+  --shadow: 0 4rpx 18rpx rgba(126, 99, 71, 0.06);
+  --shadow-hover: 0 8rpx 26rpx rgba(126, 99, 71, 0.13);
+
+  --radius: 12rpx;
   --mono: 'SFMono-Regular', 'SF Mono', Menlo, Consolas, 'Courier New', monospace;
 
   background-color: var(--bg);
@@ -82,11 +95,11 @@ button::after {
   height: calc(env(safe-area-inset-bottom) + 24rpx);
 }
 
-/* ---- 通用卡片：纯白 + 发丝边（白底上靠线条分层，不用阴影） ---- */
+/* ---- 通用卡片：纯白浮在暖底上，靠微暖投影分层（不用冷黑阴影） ---- */
 .card {
   background: var(--card);
-  border: 2rpx solid var(--line);
   border-radius: var(--radius);
+  box-shadow: var(--shadow);
 }
 
 /* ---- 等宽小字 ---- */
@@ -141,8 +154,8 @@ button::after {
 }
 
 .state-icon-warn {
-  border-color: var(--black);
-  color: var(--black);
+  border-color: var(--red);
+  color: var(--red);
 }
 
 .state-index {
@@ -178,7 +191,7 @@ button::after {
   height: 78rpx;
   line-height: 78rpx;
   padding: 0 50rpx;
-  background: var(--black);
+  background: var(--red);
   color: var(--white);
   font-size: 26rpx;
   letter-spacing: 3rpx;
@@ -194,7 +207,7 @@ button::after {
 
 /* ---- 骨架屏（计入「其他颜色」额度） ---- */
 .skeleton {
-  background: linear-gradient(90deg, #f1efec 25%, #f8f7f5 37%, #f1efec 63%);
+  background: linear-gradient(90deg, #efe8dc 25%, #f8f4ec 37%, #efe8dc 63%);
   background-size: 400% 100%;
   animation: skeleton-loading 1.5s ease infinite;
   border-radius: var(--radius);
